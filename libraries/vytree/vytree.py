@@ -1,6 +1,6 @@
 
 class ChildNotFoundError(Exception):
-    """ Raised on attempts to look up a non-existent path 
+    """ Raised on attempts to look up a non-existent path
     """
     def __init__(self, node, child):
         self.strerror = "Node %s has no child %s" % (node, child)
@@ -30,11 +30,11 @@ class Node(object):
     def find_child(self, name):
         """ Finds an immediate child by name.
 
-            Args:                 
+            Args:
                 name (str): Child name
 
             Returns:
-                Node 
+                Node
 
             Raises:
                 ChildNotFoundError
@@ -50,7 +50,7 @@ class Node(object):
 
     def list_children(self):
         """ Lists immediate children
-        
+
             Returns:
                 List of node names
         """
@@ -95,7 +95,7 @@ class Node(object):
         """
         next_level = path.pop()
         if not path:
-            # That was the last item of the path, 
+            # That was the last item of the path,
             # so the node is going to be an immediate child
 
             # Check if we are not trying to add the same name twice
@@ -117,12 +117,21 @@ class Node(object):
             return next_child.insert_child(path)
 
     def delete(self, path):
-        """ A stub for delete method.
+        """ Delete child node
 
-            Config tree and reference tree need different delete semantics,
-            so we leave it empty.
+            Args:
+                path (list): The path to child node
         """
-        pass
+        next_level = path.pop()
+        if not path:
+            # It was the last path level
+            # So it's either an immediate child or there's no such node
+            child = self.find_child(next_level)
+            self.__children.remove(child)
+        else:
+            # It's not, we need to recurse
+            child = self.find_child(next_level)
+            child.delete(path)
 
     def set_property(self, key, value):
         """ Set property value by key """
