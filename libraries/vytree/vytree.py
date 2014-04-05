@@ -108,13 +108,12 @@ class Node(object):
         else:
             # It is not, so we need to recurse,
             # but first decide if we have where to recurse.
-            next_child = self.find_child(next_level)
-            if not next_child:
-                # We have no such child
-                raise ChildNotFoundError(self.get_name(), next_level)
-            else:
-                # We do, recurse there
-                return next_child.insert_child(path)
+            try:
+                next_child = self.find_child([next_level])
+            except ChildNotFoundError:
+                next_child = self.insert_child([next_level])
+
+            return next_child.insert_child(path)
 
     def delete(self, path):
         """ A stub for delete method.
