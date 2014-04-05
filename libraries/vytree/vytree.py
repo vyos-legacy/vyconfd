@@ -20,6 +20,7 @@ class Node(object):
     def __init__(self, name):
         self.__name = name
         self.__children = []
+        self.__properties = {}
 
     def get_name(self):
         """ Returns node name.
@@ -122,3 +123,21 @@ class Node(object):
             so we leave it empty.
         """
         pass
+
+    def set_property(self, key, value):
+        """ Set property value by key """
+        try:
+            self.__properties[key] = value
+        except TypeError:
+            raise TypeError("Wrong property key type: %s" % type(key).__name__)
+
+    def get_property(self, key):
+        """ Get property value by key """
+
+        try:
+            if key in self.__properties:
+                return(self.__properties[key])
+        except TypeError:
+            raise TypeError("Wrong property key type: %s" % type(key).__name__)
+
+
