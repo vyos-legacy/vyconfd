@@ -63,8 +63,8 @@ class Node(object):
         """ Finds a child node by path
 
             Args:
-                path (list): Child node path, bottom-up ordered
-                (e.g. ['departments', 'branches', 'organization'])
+                path (list): The path to child node
+                (e.g. ['organization', 'branches', 'departments'])
 
             Returns:
                 Node: Child node
@@ -72,7 +72,7 @@ class Node(object):
             Raises:
                 ChildNotFoundError
         """
-        next_level = path.pop()
+        next_level = path.pop(0)
         if not path:
             # It was the last path level
             # So it's either an immediate child or there's no such node
@@ -95,7 +95,7 @@ class Node(object):
             Raises:
                 ChildNotFoundError, ChildAlreadyExistsError
         """
-        next_level = path.pop()
+        next_level = path.pop(0)
         if not path:
             # That was the last item of the path,
             # so the node is going to be an immediate child
@@ -124,7 +124,7 @@ class Node(object):
             Args:
                 path (list): The path to child node
         """
-        next_level = path.pop()
+        next_level = path.pop(0)
         if not path:
             # It was the last path level
             # So it's either an immediate child or there's no such node
