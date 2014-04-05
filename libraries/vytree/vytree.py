@@ -112,7 +112,7 @@ class Node(object):
             # It is not, so we need to recurse,
             # but first decide if we have where to recurse.
             try:
-                next_child = self.find_child([next_level])
+                next_child = self.find_child(next_level)
             except ChildNotFoundError:
                 next_child = self.insert_child([next_level])
 
