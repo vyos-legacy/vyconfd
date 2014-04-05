@@ -52,6 +52,8 @@ class TestVytreeNode(unittest.TestCase):
         self.assertRaises(vytree.ChildNotFoundError,
                           self.node.find_child,
                           ['foo', 'bar'])
+        self.assertIsInstance(self.node.get_child(['foo']),
+                              vytree.Node)
 
     def test_delete_child_subtree(self):
         self.node.insert_child(['foo', 'bar'])
