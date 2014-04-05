@@ -17,7 +17,7 @@ class Node(object):
         This class is not supposed to be used directly.
     """
 
-    def __init__(self, name, **kwargs):
+    def __init__(self, name):
         self.__name = name
         self.__children = []
 
@@ -80,7 +80,7 @@ class Node(object):
             child = self.find_child(next_level)
             return( child.get_child(path) )
 
-    def insert_child(self, path, **kwargs):
+    def insert_child(self, path):
         """ Inserts a new child
 
             Args:
@@ -102,7 +102,7 @@ class Node(object):
             if next_level in children:
                 raise ChildAlreadyExistsError(self.get_name(), next_level)
 
-            child = Node(next_level, **kwargs)
+            child = Node(next_level)
             self.__children.append(child)
             return(child)
         else:
