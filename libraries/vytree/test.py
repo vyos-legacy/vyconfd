@@ -3,6 +3,7 @@
 import vytree
 import unittest
 
+
 class TestVytreeNode(unittest.TestCase):
 
     def setUp(self):
@@ -20,9 +21,9 @@ class TestVytreeNode(unittest.TestCase):
 
     def test_insert_duplicate_child(self):
         self.node.insert_child(['foo'])
-        self.assertRaises( vytree.ChildAlreadyExistsError,
-                           self.node.insert_child,
-                           ['foo'] )
+        self.assertRaises(vytree.ChildAlreadyExistsError,
+                          self.node.insert_child,
+                          ['foo'])
 
     def test_find_immediate_child(self):
         self.node.insert_child(['foo'])
@@ -36,7 +37,28 @@ class TestVytreeNode(unittest.TestCase):
     def test_get_child_multi_level(self):
         foo_child = self.node.insert_child(['foo'])
         bar_child = foo_child.insert_child(['bar'])
-        self.assertEqual( bar_child, self.node.get_child(['bar', 'foo']) )
+        self.assertEqual( bar_child, self.node.get_child(['foo', 'bar']) )
+
+    def test_delete_child(self):
+        self.node.insert_child(['foo'])
+        self.node.delete(['foo'])
+        self.assertRaises(vytree.ChildNotFoundError,
+                          self.node.find_child,
+                          ['foo'])
+
+    def test_delete_child_multi_level(self):
+        self.node.insert_child(['foo', 'bar'])
+        self.node.delete(['foo', 'bar'])
+        self.assertRaises(vytree.ChildNotFoundError,
+                          self.node.find_child,
+                          ['foo', 'bar'])
+
+    def test_delete_child_subtree(self):
+        self.node.insert_child(['foo', 'bar'])
+        self.node.delete(['foo'])
+        self.assertRaises(vytree.ChildNotFoundError,
+                          self.node.find_child,
+                          ['foo', 'bar'])
 
 if __name__ == '__main__':
     unittest.main()
