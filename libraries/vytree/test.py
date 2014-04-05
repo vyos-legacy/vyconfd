@@ -41,21 +41,21 @@ class TestVytreeNode(unittest.TestCase):
 
     def test_delete_child(self):
         self.node.insert_child(['foo'])
-        self.node.delete(['foo'])
+        self.node.delete_child(['foo'])
         self.assertRaises(vytree.ChildNotFoundError,
                           self.node.find_child,
                           ['foo'])
 
     def test_delete_child_multi_level(self):
         self.node.insert_child(['foo', 'bar'])
-        self.node.delete(['foo', 'bar'])
+        self.node.delete_child(['foo', 'bar'])
         self.assertRaises(vytree.ChildNotFoundError,
                           self.node.find_child,
                           ['foo', 'bar'])
 
     def test_delete_child_subtree(self):
         self.node.insert_child(['foo', 'bar'])
-        self.node.delete(['foo'])
+        self.node.delete_child(['foo'])
         self.assertRaises(vytree.ChildNotFoundError,
                           self.node.find_child,
                           ['foo', 'bar'])

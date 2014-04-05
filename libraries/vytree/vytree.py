@@ -118,7 +118,7 @@ class Node(object):
 
             return next_child.insert_child(path)
 
-    def delete(self, path):
+    def delete_child(self, path):
         """ Delete child node
 
             Args:
@@ -133,7 +133,7 @@ class Node(object):
         else:
             # It's not, we need to recurse
             child = self.find_child(next_level)
-            child.delete(path)
+            child.delete_child(path)
 
     def set_property(self, key, value):
         """ Set property value by key """
