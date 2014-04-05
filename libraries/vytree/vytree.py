@@ -5,11 +5,13 @@ class ChildNotFoundError(Exception):
     def __init__(self, node, child):
         self.strerror = "Node %s has no child %s" % (node, child)
 
+
 class ChildAlreadyExistsError(Exception):
     """ Raised on attempts to insert the same child more than one time
     """
     def __init__(self, node, child):
         self.strerror = "Node %s already has child %s" % (node, child)
+
 
 class Node(object):
     """ The base class for configuration and reference tree nodes.
@@ -25,7 +27,7 @@ class Node(object):
     def get_name(self):
         """ Returns node name.
         """
-        return(self.__name)
+        return self.__name
 
     def find_child(self, name):
         """ Finds an immediate child by name.
@@ -44,7 +46,7 @@ class Node(object):
             if child.get_name() == name:
                 result = child
         if result:
-            return(result)
+            return result
         else:
             raise ChildNotFoundError(self.get_name(), name)
 
@@ -54,8 +56,8 @@ class Node(object):
             Returns:
                 List of node names
         """
-        names = [ x.get_name() for x in self.__children ]
-        return(names)
+        names = [x.get_name() for x in self.__children]
+        return names
 
     def get_child(self, path):
         """ Finds a child node by path
@@ -75,11 +77,11 @@ class Node(object):
             # It was the last path level
             # So it's either an immediate child or there's no such node
             child = self.find_child(next_level)
-            return(child)
+            return child
         else:
             # It's not, we need to recurse
             child = self.find_child(next_level)
-            return( child.get_child(path) )
+            return child.get_child(path)
 
     def insert_child(self, path):
         """ Inserts a new child
@@ -105,7 +107,7 @@ class Node(object):
 
             child = Node(next_level)
             self.__children.append(child)
-            return(child)
+            return child
         else:
             # It is not, so we need to recurse,
             # but first decide if we have where to recurse.
@@ -145,8 +147,6 @@ class Node(object):
 
         try:
             if key in self.__properties:
-                return(self.__properties[key])
+                return self.__properties[key]
         except TypeError:
             raise TypeError("Wrong property key type: %s" % type(key).__name__)
-
-
