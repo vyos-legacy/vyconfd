@@ -1,1 +1,1 @@
-from node import Node, ChildNotFoundError, ChildAlreadyExistsError, UndefinedPropertyError
+from vytree.node import Node, ChildNotFoundError, ChildAlreadyExistsError, UndefinedPropertyError
