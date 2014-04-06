@@ -62,5 +62,23 @@ class TestVytreeNode(unittest.TestCase):
                           self.node.find_child,
                           ['foo', 'bar'])
 
+    def test_set_property(self):
+        node = vytree.Node('test')
+        node.set_property('key', 'value')
+        self.assertEqual( node.get_property('key'), 'value')
+
+    def test_set_property_bad_key(self):
+        node = vytree.Node('test')
+        self.assertRaises(TypeError,
+                          node.set_property,
+                          [{}, 'value'])
+
+    def test_get_property_nonexistent_key(self):
+        node = vytree.Node('test')
+        self.assertRaises(vytree.UndefinedPropertyError,
+                          node.get_property,
+                          'fgsfds')
+
+
 if __name__ == '__main__':
     unittest.main()
