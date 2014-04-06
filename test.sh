@@ -1,3 +1,3 @@
 #!/bin/sh
 
-python -m unittest discover
+PYTHONPATH=libraries nosetests -w tests/unit/
