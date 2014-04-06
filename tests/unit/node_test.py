@@ -56,7 +56,7 @@ class TestVytreeNode(unittest.TestCase):
     def test_get_child_multi_level(self):
         foo_child = self.node.insert_child(['foo'])
         bar_child = foo_child.insert_child(['bar'])
-        self.assertEqual( bar_child, self.node.get_child(['foo', 'bar']) )
+        self.assertEqual(bar_child, self.node.get_child(['foo', 'bar']))
 
     def test_delete_child(self):
         self.node.insert_child(['foo'])
@@ -84,7 +84,7 @@ class TestVytreeNode(unittest.TestCase):
     def test_set_property(self):
         node = vytree.Node('test')
         node.set_property('key', 'value')
-        self.assertEqual( node.get_property('key'), 'value')
+        self.assertEqual(node.get_property('key'), 'value')
 
     def test_set_property_bad_key(self):
         node = vytree.Node('test')

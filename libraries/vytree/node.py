@@ -31,6 +31,7 @@ class ChildAlreadyExistsError(Exception):
     def __init__(self, node, child):
         self.strerror = "Node %s already has child %s" % (node, child)
 
+
 class UndefinedPropertyError(Exception):
     """ Raised on attempts to access undefined property """
     def __init__(self, node, property):
