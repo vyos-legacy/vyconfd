@@ -160,6 +160,21 @@ class Node(object):
             child = self.find_child(next_level)
             child.delete_child(path)
 
+    def child_exists(self, path):
+        """ Checks if specific path to a child exists """
+        try:
+            self.get_child(path)
+            return True
+        except ChildNotFoundError:
+            return False
+
+    def is_empty(self):
+        """ Checks if a node has any children """
+        if self.list_children():
+            return False
+        else:
+            return True
+
     def set_property(self, key, value):
         """ Set property value by key """
         try:

@@ -81,6 +81,24 @@ class TestVytreeNode(unittest.TestCase):
                           self.node.find_child,
                           ['foo', 'bar'])
 
+    def test_exists(self):
+        node = vytree.Node('root')
+        node.insert_child(['foo', 'bar'])
+        self.assertTrue(node.child_exists(['foo', 'bar']))
+
+    def test_does_not_exist(self):
+        node = vytree.Node('root')
+        self.assertFalse(node.child_exists(['foo']))
+
+    def test_empty(self):
+        node = vytree.Node('root')
+        self.assertTrue(node.is_empty())
+
+    def test_not_empty(self):
+        node = vytree.Node('root')
+        node.insert_child(['foo'])
+        self.assertFalse(node.is_empty())
+
     def test_set_property(self):
         node = vytree.Node('test')
         node.set_property('key', 'value')
