@@ -44,10 +44,11 @@ class Node(object):
         This class is not supposed to be used directly.
     """
 
-    def __init__(self, name):
+    def __init__(self, name, parent=None):
         self.__name = name
         self.__children = []
         self.__properties = {}
+        self.__parent = parent
 
     def get_name(self):
         """ Returns node name.
@@ -108,7 +109,7 @@ class Node(object):
             child = self.find_child(next_level)
             return child.get_child(path)
 
-    def insert_child(self, path):
+    def insert_child(self, path, parent=None):
         """ Inserts a new child
 
             Args:
@@ -130,7 +131,7 @@ class Node(object):
             if next_level in children:
                 raise ChildAlreadyExistsError(self.get_name(), next_level)
 
-            child = Node(next_level)
+            child = Node(next_level, self)
             self.__children.append(child)
             return child
         else:
@@ -139,9 +140,9 @@ class Node(object):
             try:
                 next_child = self.find_child(next_level)
             except ChildNotFoundError:
-                next_child = self.insert_child([next_level])
+                next_child = self.insert_child([next_level], self)
 
-            return next_child.insert_child(path)
+            return next_child.insert_child(path, self)
 
     def delete_child(self, path):
         """ Delete child node
@@ -174,6 +175,9 @@ class Node(object):
             return False
         else:
             return True
+
+    def get_parent(self):
+        return self.__parent
 
     def set_property(self, key, value):
         """ Set property value by key """

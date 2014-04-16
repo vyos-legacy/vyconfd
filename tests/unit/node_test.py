@@ -99,6 +99,17 @@ class TestVytreeNode(unittest.TestCase):
         node.insert_child(['foo'])
         self.assertFalse(node.is_empty())
 
+    def test_get_parent(self):
+        node = vytree.Node('root')
+        child = node.insert_child(['foo'])
+        self.assertIs(node, child.get_parent())
+
+    def test_get_parent_multilevel(self):
+        node = vytree.Node('root')
+        foo_child = node.insert_child(['foo'])
+        bar_child = node.insert_child(['foo', 'bar'])
+        self.assertIs(foo_child, bar_child.get_parent())
+
     def test_set_property(self):
         node = vytree.Node('test')
         node.set_property('key', 'value')
