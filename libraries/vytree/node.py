@@ -109,7 +109,7 @@ class Node(object):
             child = self.find_child(next_level)
             return child.get_child(path)
 
-    def insert_child(self, path, parent=None):
+    def insert_child(self, path):
         """ Inserts a new child
 
             Args:
@@ -140,9 +140,9 @@ class Node(object):
             try:
                 next_child = self.find_child(next_level)
             except ChildNotFoundError:
-                next_child = self.insert_child([next_level], self)
+                next_child = self.insert_child([next_level])
 
-            return next_child.insert_child(path, self)
+            return next_child.insert_child(path)
 
     def delete_child(self, path):
         """ Delete child node
