@@ -32,12 +32,6 @@ class ChildAlreadyExistsError(Exception):
         self.strerror = "Node %s already has child %s" % (node, child)
 
 
-class UndefinedPropertyError(Exception):
-    """ Raised on attempts to access undefined property """
-    def __init__(self, node, property):
-        self.strerror = "Node %s has no property %s" % (node, property)
-
-
 class Node(object):
     """ The base class for configuration and reference tree nodes.
 
@@ -193,6 +187,6 @@ class Node(object):
             if key in self.__properties:
                 return self.__properties[key]
             else:
-                raise UndefinedPropertyError(self.__name, key)
+                return None
         except TypeError:
             raise TypeError("Wrong property key type: %s" % type(key).__name__)
