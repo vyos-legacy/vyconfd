@@ -22,14 +22,18 @@ class ChildNotFoundError(Exception):
     """ Raised on attempts to look up a non-existent path
     """
     def __init__(self, node, child):
-        self.strerror = "Node %s has no child %s" % (node, child)
+        message = "Node %s has no child %s" % (node, child)
+        super(ChildNotFoundError, self).__init__(message)
+        self.strerror = message
 
 
 class ChildAlreadyExistsError(Exception):
     """ Raised on attempts to insert the same child more than one time
     """
     def __init__(self, node, child):
-        self.strerror = "Node %s already has child %s" % (node, child)
+        message = "Node %s already has child %s" % (node, child)
+        super(ChildAlreadyExistsError, self).__init__(message)
+        self.strerror = message
 
 
 class Node(object):
