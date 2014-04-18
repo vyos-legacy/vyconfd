@@ -1,4 +1,4 @@
-#    vytree.node: base classes for VyConf configuration management backend
+#    vytree.__init__: package init file.
 #
 #    Copyright (C) 2014 VyOS Development Group <maintainers@vyos.net>
 #

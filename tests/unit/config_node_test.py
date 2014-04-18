@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #
-#    node_test.py: unit tests for vytree.Node
+#    config_node_test.py: unit tests for vytree.Node
 #    Copyright (C) 2014 VyOS Development Group <maintainers@vyos.net>
 #
 #    This library is free software; you can redistribute it and/or
