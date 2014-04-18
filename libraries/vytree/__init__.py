@@ -3,3 +3,5 @@ from vytree.node import (
     ChildNotFoundError,
     ChildAlreadyExistsError,
     )
+
+from vytree.config_node import ConfigNode
