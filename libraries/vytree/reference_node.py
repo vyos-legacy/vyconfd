@@ -28,7 +28,7 @@ class ReferenceNode(vytree.Node):
         self.set_property("leaf", False)
         self.set_property("tag", False)
         self.set_property("multi", False)
-        self.set_property("constraint", None)
+        self.set_property("constraint", [])
 
     def set_leaf(self, value):
         if not isinstance(value, bool):
@@ -51,7 +51,7 @@ class ReferenceNode(vytree.Node):
        	    raise TypeError("Multi property value must be True or False")
         self.set_property("multi", value)
 
-    def	is_multi(self):
+    def is_multi(self):
        	return self.get_property("multi")
 
     def add_value_constraint(self, type, constraint):
