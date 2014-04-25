@@ -1,0 +1,57 @@
+# The language of this file is compact form RELAX-NG
+# http://relaxng.org/compact-tutorial-20030326.htm
+
+# Interface definition starts with nodeList tag that may contain node tags
+start = element nodeList { node* }
+
+# node tag may contain node, leafNode, or tagNode tags
+# Those are intermediate configuration nodes that may only contain
+# other nodes and must not have values
+node = element node { nodeNameAttr, (node | tagNode | leafNode)+ }
+
+# All nodes must have "name" attribute
+nodeNameAttr = attribute name { text }
+
+# Tag nodes are containers for nodes without predefined names, like network interfaces
+# or user names (e.g. "interfaces ethernet eth0" or "user jrandomhacker")
+# Tag nodes may	contain	node and leafNode elements, and also nameConstraint tags
+# They must not contain other tag nodes
+tagNode = element tagNode { nodeNameAttr, nameConstraint?, helpString?, (node | leafNode)+ }
+
+# Tag nodes may also contain nameConstraint tag with type and constraint
+# attributes. It provides information required to validate child name.
+nameConstraint = element nameConstraint { typeAttr, constraintAttr, empty }
+
+# Leaf nodes are terminal configuration nodes that can't have children,
+# but can have values.
+# Leaf node may contain one or more valueConstraint tags
+# If multiple valueConstraint tags are used, they work a logical OR
+leafNode = element leafNode { nodeNameAttr, helpString?, (valueHelpString | valueConstraint)* }
+
+# valueConstraint tag contains information required to validate node values
+# It must have two attributes, "type" and "constraint".
+valueConstraint = element valueConstraint { typeAttr, constraintAttr, empty }
+
+# helpString tag contains brief description of the purpose of the node
+# Must have description= attribute
+helpString = element helpString { descriptionAttr, empty }
+
+# valueHelpString tag contain information about acceptable value format
+# It may be exact value in value= attribute, or a placeholder taken from
+# type specified in type= attribute
+valueHelpString = element valueHelpString { (valueAttr | typeAttr), descriptionAttr, empty }
+
+# description= attribute contains help strings for nodes
+descriptionAttr = attribute description { text }
+
+# value= attributes contains one of allowed values for leaf nodes
+valueAttr = attribute value { text }
+
+# type= attribute is used in leaf nodes and contains name of a type
+# to take value placeholder from
+typeAttr = attribute type { text }
+
+# constraint= attribute contains additional information for type validation,
+# used in valueContrating tags
+constraintAttr = attribute constraint { text }
+
