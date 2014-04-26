@@ -1,4 +1,4 @@
-#    vytree.__init__: package init file.
+#    vytree.configtree.__init__: package init file.
 #
 #    Copyright (C) 2014 VyOS Development Group <maintainers@vyos.net>
 #
@@ -18,10 +18,8 @@
 #    USA
 
 
-from vytree.node import (
-    Node,
-    ChildNotFoundError,
-    ChildAlreadyExistsError,
-    )
+
+
+from vytree.configtree.config_node import ConfigNode
 
 
