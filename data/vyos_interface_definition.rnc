@@ -26,7 +26,7 @@ start = element nodeList { node* }
 # node tag may contain node, leafNode, or tagNode tags
 # Those are intermediate configuration nodes that may only contain
 # other nodes and must not have values
-node = element node { nodeNameAttr, (node | tagNode | leafNode)+ }
+node = element node { nodeNameAttr, helpString?, (node | tagNode | leafNode)+ }
 
 # All nodes must have "name" attribute
 nodeNameAttr = attribute name { text }
