@@ -26,6 +26,3 @@ from vytree.node import (
 
 from vytree.config_node import ConfigNode
 
-from vytree.reference_node import ReferenceNode
-
-from vytree.reference_tree_loader import ReferenceTreeLoader
