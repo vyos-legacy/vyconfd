@@ -20,17 +20,18 @@
 
 
 import vytree
+import vytree.configtree
 import unittest
 
 
 class TestVytreeConfigNode(unittest.TestCase):
     def test_add_value(self):
-        node = vytree.ConfigNode('root')
+        node = vytree.configtree.ConfigNode('root')
         node.add_value("foo")
         self.assertEqual(node.get_values(), ["foo"])
 
     def test_remove_value(self):
-        node = vytree.ConfigNode('root')
+        node = vytree.configtree.ConfigNode('root')
         node.add_value("foo")
         node.add_value("bar")
         node.remove_value("foo")
