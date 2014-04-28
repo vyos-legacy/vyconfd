@@ -29,7 +29,7 @@ class ReferenceNode(vytree.Node):
         self.set_property("tag", False)
         self.set_property("multi", False)
         self.set_property("name_constraint", {})
-        self.set_property("constraint", [])
+        self.set_property("value_constraints", [])
 
     def set_leaf(self):
         self.set_property("leaf", True)
@@ -60,3 +60,5 @@ class ReferenceNode(vytree.Node):
             raise TypeError("Type and constraint must be strings")
         self.get_property("value_constraints").append({"type": type, "constraint": constraint})
 
+    def get_value_constraints(self):
+        return self.get_property("value_constraints")
