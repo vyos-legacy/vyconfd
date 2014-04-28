@@ -31,25 +31,19 @@ class ReferenceNode(vytree.Node):
         self.set_property("name_constraint", {})
         self.set_property("constraint", [])
 
-    def set_leaf(self, value):
-        if not isinstance(value, bool):
-            raise TypeError("Leaf property value must be True or False")
+    def set_leaf(self):
         self.set_property("leaf", True)
 
     def is_leaf(self):
         return self.get_property("leaf")
 
-    def set_tag(self, value):
-        if not isinstance(value, bool):
-            raise TypeError("Tag property value must be True or False")
+    def set_tag(self):
         self.set_property("tag", value)
 
     def is_tag(self):
         return self.get_property("tag")
 
-    def set_multi(self, value):
-       	if not isinstance(value, bool):
-       	    raise TypeError("Multi property value must be True or False")
+    def set_multi(self):
         self.set_property("multi", value)
 
     def is_multi(self):
