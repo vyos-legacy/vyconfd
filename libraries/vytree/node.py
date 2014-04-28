@@ -129,7 +129,8 @@ class Node(object):
             if next_level in children:
                 raise ChildAlreadyExistsError(self.get_name(), next_level)
 
-            child = Node(next_level, self)
+            node_type = type(self)
+            child = node_type(next_level, self)
             self.__children.append(child)
             return child
         else:
