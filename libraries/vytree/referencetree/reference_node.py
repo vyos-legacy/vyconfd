@@ -38,13 +38,13 @@ class ReferenceNode(vytree.Node):
         return self.get_property("leaf")
 
     def set_tag(self):
-        self.set_property("tag", value)
+        self.set_property("tag", True)
 
     def is_tag(self):
         return self.get_property("tag")
 
     def set_multi(self):
-        self.set_property("multi", value)
+        self.set_property("multi", True)
 
     def is_multi(self):
        	return self.get_property("multi")
