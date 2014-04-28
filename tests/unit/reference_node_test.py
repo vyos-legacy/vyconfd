@@ -76,6 +76,15 @@ class TestVytreeReferenceNode(unittest.TestCase):
        	node = vytree.referencetree.ReferenceNode('root')
         self.assertEqual(node.get_value_constraints(), [])
 
+    def test_help_string(self):
+        node = vytree.referencetree.ReferenceNode('root')
+        node.set_help_string("foo")
+        self.assertEqual(node.get_help_string(), "foo")
+
+    def test_help_string_default(self):
+        node = vytree.referencetree.ReferenceNode('root')
+        self.assertEqual(node.get_help_string(), "")
+
 
 if __name__ == '__main__':
     unittest.main()

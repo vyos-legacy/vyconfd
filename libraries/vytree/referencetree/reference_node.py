@@ -30,6 +30,7 @@ class ReferenceNode(vytree.Node):
         self.set_property("multi", False)
         self.set_property("name_constraint", {})
         self.set_property("value_constraints", [])
+        self.set_property("help_string", "")
 
     def set_leaf(self):
         self.set_property("leaf", True)
@@ -62,3 +63,9 @@ class ReferenceNode(vytree.Node):
 
     def get_value_constraints(self):
         return self.get_property("value_constraints")
+
+    def set_help_string(self, value):
+        self.set_property("help_string", value)
+
+    def get_help_string(self):
+        return self.get_property("help_string")
