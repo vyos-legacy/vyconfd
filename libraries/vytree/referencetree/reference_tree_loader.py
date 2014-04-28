@@ -23,9 +23,6 @@ class ReferenceTreeLoader(object):
     def load(self, reference_tree):
         self._walk_xml_node(self.__xml_root, reference_tree)
 
-    def _add_reference_node(self, element):
-        print "Adding element %s" % element.attrib["name"]
-
     def _walk_xml_leaf_node(self, node, reference_node):
         print "Adding leaf node %s" % node.tag
 
