@@ -2,11 +2,18 @@ from lxml import etree as ET
 
 import vytree
 
-node_element = "node"
-tag_node_element = "tagNode"
-leaf_node_element = "leafNode"
-name_constraint_element = "nameConstraint"
+NODE_ELEMENT = "node"
+TAG_NODE_ELEMENT = "tagNode"
+LEAF_NODE_ELEMENT = "leafNode"
+NAME_CONSTRAINT_ELEMENT = "nameConstraint"
+VALUE_CONSTRAINT_ELEMENT = "valueConstraint"
+HELP_STRING_ELEMENT = "helpString"
+VALUE_HELP_STRING_ELEMENT = "valueHelpString"
 
+NODE_NAME_ATTRIBUTE = "name"
+TYPE_ATTRIBUTE = "type"
+CONSTRAINT_ATTRIBUTE = "constraint"
+DESCRIPTION_ATTRIBUTE = "description"
 
 class ReferenceTreeLoader(object):
     def __init__(self, xml_source):
@@ -24,13 +31,25 @@ class ReferenceTreeLoader(object):
 
     def _walk_xml_node(self, xml_node, reference_node):
         for xml_child in xml_node:
-            if (xml_child.tag == node_element) or (xml_child.tag == tag_node_element):
-                next_reference_node = reference_node.insert_child([xml_child.attrib["name"]])
+            # <tagNode> can not contain another <tagNode>, but we do not reflect it here
+            # because it's already expressed in the RELAX-NG XML grammar
+            if (xml_child.tag == NODE_ELEMENT) or (xml_child.tag == TAG_NODE_ELEMENT):
+                next_reference_node = reference_node.insert_child([xml_child.attrib[NODE_NAME_ATTRIBUTE]])
                 self._walk_xml_node(xml_child, next_reference_node)
-            elif xml_child.tag == name_constraint_element:
-                #reference_node.set_name_constraint({"type": element.attrib["type"], "constraint": element.attrib["constraint"]})
-                pass
-            elif xml_child.tag == leaf_node_element:
-                next_reference_node = reference_node.insert_child([xml_child.attrib["name"]])
+            elif xml_child.tag == NAME_CONSTRAINT_ELEMENT:
+                # Blind faith here again, type= attribute is required by the grammar
+                name_type = xml_child.attrib[TYPE_ATTRIBUTE]
+
+                # constraint= arribute is optional, needs a check
+                name_constraint = None
+                if CONSTRAINT_ATTRIBUTE in xml_child.attrib:
+                    name_constraint = xml_child.attrib[CONSTRAINT_ATTRIBUTE]
+
+                reference_node.set_name_constraint(name_type, name_constraint)
+            elif xml_child.tag == HELP_STRING_ELEMENT:
+                help_string = xml_child.attrib[DESCRIPTION_ATTRIBUTE]
+                reference_node.set_help_string(help_string)
+            elif xml_child.tag == LEAF_NODE_ELEMENT:
+                next_reference_node = reference_node.insert_child([xml_child.attrib[NODE_NAME_ATTRIBUTE]])
                 self._walk_xml_leaf_node(xml_child, next_reference_node)
 
