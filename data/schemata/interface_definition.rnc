@@ -39,7 +39,7 @@ tagNode = element tagNode { nodeNameAttr, nameConstraint?, helpString?, (node | 
 
 # Tag nodes may also contain nameConstraint tag with type and constraint
 # attributes. It provides information required to validate child name.
-nameConstraint = element nameConstraint { typeAttr, constraintAttr, empty }
+nameConstraint = element nameConstraint { typeAttr, constraintAttr?, empty }
 
 # Leaf nodes are terminal configuration nodes that can't have children,
 # but can have values.
@@ -49,7 +49,7 @@ leafNode = element leafNode { nodeNameAttr, helpString?, (valueHelpString | valu
 
 # valueConstraint tag contains information required to validate node values
 # It must have two attributes, "type" and "constraint".
-valueConstraint = element valueConstraint { typeAttr, constraintAttr, empty }
+valueConstraint = element valueConstraint { typeAttr, constraintAttr?, empty }
 
 # helpString tag contains brief description of the purpose of the node
 # Must have description= attribute
