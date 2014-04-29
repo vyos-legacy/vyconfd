@@ -20,6 +20,7 @@
 
 
 
-from vytree.referencetree.reference_node import ReferenceNode
+from vytree.referencetree.reference_node import (ReferenceNode,
+    ReferenceNodeError)
 
 from vytree.referencetree.reference_tree_loader import ReferenceTreeLoader

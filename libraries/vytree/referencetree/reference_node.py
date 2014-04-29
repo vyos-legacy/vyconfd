@@ -20,6 +20,14 @@
 
 import vytree
 
+class ReferenceNodeError(Exception):
+    """ Raised on attempts to create incorrectly configure ReferenceNode
+        instance (e.g. set mutually exlusive flags at the same time)
+    """
+    def __init__(self, message):
+        super(ChildNotFoundError, self).__init__(message)
+        self.strerror = message
+
 class ReferenceNode(vytree.Node):
     def __init__(self, name, parent=None):
         super(ReferenceNode, self).__init__(name, parent)
