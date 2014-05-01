@@ -70,7 +70,8 @@ class TestVytreeReferenceNode(unittest.TestCase):
        	node = vytree.referencetree.ReferenceNode('root')
         node.add_value_constraint("foo", "bar")
         node.add_value_constraint("baz", "quux")
-        self.assertEqual(node.get_value_constraints(), [{"type": "foo", "constraint": "bar"}, {"type": "baz", "constraint": "quux"}])
+        self.assertEqual(node.get_value_constraints(), [{"type": "foo", "constraint": "bar"},
+                                                        {"type": "baz", "constraint": "quux"}])
 
     def test_value_constraints_default(self):
        	node = vytree.referencetree.ReferenceNode('root')
