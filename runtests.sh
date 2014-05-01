@@ -7,4 +7,4 @@ if [ $? != 0 ]; then
     exit 1
 fi
 
-PYTHONPATH=libraries:tests/unit nosetests -w tests/unit/
+PYTHONPATH=libraries:tests/unit nosetests --verbosity=2 -w tests/unit/
