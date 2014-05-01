@@ -39,6 +39,7 @@ class ReferenceNode(vytree.Node):
         self.set_property("multi", False)
         self.set_property("name_constraint", {})
         self.set_property("value_constraints", [])
+        self.set_property("value_help_strings", [])
         self.set_property("help_string", "")
 
     def set_leaf(self):
@@ -73,8 +74,19 @@ class ReferenceNode(vytree.Node):
     def get_value_constraints(self):
         return self.get_property("value_constraints")
 
+    def add_value_help_string(self, format_string, help_string):
+        if (not isinstance(format_string, str)) and (not isinstance(help_string, str)):
+            raise TypeError("Format and help must be strings")
+        self.get_property("value_help_strings").append({"format_string": format_string,
+                                                        "help_string": help_string})
+
+    def get_value_help_strings(self):
+        return self.get_property("value_help_strings")
+
     def set_help_string(self, value):
         self.set_property("help_string", value)
 
     def get_help_string(self):
         return self.get_property("help_string")
+
+
