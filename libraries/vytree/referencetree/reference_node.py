@@ -60,16 +60,16 @@ class ReferenceNode(vytree.Node):
     def is_multi(self):
        	return self.get_property("multi")
 
-    def set_name_constraint(self, name_type, name_constraint):
-        self.set_property("name_constraint", {"type": name_type, "constraint": name_constraint})
+    def set_name_constraint(self, type_string, constraint_string):
+        self.set_property("name_constraint", {"type": type_string, "constraint": constraint_string})
 
     def get_name_constraint(self):
         return self.get_property("name_constraint")
 
-    def add_value_constraint(self, type, constraint):
-        if (not isinstance(type, str)) and (not isinstance(constraint, str)):
+    def add_value_constraint(self, type_string, constraint_string):
+        if (not isinstance(type_string, str)) and (not isinstance(constraint_string, str)):
             raise TypeError("Type and constraint must be strings")
-        self.get_property("value_constraints").append({"type": type, "constraint": constraint})
+        self.get_property("value_constraints").append({"type": type_string, "constraint": constraint_string})
 
     def get_value_constraints(self):
         return self.get_property("value_constraints")
@@ -77,8 +77,8 @@ class ReferenceNode(vytree.Node):
     def add_value_help_string(self, format_string, help_string):
         if (not isinstance(format_string, str)) and (not isinstance(help_string, str)):
             raise TypeError("Format and help must be strings")
-        self.get_property("value_help_strings").append({"format_string": format_string,
-                                                        "help_string": help_string})
+        self.get_property("value_help_strings").append({"format": format_string,
+                                                        "help": help_string})
 
     def get_value_help_strings(self):
         return self.get_property("value_help_strings")

@@ -79,14 +79,14 @@ class TestVytreeReferenceNode(unittest.TestCase):
     def test_value_help_strings(self):
         node = vytree.referencetree.ReferenceNode('root')
         node.add_value_help_string("foo", "Foo value")
-        self.assertEqual(node.get_value_help_strings(), [{"format_string": "foo", "help_string": "Foo value"}])
+        self.assertEqual(node.get_value_help_strings(), [{"format": "foo", "help": "Foo value"}])
 
     def test_value_help_strings_multiple(self):
         node = vytree.referencetree.ReferenceNode('root')
         node.add_value_help_string("foo", "bar")
         node.add_value_help_string("baz", "quux")
-        self.assertEqual(node.get_value_help_strings(), [{"format_string": "foo", "help_string": "bar"},
-                                                         {"format_string": "baz", "help_string": "quux"}])
+        self.assertEqual(node.get_value_help_strings(), [{"format": "foo", "help": "bar"},
+                                                         {"format": "baz", "help": "quux"}])
 
     def test_value_help_strings_default(self):
         node = vytree.referencetree.ReferenceNode('root')
