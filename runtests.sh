@@ -8,3 +8,5 @@ if [ $? != 0 ]; then
 fi
 
 PYTHONPATH=libraries:tests/unit nosetests --verbosity=2 -w tests/unit/
+
+PYTHONPATH=libraries:tests/integration nosetests --verbosity=2 -w tests/integration/
