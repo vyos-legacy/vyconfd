@@ -58,7 +58,7 @@ helpString = element helpString { descriptionAttr, empty }
 # valueHelpString tag contain information about acceptable value format
 # It may be exact value in value= attribute, or a placeholder taken from
 # type specified in type= attribute
-valueHelpString = element valueHelpString { ((typeAttr, constraintAttr)|valueAttr), descriptionAttr, empty }
+valueHelpString = element valueHelpString { ((typeAttr, constraintAttr?)|valueAttr), descriptionAttr, empty }
 
 # description= attribute contains help strings for nodes
 descriptionAttr = attribute description { text }
