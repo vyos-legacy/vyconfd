@@ -58,7 +58,7 @@ helpString = element helpString { descriptionAttr, empty }
 # valueHelpString tag contain information about acceptable value format
 # It may be exact value in value= attribute, or a placeholder taken from
 # type specified in type= attribute
-valueHelpString = element valueHelpString { formatAttr, descriptionAttr, empty }
+valueHelpString = element valueHelpString { ((typeAttr, constraintAttr)|valueAttr), descriptionAttr, empty }
 
 # description= attribute contains help strings for nodes
 descriptionAttr = attribute description { text }
@@ -73,8 +73,3 @@ typeAttr = attribute type { text }
 # constraint= attribute contains additional information for type validation,
 # used in valueContrating tags
 constraintAttr = attribute constraint { text }
-
-# format= attribute is used in valueHelpString's to specify allowed format
-# or exact value
-formatAttr = attribute format { text }
-
