@@ -14,17 +14,50 @@ NODE_NAME_ATTRIBUTE = "name"
 TYPE_ATTRIBUTE = "type"
 CONSTRAINT_ATTRIBUTE = "constraint"
 DESCRIPTION_ATTRIBUTE = "description"
+VALUE_ATTRIBUTE = "value"
 
 class ReferenceTreeLoader(object):
-    def __init__(self, xml_source):
+    def __init__(self, xml_source, types):
         self.__xml_tree = ET.parse(xml_source)
         self.__xml_root = self.__xml_tree.getroot()
+        self.__types = types
         
     def load(self, reference_tree):
         self._walk_xml_node(self.__xml_root, reference_tree)
 
-    def _walk_xml_leaf_node(self, node, reference_node):
-        print "Adding leaf node %s" % node.tag
+    def _walk_xml_leaf_node(self, xml_node, reference_node):
+        for xml_child in xml_node:
+            if xml_child.tag == HELP_STRING_ELEMENT:
+                help_string = xml_child.attrib[DESCRIPTION_ATTRIBUTE]
+                reference_node.set_help_string(help_string)
+            elif xml_child.tag == VALUE_CONSTRAINT_ELEMENT:
+                value_type = xml_child.attrib[TYPE_ATTRIBUTE]
+                value_constraint = None
+                if CONSTRAINT_ATTRIBUTE in xml_child.attrib:
+                    value_constraint = xml_child.attrib[CONSTRAINT_ATTRIBUTE]
+                reference_node.add_value_constraint(value_type, value_constraint)
+            elif xml_child.tag == VALUE_HELP_STRING_ELEMENT:
+                # A lot of blind faith: the point is that <valueHelpString>
+                # can have either value= attribute or type= and constaint= attributes
+                help_string = xml_child.attrib[DESCRIPTION_ATTRIBUTE]
+                value_type = None
+                value_constraint = None
+                value = None
+
+                if TYPE_ATTRIBUTE in xml_child.attrib:
+                    value_type = xml_child.attrib[TYPE_ATTRIBUTE]
+                if CONSTRAINT_ATTRIBUTE in xml_child.attrib:
+                    value_constraint = xml_child.attrib[CONSTRAINT_ATTRIBUTE]
+                if VALUE_ATTRIBUTE in xml_child.attrib:
+                    value = xml_child.attrib[VALUE_ATTRIBUTE]
+
+                format = None
+                if value_type is not None:
+                    format = self.__types[value_type].get_format_string(value_constraint)
+                else:
+                    format = value
+
+                reference_node.add_value_help_string(format, help_string)
 
     def _walk_xml_node(self, xml_node, reference_node):
         for xml_child in xml_node:
