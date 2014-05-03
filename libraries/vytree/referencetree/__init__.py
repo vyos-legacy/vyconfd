@@ -23,4 +23,5 @@
 from vytree.referencetree.reference_node import (ReferenceNode,
     ReferenceNodeError)
 
-from vytree.referencetree.reference_tree_loader import ReferenceTreeLoader
+from vytree.referencetree.reference_tree_loader import (ReferenceTreeLoader,
+    ReferenceTreeLoaderError)
