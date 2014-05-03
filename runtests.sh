@@ -9,4 +9,7 @@ fi
 
 PYTHONPATH=libraries:tests/unit nosetests --verbosity=2 -w tests/unit/
 
-PYTHONPATH=libraries:tests/integration nosetests --verbosity=2 -w tests/integration/
+PYTHONPATH=libraries:tests/integration \
+VYCONF_DATA_DIR=$PWD/data/ \
+VYCONF_TEST_DATA_DIR=$PWD/tests/integration/data \
+nosetests --verbosity=2 -w tests/integration/

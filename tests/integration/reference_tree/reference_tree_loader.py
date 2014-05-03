@@ -18,7 +18,7 @@
 #    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301
 #    USA
 
-
+import os
 import vytree
 import vytree.referencetree
 import unittest
@@ -32,10 +32,13 @@ class MockType(object):
 
 class TestVytreeReferenceLoader(unittest.TestCase):
     def setUp(self):
+        data_dir = os.environ["VYCONF_DATA_DIR"]
+        test_data_dir = os.environ["VYCONF_TEST_DATA_DIR"]
         self.reference_tree = vytree.referencetree.ReferenceNode('root')
-        xml = pkg_resources.resource_filename(__name__, "interface_definition_valid.xml")
+        xml_file = os.path.join(test_data_dir, "interface_definition_valid.xml")
+        schema_file = os.path.join(data_dir, "schemata", "interface_definition.rng")
 
-        loader = vytree.referencetree.ReferenceTreeLoader(xml, {"mock": MockType})
+        loader = vytree.referencetree.ReferenceTreeLoader(xml_file, {"mock": MockType}, schema=schema_file)
         loader.load(self.reference_tree)
 
     def test_get_child(self):
