@@ -26,7 +26,7 @@ class ReferenceNodeError(Exception):
         instance (e.g. set mutually exlusive flags at the same time)
     """
     def __init__(self, message):
-        super(ChildNotFoundError, self).__init__(message)
+        super(ReferenceNodeError, self).__init__(message)
         self.strerror = message
 
 class ReferenceNode(vytree.Node):
