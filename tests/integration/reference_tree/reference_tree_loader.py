@@ -44,3 +44,12 @@ class TestVytreeReferenceLoader(unittest.TestCase):
     def test_get_child(self):
         child = self.reference_tree.get_child(['foo', 'bar'])
         self.assertIsInstance(child, vytree.referencetree.ReferenceNode)
+
+    def test_invalid_interface_definition(self):
+        data_dir = os.environ["VYCONF_DATA_DIR"]
+        test_data_dir = os.environ["VYCONF_TEST_DATA_DIR"]
+        xml_file = os.path.join(test_data_dir, "interface_definition_invalid.xml")
+        schema_file = os.path.join(data_dir, "schemata", "interface_definition.rng")
+        self.assertRaises(vytree.referencetree.ReferenceTreeLoaderError,
+                          vytree.referencetree.ReferenceTreeLoader,
+                          xml_file, {"mock": MockType}, schema=schema_file)
