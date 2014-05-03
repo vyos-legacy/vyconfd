@@ -16,11 +16,26 @@ CONSTRAINT_ATTRIBUTE = "constraint"
 DESCRIPTION_ATTRIBUTE = "description"
 VALUE_ATTRIBUTE = "value"
 
+class ReferenceTreeLoaderError(Exception):
+    """ Raised on attempts to create a reference tree from incorrect
+        interface definition
+    """
+    def __init__(self, message):
+        super(ReferenceTreeLoaderError, self).__init__(message)
+        self.strerror = message
+
+
 class ReferenceTreeLoader(object):
-    def __init__(self, xml_source, types):
+    def __init__(self, xml_source, types, schema=None):
         self.__xml_tree = ET.parse(xml_source)
         self.__xml_root = self.__xml_tree.getroot()
         self.__types = types
+
+        if schema:
+           relaxng_xml = ET.parse(schema)
+           validator = ET.RelaxNG(relaxng_xml)
+           if not validator.validate(self.__xml_tree):
+               raise ReferenceTreeLoadError("Malformed interface definition: %s" % xml_source)
         
     def load(self, reference_tree):
         self._walk_xml_node(self.__xml_root, reference_tree)
