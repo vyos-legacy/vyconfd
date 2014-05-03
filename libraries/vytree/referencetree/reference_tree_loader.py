@@ -35,7 +35,7 @@ class ReferenceTreeLoader(object):
            relaxng_xml = ET.parse(schema)
            validator = ET.RelaxNG(relaxng_xml)
            if not validator.validate(self.__xml_tree):
-               raise ReferenceTreeLoadError("Malformed interface definition: %s" % xml_source)
+               raise ReferenceTreeLoaderError("Malformed interface definition: %s" % xml_source)
         
     def load(self, reference_tree):
         self._walk_xml_node(self.__xml_root, reference_tree)
