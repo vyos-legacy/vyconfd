@@ -19,7 +19,7 @@
 #    USA
 
 
-import vytree
+import vyconf.tree
 
 class ReferenceNodeError(Exception):
     """ Raised on attempts to create incorrectly configure ReferenceNode
@@ -29,7 +29,7 @@ class ReferenceNodeError(Exception):
         super(ReferenceNodeError, self).__init__(message)
         self.strerror = message
 
-class ReferenceNode(vytree.Node):
+class ReferenceNode(vyconf.tree.Node):
     def __init__(self, name, parent=None):
         super(ReferenceNode, self).__init__(name, parent)
 

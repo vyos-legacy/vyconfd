@@ -1,7 +1,5 @@
 from lxml import etree as ET
 
-import vytree
-
 NODE_ELEMENT = "node"
 TAG_NODE_ELEMENT = "tagNode"
 LEAF_NODE_ELEMENT = "leafNode"

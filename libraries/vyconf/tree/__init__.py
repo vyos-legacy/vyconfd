@@ -18,7 +18,7 @@
 #    USA
 
 
-from vytree.node import (
+from vyconf.tree.node import (
     Node,
     ChildNotFoundError,
     ChildAlreadyExistsError,

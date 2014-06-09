@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #
-#    config_node_test.py: unit tests for vytree.Node
+#    config_node_test.py: unit tests for vyconf.tree.Node
 #    Copyright (C) 2014 VyOS Development Group <maintainers@vyos.net>
 #
 #    This library is free software; you can redistribute it and/or
@@ -19,19 +19,18 @@
 #    USA
 
 
-import vytree
-import vytree.configtree
+import vyconf.tree.configtree
 import unittest
 
 
 class TestVytreeConfigNode(unittest.TestCase):
     def test_add_value(self):
-        node = vytree.configtree.ConfigNode('root')
+        node = vyconf.tree.configtree.ConfigNode('root')
         node.add_value("foo")
         self.assertEqual(node.get_values(), ["foo"])
 
     def test_remove_value(self):
-        node = vytree.configtree.ConfigNode('root')
+        node = vyconf.tree.configtree.ConfigNode('root')
         node.add_value("foo")
         node.add_value("bar")
         node.remove_value("foo")

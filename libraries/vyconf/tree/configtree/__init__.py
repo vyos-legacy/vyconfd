@@ -20,6 +20,6 @@
 
 
 
-from vytree.configtree.config_node import ConfigNode
+from vyconf.tree.configtree.config_node import ConfigNode
 
 

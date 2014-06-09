@@ -19,9 +19,9 @@
 #    USA
 
 
-import vytree
+import vyconf.tree
 
-class ConfigNode(vytree.Node):
+class ConfigNode(vyconf.tree.Node):
     def __init__(self, name, parent=None):
         super(ConfigNode, self).__init__(name, parent)
         self.set_property("value_list", [])
