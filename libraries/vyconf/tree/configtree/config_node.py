@@ -1,4 +1,4 @@
-#    vytree.configtree.config_node: 
+#    vyconf.tree.configtree.config_node: 
 #    Config storage classes for VyConf configuration management backend
 #
 #    Copyright (C) 2014 VyOS Development Group <maintainers@vyos.net>

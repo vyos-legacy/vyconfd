@@ -1,4 +1,4 @@
-#    vytree.__init__: package init file.
+#    vyconf.tree.__init__: package init file.
 #
 #    Copyright (C) 2014 VyOS Development Group <maintainers@vyos.net>
 #

@@ -1,4 +1,4 @@
-#    vytree.referencetree.reference_node: 
+#    vyconf.tree.referencetree.reference_node: 
 #    Interface definition storage classes for VyConf
 #
 #    Copyright (C) 2014 VyOS Development Group <maintainers@vyos.net>

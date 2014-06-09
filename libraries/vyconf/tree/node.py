@@ -1,4 +1,4 @@
-#    vytree.node: base classes for VyConf configuration management backend
+#    vyconf.tree.node: base classes for VyConf configuration management backend
 #
 #    Copyright (C) 2014 VyOS Development Group <maintainers@vyos.net>
 #
