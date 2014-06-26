@@ -19,4 +19,5 @@ if [ -z $destination ]; then
     exit 1
 fi
 
+echo "Writing RelaxNG into $destination"
 trang -Irnc -Orng $source $destination
