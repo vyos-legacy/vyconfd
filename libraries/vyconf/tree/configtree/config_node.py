@@ -34,3 +34,11 @@ class ConfigNode(vyconf.tree.Node):
 
     def get_values(self):
         return self.get_property("value_list")
+
+    def set_comment(self, comment):
+        self.set_property("comment", comment)
+
+    def get_comment(self):
+        return self.get_property("comment")
+
+    

@@ -36,6 +36,14 @@ class TestVytreeConfigNode(unittest.TestCase):
         node.remove_value("foo")
         self.assertEqual(node.get_values(), ["bar"])
 
+    def test_get_comment_before_its_set(self):
+        node = vyconf.tree.configtree.ConfigNode('root')
+        self.assertIsNone(node.get_comment())
+
+    def test_set_comment(self):
+        node = vyconf.tree.configtree.ConfigNode('root')
+        node.set_comment("This is a comment")
+        self.assertEqual(node.get_comment(), "This is a comment")
 
 
 if __name__ == '__main__':
