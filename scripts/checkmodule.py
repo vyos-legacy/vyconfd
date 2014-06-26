@@ -1,6 +1,8 @@
-#!/bin/sh
+#!/usr/bin/env python
 #
-#    runtests.sh: runs tests
+#    checkmodule.py: checks if a module specified as argument is
+#                    installed, exits with 1 if not
+#
 #    Copyright (C) 2014 VyOS Development Group <maintainers@vyos.net>
 #
 #    This library is free software; you can redistribute it and/or
@@ -18,23 +20,14 @@
 #    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301
 #    USA
 
-which nosetests 2>&1 >/dev/null
-if [ $? != 0 ]; then
-    echo "nosetests binary not found"
-    echo "Install nose (https://pypi.python.org/pypi/nose/‎) or make sure it is in your PATH"
-    exit 1
-fi
+import sys
+import importlib
 
-if $(scripts/checkmodule.py coverage); then
-    COVERAGE_OPTIONS="--with-coverage --cover-branches"
-else
-    echo "Warning: install python coverage module (http://nedbatchelder.com/code/coverage/) to enable coverage report"
-    COVERAGE_OPTIONS=""
-fi
+module_name = sys.argv[1]
 
-PYTHONPATH=libraries:tests/unit nosetests $COVERAGE_OPTIONS --verbosity=2 -w tests/unit/
+try:
+    importlib.import_module(module_name)
+except ImportError:
+    sys.exit(1)
 
-PYTHONPATH=libraries:tests/integration \
-VYCONF_DATA_DIR=$PWD/data/ \
-VYCONF_TEST_DATA_DIR=$PWD/tests/integration/data \
-nosetests --verbosity=2 -w tests/integration/
+sys.exit(0)
