@@ -47,6 +47,10 @@ class Parser(object):
                 lexer=self.lexer,
                 debug=debuglevel)
 
+    def p_empty(self, p):
+        ''' empty : '''
+        pass
+
     def p_value(self, p):
         ''' value : IDENTIFIER
                   | STRING
@@ -113,9 +117,10 @@ class Parser(object):
                          | nodes leaf_nodes
                          | leaf_nodes nodes leaf_nodes
                          | nodes
-                         |
+                         | empty
         '''
-        p[0] = p[1]
+        if p:
+            p[0] = p[1]
 
     def p_nodes(self, p):
         ''' nodes : node
