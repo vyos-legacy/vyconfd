@@ -20,6 +20,21 @@
 import ply.yacc as yacc
 from .lexer import Lexer
 
+class ParseError(Exception):
+    """ Raised when incorrect token is found
+    """
+    def __init__(self, token):
+        print token
+        token_str = ""
+        position = ""
+        if token:
+            token_str = token.value
+            position = token.lineno
+        message = "Unexpected token '{0}' at line {1}".format(token_str, position)
+        super(ParseError, self).__init__(message)
+        self.strerror = message
+
+
 class Parser(object):
     def __init__(
             self,
@@ -39,13 +54,14 @@ class Parser(object):
             debug=yacc_debug,
             optimize=yacc_optimize)
 
-    def parse(self, text, filename='', debuglevel=0):
+    def parse(self, text, filename='', debuglevel=0,positiontracking=True):
         self.lexer.filename = filename
         self._last_yielded_token = None
         return self.parser.parse(
                 input=text,
                 lexer=self.lexer,
-                debug=debuglevel)
+                debug=debuglevel,
+                tracking=positiontracking)
 
     def p_empty(self, p):
         ''' empty : '''
@@ -148,5 +164,4 @@ class Parser(object):
         p[0] = p[1]
 
     def p_error(self, p):
-        # TODO: Replace with exception
-        print("Syntax error in input! Unexpected token " , p)
+        raise ParseError(p)
