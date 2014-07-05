@@ -101,4 +101,17 @@ included in the appliance. Previous application configs are saved for the case r
 When configs are generated, *apply* procedures are called. If any of those fails, application configs
 are restored and commit is aborted.
 
+# Hacking
 
+VyConf is written in Python. For hacking it, apart from a Python interpreter, you will need:
+
+* nosetests, for automated tests discovery and execution
+* trang (http://www.thaiopensource.com/relaxng/trang.html), for converting compact RelaxNG to XML
+* make (e.g. GNU Make) for automated build/test/etc. execution
+* lxml, ply (http://www.dabeaz.com/ply/) for VyConf dependencies
+
+The rules for contributed code are:
+
+* Follow PEP8 whenever possible
+* Make it both 2 and 3 compatible (2 is not going anywhere for a while)
+* Add unit tests whenever possible
