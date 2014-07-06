@@ -63,10 +63,6 @@ class Parser(object):
                 debug=debuglevel,
                 tracking=positiontracking)
 
-    def p_empty(self, p):
-        ''' empty : '''
-        pass
-
     def p_value(self, p):
         ''' value : IDENTIFIER
                   | STRING
@@ -133,10 +129,8 @@ class Parser(object):
                          | nodes leaf_nodes
                          | leaf_nodes nodes leaf_nodes
                          | nodes
-                         | empty
         '''
-        if p:
-            p[0] = p[1]
+        p[0] = p[1]
 
     def p_nodes(self, p):
         ''' nodes : node
@@ -146,6 +140,15 @@ class Parser(object):
             p[0] = [p[1]]
         else:
             p[0] = p[1] + [p[2]]
+
+    def p_empty_node(self, p):
+        ''' node : node_name LBRACE RBRACE
+                 | node_comment node_name LBRACE RBRACE
+        '''
+        if len(p) == 4:
+            p[0] = ('node', {"comment": None, "name": p[1][1], "content": []})
+        else:
+            p[0] = ('node', {"comment": p[1][1], "name": p[2][1], "content": []})
 
     def p_node(self, p):
         ''' node : node_name LBRACE node_content RBRACE
