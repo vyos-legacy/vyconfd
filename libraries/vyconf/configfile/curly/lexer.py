@@ -59,7 +59,7 @@ class Lexer(object):
         return t
 
     def t_IDENTIFIER(self, t):
-        r'([a-z][a-z0-9\-]*)'
+        r'[^\s;{}\"\']+'
 
         return t
 
