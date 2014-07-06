@@ -25,7 +25,6 @@ class Lexer(object):
         'LBRACE',
         'RBRACE',
         'IDENTIFIER',
-        'NUMBER',
         'STRING',
         'NODE_COMMENT',
         'SEMICOLON',
@@ -43,12 +42,6 @@ class Lexer(object):
         str = t.value[2:-2] # Strip off /* and */
         str = str.strip()
         t.value = str
-        return t
-
-    def t_NUMBER(self, t):
-        r'\d+'
-
-        t.value = int(t.value)    
         return t
 
     # Define a rule so we can track line numbers

@@ -45,7 +45,7 @@ class TestCurlyParser(unittest.TestCase):
 
     def test_single_non_empty_node(self):
         result = [('node', {'comment': None, 'content': 
-                   [('leaf-node', {'comment': None, 'name': 'bar', 'value': 0})], 'name': 'foo'})]
+                   [('leaf-node', {'comment': None, 'name': 'bar', 'value': '0'})], 'name': 'foo'})]
         ast = self.parser.parse("foo { bar 0; }")
         self.assertEqual(ast, result)
 

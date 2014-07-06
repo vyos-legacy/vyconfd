@@ -66,7 +66,6 @@ class Parser(object):
     def p_value(self, p):
         ''' value : IDENTIFIER
                   | STRING
-                  | NUMBER
         '''
         p[0] = p[1]
 
