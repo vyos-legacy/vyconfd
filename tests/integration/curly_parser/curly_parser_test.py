@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #
-#    node_test.py: unit tests for vyconf.tree.Node
+#    curly_parser_test.py:  tests for vyconf.configfile.curly.Parser
 #    Copyright (C) 2014 VyOS Development Group <maintainers@vyos.net>
 #
 #    This library is free software; you can redistribute it and/or
@@ -19,15 +19,35 @@
 #    USA
 
 
-from vyconf.configfile.curly import Parser
+import vyconf.configfile.curly
 import unittest
 
+# Comparing to a complete datastructure is sort of ugly, but I don't see
+# a better way to make sure it works correctly yet.
 
 class TestCurlyParser(unittest.TestCase):
-    def test_create_parser(self):
-        p = Parser()
-        self.assertIsInstance(p, Parser)
+    def setUp(self):
+        self.parser = vyconf.configfile.curly.Parser()
 
+    def test_empty_config(self):
+        self.assertRaises(vyconf.configfile.curly.ParseError, self.parser.parse, "")
+
+    def test_single_empty_node(self):
+        parser = vyconf.configfile.curly.Parser()
+        result = [('node', {'comment': None, 'content': [], 'name': 'foo'})]
+        ast = parser.parse("foo { }",positiontracking=False)
+        self.assertEqual(ast, result)
+
+    def test_single_node_with_comment(self):
+        result = [('node', {'comment': 'Foo', 'content': [], 'name': 'foo'})]
+        ast = self.parser.parse("/* Foo */ foo {}",positiontracking=True)
+        self.assertEqual(ast, result)
+
+    def test_single_non_empty_node(self):
+        result = [('node', {'comment': None, 'content': 
+                   [('leaf-node', {'comment': None, 'name': 'bar', 'value': 0})], 'name': 'foo'})]
+        ast = self.parser.parse("foo { bar 0; }")
+        self.assertEqual(ast, result)
 
 if __name__ == '__main__':
     unittest.main()
