@@ -21,6 +21,12 @@ import ply.lex as lex
 
 class Lexer(object):
 
+    # Multiline comment can't be extracted with regex,
+    # so we have exclusive state for it
+    states = (
+         ('COMMENT', 'exclusive'),
+    )
+
     tokens = (
         'LBRACE',
         'RBRACE',
@@ -35,14 +41,34 @@ class Lexer(object):
     t_RBRACE  = r'\}'
     t_SEMICOLON = r';'
 
-    # TODO: add multiline comment support
-    def t_NODE_COMMENT(self, t):
-        r'/\*(.*)\*/'
+    # /* */ comment. This is a bit complicated.
+    # VyConf is supposed to store node comments along with nodes
+    # and display them in the config etc., that's why all the hassle
 
-        str = t.value[2:-2] # Strip off /* and */
-        str = str.strip()
-        t.value = str
+    def t_COMMENT(self, t):
+        r'/\*'
+        t.lexer.code_start = t.lexer.lexpos
+        t.lexer.level = 1
+        t.lexer.begin('COMMENT')
+
+    t_COMMENT_ignore = '\n'
+
+    def t_COMMENT_anything(self, t):
+        r'(\s|\w)+'
+
+    def t_COMMENT_error(self, t):
+        print("Illegal character '{0}'".format(t.value[0]))
+        t.lexer.skip(1)
+
+    def t_COMMENT_end(self, t):
+        r'\*/'
+        tmp_str = t.lexer.lexdata[t.lexer.code_start:t.lexer.lexpos-2]
+        t.value = tmp_str.strip()
+        t.type = "NODE_COMMENT"
+        t.lexer.lineno += t.value.count('\n')
+        t.lexer.begin('INITIAL')
         return t
+    # The comment stuff is over
 
     # Define a rule so we can track line numbers
     def t_NEWLINE(self, t):
@@ -78,7 +104,6 @@ class Lexer(object):
                     new_str += c
         t.value = new_str
         return t
-
 
     t_ignore  = ' \t\n'
 
