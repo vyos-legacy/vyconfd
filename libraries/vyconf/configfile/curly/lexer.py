@@ -34,7 +34,6 @@ class Lexer(object):
         'STRING',
         'NODE_COMMENT',
         'SEMICOLON',
-        'NEWLINE'
     )
 
     t_LBRACE = r'\{'
