@@ -115,7 +115,7 @@ class Parser(object):
         '''
         if len(p) < 3:
             # That's ordinary node with one-word name
-            node_name = p[1]
+            node_name = [p[1]]
         else:
             # That's a tag node
             node_name = [p[1], p[2]]
