@@ -17,6 +17,11 @@
 #    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301
 #    USA
 
+# An ash I know, Yggdrasil its name,
+# With water white is the great tree wet;
+# Thence come the dews that fall in the dales,
+# Green by Urth's well does it ever grow.
+#                   From The Poetic Edda, Voluspa
 
 class ChildNotFoundError(Exception):
     """ Raised on attempts to look up a non-existent path
