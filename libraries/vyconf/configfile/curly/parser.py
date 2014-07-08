@@ -83,19 +83,19 @@ class Parser(object):
         p_tmp = None
         if len(p) == 3:
             # Typeless node without comment
-            p_tmp = {"name": p[1], "value": None, "comment": None}
+            p_tmp = {"name": [p[1]], "value": None, "comment": None}
         elif len(p) == 4:
             # Typeless node with comment,
             # or node with value
             if p[0] == "comment":
                 # Typeless with comment
-                p_tmp = {"name": p[2], "value": None, "comment": p[1][1]}
+                p_tmp = {"name": [p[2]], "value": None, "comment": p[1][1]}
             else:
                 # Node with value
-                p_tmp = {"name": p[1], "value": p[2], "comment": None}
+                p_tmp = {"name": [p[1]], "value": p[2], "comment": None}
         elif len(p) == 5:
             # Node with value and comment
-            p_tmp = {"name": p[2], "value": p[3], "comment": p[1][1]}
+            p_tmp = {"name": [p[2]], "value": p[3], "comment": p[1][1]}
 
         p[0] = ('leaf-node', p_tmp)
 
