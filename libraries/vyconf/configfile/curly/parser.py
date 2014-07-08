@@ -134,7 +134,13 @@ class Parser(object):
                          | leaf_nodes nodes leaf_nodes
                          | nodes
         '''
-        p[0] = p[1]
+	# This is to avoid producing a nested list
+        # when there are leaf/non-leaf nodes mixed together,
+        # since we return those as lists
+        if len(p) == 2:
+            p[0] = p[1]
+        else:
+            p[0] = p[1] + p[2]
 
     def p_nodes(self, p):
         ''' nodes : node
