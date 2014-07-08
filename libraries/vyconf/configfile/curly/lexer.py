@@ -18,8 +18,11 @@
 #    USA
 
 import ply.lex as lex
+import re
 
 class Lexer(object):
+
+    __number_regex = re.compile('\d+')
 
     # Multiline comment can't be extracted with regex,
     # so we have exclusive state for it
@@ -78,6 +81,9 @@ class Lexer(object):
 
     def t_IDENTIFIER(self, t):
         r'[^\s;{}\"\']+'
+
+        if re.match(self.__number_regex, t.value):
+            t.value = int(t.value)
 
         return t
 
