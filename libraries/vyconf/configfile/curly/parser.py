@@ -17,6 +17,11 @@
 #    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301
 #    USA
 
+# -- I'd prefer not to argue about politics.
+# -- It's not a question of politics, but of grammar.
+# -- In that case, I'd rather not argue about grammar.
+#                  Lipson, Molinsky, "A Russian Course"
+
 import ply.yacc as yacc
 from .lexer import Lexer
 
@@ -140,24 +145,24 @@ class Parser(object):
         else:
             p[0] = p[1] + [p[2]]
 
-    def p_empty_node(self, p):
-        ''' node : node_name LBRACE RBRACE
+    def p_node(self, p):
+        ''' node : node_name LBRACE node_content RBRACE
+                 | node_comment node_name LBRACE node_content RBRACE
+                 | node_name LBRACE RBRACE
                  | node_comment node_name LBRACE RBRACE
         '''
         if len(p) == 4:
-            p[0] = ('node', {"comment": None, "name": p[1][1], "content": []})
+            # Empty node without comment
+            p[0] = ('node', {"comment": None, "name": p[1][1], "content": None})
+        elif len(p) == 5:
+            if p[2] == '{':
+                # Non-empty node without comment
+                p[0] = ('node', {"comment": None, "name": p[1][1], "content": p[3]})
+            else:
+                # Empty node with comment
+                p[0] = ('node', {"comment": p[1][1], "name": p[2][1], "content": None})
         else:
-            p[0] = ('node', {"comment": p[1][1], "name": p[2][1], "content": []})
-
-    def p_node(self, p):
-        ''' node : node_name LBRACE node_content RBRACE
-                 | node_comment node_name LBRACE node_content RBRACE  
-        '''
-        if len(p) == 5:
-            # Node without comment
-            p[0] = ('node', {"comment": None, "name": p[1][1], "content": p[3]})
-        else:
-            # Node with comment
+            # Non-empty node with comment
             p[0] = ('node', {"comment": p[1][1], "name": p[2][1], "content": p[4]})
 
     def p_config(self, p):
