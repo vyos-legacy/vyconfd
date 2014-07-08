@@ -34,18 +34,18 @@ class TestCurlyParser(unittest.TestCase):
 
     def test_single_empty_node(self):
         parser = vyconf.configfile.curly.Parser()
-        result = [('node', {'comment': None, 'content': [], 'name': 'foo'})]
+        result = [('node', {'comment': None, 'content': None, 'name': ['foo']})]
         ast = parser.parse("foo { }",positiontracking=False)
         self.assertEqual(ast, result)
 
     def test_single_node_with_comment(self):
-        result = [('node', {'comment': 'Foo', 'content': [], 'name': 'foo'})]
+        result = [('node', {'comment': 'Foo', 'content': None, 'name': ['foo']})]
         ast = self.parser.parse("/* Foo */ foo {}",positiontracking=True)
         self.assertEqual(ast, result)
 
     def test_single_non_empty_node(self):
         result = [('node', {'comment': None, 'content': 
-                   [('leaf-node', {'comment': None, 'name': 'bar', 'value': '0'})], 'name': 'foo'})]
+                   [('leaf-node', {'comment': None, 'name': ['bar'], 'value': 0})], 'name': ['foo']})]
         ast = self.parser.parse("foo { bar 0; }")
         self.assertEqual(ast, result)
 
