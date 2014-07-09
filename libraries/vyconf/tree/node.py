@@ -27,7 +27,7 @@ class ChildNotFoundError(Exception):
     """ Raised on attempts to look up a non-existent path
     """
     def __init__(self, node, child):
-        message = "Node %s has no child %s" % (node, child)
+        message = "Node {0} has no child {1}".format(node, child)
         super(ChildNotFoundError, self).__init__(message)
         self.strerror = message
 
@@ -36,7 +36,7 @@ class ChildAlreadyExistsError(Exception):
     """ Raised on attempts to insert the same child more than one time
     """
     def __init__(self, node, child):
-        message = "Node %s already has child %s" % (node, child)
+        message = "Node {0} already has child {1}".format(node, child)
         super(ChildAlreadyExistsError, self).__init__(message)
         self.strerror = message
 
@@ -188,7 +188,7 @@ class Node(object):
         try:
             self.__properties[key] = value
         except TypeError:
-            raise TypeError("Wrong property key type: %s" % type(key).__name__)
+            raise TypeError("Wrong property key type: {0}".format(type(key).__name__))
 
     def get_property(self, key):
         """ Get property value by key """
@@ -199,4 +199,4 @@ class Node(object):
             else:
                 return None
         except TypeError:
-            raise TypeError("Wrong property key type: %s" % type(key).__name__)
+            raise TypeError("Wrong property key type: {0}".format(type(key).__name__))
