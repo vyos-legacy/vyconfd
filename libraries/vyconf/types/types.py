@@ -55,6 +55,19 @@ class TypeValidator(object):
     def validate(value, constraint=None):
         pass
 
+    @staticmethod
+    def to_string_safe(value):
+        """ Sometimes conversion to string may fail,
+            and we don't want to introduce more failures in validator """
+        value_str = ""
+        if not isinstance(value, str):
+            try:
+                value_str = repr(value)
+            except:
+                pass
+        return value_str
+
+
 def get_types(module):
     """ Build a dict of type validators from specified module """
     types = {}

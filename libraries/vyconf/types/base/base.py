@@ -30,17 +30,8 @@ class StringValidator(TypeValidator):
 
     @classmethod
     def validate(self, value, constraint=None):
-        # Most of objects can be converted to strings,
-        # so the fact it has string representation doesn't really
-        # mean anything
-        value_str = ""
         if not isinstance(value, str):
-            # Unlikely to fail, but...
-            try:
-                value_str = repr(value)
-            except:
-                pass
-            raise ValidationError("\"{0}\" is not a valid value of type \"{1}\"".format(value_str, self.name))
+            raise ValidationError("\"{0}\" is not a valid value of type \"{1}\"".format(self.to_string_safe(value), self.name))
 
         if constraint:
             if not isinstance(constraint, str):
@@ -50,12 +41,7 @@ class StringValidator(TypeValidator):
             try:
                 constraint_re = re.compile(constraint)
             except:
-                constraint_str = ""
-                try:
-                    constraint_str = repr(constraint)
-                except:
-                    pass
-                raise ConstraintFormatError("\"{0}\" is not a valid constraint for type \"{1}\"".format(constraint_str, self.name))
+                raise ConstraintFormatError("\"{0}\" is not a valid constraint for type \"{1}\"".format(self.to_string_safe(constraint), self.name))
 
             # Check the value against constraint
             if not re.match(constraint_re, str(value)):
@@ -64,7 +50,6 @@ class StringValidator(TypeValidator):
                 return True
         else:
             return True
-
 
 
 
