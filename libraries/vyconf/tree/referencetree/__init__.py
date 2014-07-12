@@ -20,8 +20,8 @@
 
 
 
-from vyconf.tree.referencetree.reference_node import (ReferenceNode,
+from .reference_node import (ReferenceNode,
     ReferenceNodeError)
 
-from vyconf.tree.referencetree.reference_tree_loader import (ReferenceTreeLoader,
+from .reference_tree_loader import (ReferenceTreeLoader,
     ReferenceTreeLoaderError)
