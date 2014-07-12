@@ -1,1 +1,1 @@
-from reference_tree_loader import TestVytreeReferenceLoader
+from .reference_tree_loader import TestVytreeReferenceLoader
