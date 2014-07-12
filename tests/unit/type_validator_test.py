@@ -31,7 +31,7 @@ class MockTypeSet(object):
 
 class TestDummyValidators(unittest.TestCase):
     def test_get_types_keys(self):
-        self.assertEqual(sorted(types.get_types(MockTypeSet).keys()), ["a_type", "b_type"])
+        self.assertEqual(sorted(list(types.get_types(MockTypeSet).keys())), ["a_type", "b_type"])
 
     def test_get_types_values(self):
         self.assertTrue(issubclass(types.get_types(MockTypeSet)["a_type"], types.TypeValidator))

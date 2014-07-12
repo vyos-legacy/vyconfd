@@ -1,1 +1,1 @@
-from type import TypeValidator, ValidationError, ConstraintFormatError, get_types
+from .types import TypeValidator, ValidationError, ConstraintFormatError, get_types
