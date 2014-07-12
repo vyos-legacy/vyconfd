@@ -17,6 +17,9 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301
 # USA
 
+import sys
+import inspect
+
 class ValidationError(Exception):
     """ Raised when the value fails validation """
     def __init__(self, message):
@@ -51,3 +54,14 @@ class TypeValidator(object):
     @classmethod
     def validate(value, constraint=None):
         pass
+
+def get_types(module):
+    """ Build a dict of type validators from specified module """
+    types = {}
+    classes = inspect.getmembers(module, inspect.isclass)
+    for c in classes:
+        # inspect.getmembers() return a list of tuples of name and class
+        if issubclass(c[1], TypeValidator):
+            types[c[1].name] = c[1]
+    return types
+
