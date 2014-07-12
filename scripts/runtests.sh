@@ -18,7 +18,12 @@
 #    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301
 #    USA
 
-which nosetests 2>&1 >/dev/null
+if [ "$NOSETESTS" == "" ]; then
+    NOSETESTS=nosetests
+fi
+echo "Using $NOSETESTS for nosetests binary"
+
+which $NOSETESTS 2>&1 >/dev/null
 if [ $? != 0 ]; then
     echo "nosetests binary not found"
     echo "Install nose (https://pypi.python.org/pypi/nose/‎) or make sure it is in your PATH"
@@ -32,9 +37,9 @@ else
     COVERAGE_OPTIONS=""
 fi
 
-PYTHONPATH=libraries:tests/unit nosetests $COVERAGE_OPTIONS --verbosity=2 -w tests/unit/
+PYTHONPATH=libraries:tests/unit $NOSETESTS $COVERAGE_OPTIONS --verbosity=2 -w tests/unit/
 
 PYTHONPATH=libraries:tests/integration \
 VYCONF_DATA_DIR=$PWD/data/ \
 VYCONF_TEST_DATA_DIR=$PWD/tests/integration/data \
-nosetests --verbosity=2 -w tests/integration/
+$NOSETESTS --verbosity=2 -w tests/integration/
