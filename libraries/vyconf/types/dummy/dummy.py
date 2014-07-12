@@ -29,7 +29,7 @@ class AlwaysValid(TypeValidator):
 
     @classmethod
     def validate(self, value, constraint=None):
-        pass
+        return True
 
 
 class NeverValid(TypeValidator):
