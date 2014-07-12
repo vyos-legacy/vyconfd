@@ -29,7 +29,6 @@ class ParseError(Exception):
     """ Raised when incorrect token is found
     """
     def __init__(self, token):
-        print token
         token_str = ""
         position = ""
         if token:
