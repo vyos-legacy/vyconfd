@@ -17,8 +17,6 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301
 # USA
 
-import sys
-import inspect
 from vyconf.types import TypeValidator, ValidationError, ConstraintFormatError
 
 
@@ -55,5 +53,3 @@ class BadConstraint(TypeValidator):
     @classmethod
     def validate(self, value, constraint=None):
         raise ConstraintFormatError("Constraint string {0} is not valid for type {1}".format(value, self.name))
-
-
