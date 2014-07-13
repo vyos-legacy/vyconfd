@@ -54,7 +54,16 @@ class TestVytreeReferenceNode(unittest.TestCase):
     def test_name_constraint(self):
         node = vyconf.tree.referencetree.ReferenceNode('root')
         node.set_name_constraint("foo", "bar")
-        self.assertEqual(node.get_name_constraint(), {"type": "foo", "constraint": "bar"})
+        self.assertEqual(node.get_name_constraint(), {"type": "foo",
+                                                      "constraint": "bar",
+                                                      "error_message": None})
+
+    def test_name_constraint_with_message(self):
+        node = vyconf.tree.referencetree.ReferenceNode('root')
+        node.set_name_constraint("foo", "bar", "baz")
+        self.assertEqual(node.get_name_constraint(), {"type": "foo",
+                                                      "constraint": "bar",
+                                                      "error_message": "baz"})
 
     def test_name_constraint_default(self):
        	node = vyconf.tree.referencetree.ReferenceNode('root')
@@ -63,14 +72,29 @@ class TestVytreeReferenceNode(unittest.TestCase):
     def test_value_constraints(self):
        	node = vyconf.tree.referencetree.ReferenceNode('root')
         node.add_value_constraint("foo", "bar")
-        self.assertEqual(node.get_value_constraints(), [{"type": "foo", "constraint": "bar"}])
+        self.assertEqual(node.get_value_constraints(), [{"type":
+                                                         "foo",
+                                                         "constraint": "bar",
+                                                         "error_message": None}])
+
+    def test_value_constraints_with_message(self):
+        node = vyconf.tree.referencetree.ReferenceNode('root')
+        node.add_value_constraint("foo", "bar", "baz")
+        self.assertEqual(node.get_value_constraints(), [{"type":
+                                                         "foo",
+                                                         "constraint": "bar",
+                                                         "error_message": "baz"}])
 
     def test_value_constraints_multiple(self):
        	node = vyconf.tree.referencetree.ReferenceNode('root')
         node.add_value_constraint("foo", "bar")
         node.add_value_constraint("baz", "quux")
-        self.assertEqual(node.get_value_constraints(), [{"type": "foo", "constraint": "bar"},
-                                                        {"type": "baz", "constraint": "quux"}])
+        self.assertEqual(node.get_value_constraints(), [{"type": "foo",
+                                                         "constraint": "bar",
+                                                         "error_message": None},
+                                                        {"type": "baz",
+                                                         "constraint": "quux",
+                                                         "error_message": None}])
 
     def test_value_constraints_default(self):
        	node = vyconf.tree.referencetree.ReferenceNode('root')

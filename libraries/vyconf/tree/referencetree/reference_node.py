@@ -60,16 +60,22 @@ class ReferenceNode(vyconf.tree.Node):
     def is_multi(self):
        	return self.get_property("multi")
 
-    def set_name_constraint(self, type_string, constraint_string):
-        self.set_property("name_constraint", {"type": type_string, "constraint": constraint_string})
+    def set_name_constraint(self, type_string, constraint_string, name_error_message=None):
+        self.set_property("name_constraint", {"type": type_string,
+                                              "constraint": constraint_string,
+                                              "error_message": name_error_message
+                                             })
 
     def get_name_constraint(self):
         return self.get_property("name_constraint")
 
-    def add_value_constraint(self, type_string, constraint_string):
+    def add_value_constraint(self, type_string, constraint_string, value_error_message=None):
         if (not isinstance(type_string, str)) and (not isinstance(constraint_string, str)):
             raise TypeError("Type and constraint must be strings")
-        self.get_property("value_constraints").append({"type": type_string, "constraint": constraint_string})
+        self.get_property("value_constraints").append({"type": type_string,
+                                                       "constraint": constraint_string,
+                                                       "error_message": value_error_message
+                                                      })
 
     def get_value_constraints(self):
         return self.get_property("value_constraints")

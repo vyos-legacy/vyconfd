@@ -33,6 +33,7 @@ TYPE_ATTRIBUTE = "type"
 CONSTRAINT_ATTRIBUTE = "constraint"
 DESCRIPTION_ATTRIBUTE = "description"
 VALUE_ATTRIBUTE = "value"
+ERROR_MESSAGE_ATTRIBUTE = "error-message"
 
 class ReferenceTreeLoaderError(Exception):
     """ Raised on attempts to create a reference tree from incorrect
@@ -66,9 +67,12 @@ class ReferenceTreeLoader(object):
             elif xml_child.tag == VALUE_CONSTRAINT_ELEMENT:
                 value_type = xml_child.attrib[TYPE_ATTRIBUTE]
                 value_constraint = None
+                value_error_message = None
                 if CONSTRAINT_ATTRIBUTE in xml_child.attrib:
                     value_constraint = xml_child.attrib[CONSTRAINT_ATTRIBUTE]
-                reference_node.add_value_constraint(value_type, value_constraint)
+                if ERROR_MESSAGE_ATTRIBUTE in xml_child.attrib:
+                    value_error_message = xml_child.attrib[ERROR_MESSAGE_ATTRIBUTE]
+                reference_node.add_value_constraint(value_type, value_constraint, value_error_message)
             elif xml_child.tag == VALUE_HELP_STRING_ELEMENT:
                 # A lot of blind faith: the point is that <valueHelpString>
                 # can have either value= attribute or type= and constaint= attributes
@@ -108,7 +112,12 @@ class ReferenceTreeLoader(object):
                 if CONSTRAINT_ATTRIBUTE in xml_child.attrib:
                     name_constraint = xml_child.attrib[CONSTRAINT_ATTRIBUTE]
 
-                reference_node.set_name_constraint(name_type, name_constraint)
+                # error-message= is optional as well
+                name_error_message = None
+                if ERROR_MESSAGE_ATTRIBUTE in xml_child.attrib:
+                    value_error_message = xml_child.attrib[ERROR_MESSAGE_ATTRIBUTE]
+
+                reference_node.set_name_constraint(name_type, name_constraint, name_error_message)
             elif xml_child.tag == HELP_STRING_ELEMENT:
                 help_string = xml_child.attrib[DESCRIPTION_ATTRIBUTE]
                 reference_node.set_help_string(help_string)

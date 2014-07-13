@@ -2,10 +2,10 @@
 <nodeList>
   <node name="foo">
     <tagNode name="bar">
-      <nameConstraint type="mock" constraint="asdf"/>
+      <nameConstraint type="mock" constraint="asdf" error-message="Who would call a node like that?!"/>
       <helpString description="Sample node bar"/>
       <leafNode name="baz">
-        <valueConstraint type="mock" constraint="cvbn"/>
+        <valueConstraint type="mock" constraint="cvbn" error-message="Your value is bad and you should feel bad"/>
         <valueConstraint type="mock"/>
         <valueHelpString type="mock" constraint="ffgg" description="One of the possible values"/>
         <valueHelpString value="fghj" description="Another possible value"/>
