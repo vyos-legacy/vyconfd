@@ -1,1 +1,1 @@
-from .base import StringValidator
+from .base import StringValidator, IntegerValidator
