@@ -31,7 +31,7 @@ class StringValidator(TypeValidator):
     @classmethod
     def validate(self, value, constraint=None):
         if not isinstance(value, str):
-            raise ValidationError("\"{0}\" is not a valid value of type \"{1}\"".format(self.to_string_safe(value), self.name))
+            raise ValidationError("\"{0}\" is not a valid string".format(self.to_string_safe(value)))
 
         if constraint:
             if not isinstance(constraint, str):
@@ -44,8 +44,9 @@ class StringValidator(TypeValidator):
                 raise ConstraintFormatError("\"{0}\" is not a valid constraint for type \"{1}\"".format(self.to_string_safe(constraint), self.name))
 
             # Check the value against constraint
+            # XXX: do we need to force strict ^...$ match here?
             if not re.match(constraint_re, str(value)):
-                raise ValidationError("\"{0}\" value does not satisfy constraint \"{1}\"".format(value, constraint))
+                raise ValidationError("\"{0}\" does not match pattern \"{1}\"".format(value, constraint))
             else:
                 return True
         else:
@@ -85,6 +86,7 @@ class IntegerValidator(TypeValidator):
             value_int = value
 
         if value_int < 0:
+            # Anyone wants negative integers in configs?
             raise ValidationError("\"{0}\" is not a non-negative integer")
 
         if constraint:
@@ -100,4 +102,7 @@ class IntegerValidator(TypeValidator):
             ranges = map(lambda x: (int(x[0]), int(x[1])), range_re.findall(constraint))
             if True not in map(lambda x: True if x[0] <= value_int <= x[1] else False, ranges):
                 raise ValidationError("\"{0}\" does not fall in range \"{1}\"".format(value, constraint))
+
+        # If no exceptions were raised by this time, everything is fine
+        return True
 
