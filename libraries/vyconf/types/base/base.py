@@ -52,4 +52,52 @@ class StringValidator(TypeValidator):
             return True
 
 
+class IntegerValidator(TypeValidator):
+    """ Validates unsigned integer values """
+    name = "integer"
+
+    __range_re_str = """ (?: # xx-yy range group and separator, comma or end of line
+                      (?: # xx-yy range group
+                        (?P<start>\d+)
+                        \-
+                        (?P<stop>\d+)
+                      (?:,|$))+?)
+                """
+
+    def in_range(value, min, max):
+        if not ((value >= min) and (value <= max)):
+            return True
+    @classmethod
+    def validate(self, value, constraint=None):
+        """ Validate an integer. Takes either string representation or
+            actual integer """
+        if (not isinstance(value, str)) and (not isinstance(value, int)):
+            raise ValidationError("\"{0}\" is not a valid integer".format(self.to_string_safe(value)))
+
+        value_int = None
+        if isinstance(value, str):
+            try:
+                value_int = int(value)
+            except:
+                # Likely ValueError, but we don't really care which error it was
+                raise ValidationError("{0} is not a valid integer".format(value, self.name))
+        else:
+            value_int = value
+
+        if value_int < 0:
+            raise ValidationError("\"{0}\" is not a non-negative integer")
+
+        if constraint:
+            if not isinstance(constraint, str):
+                raise ConstraintFormatError("Constraint must be a string")
+
+            # XXX: needs really strict validation?
+            range_re = re.compile(self.__range_re_str, re.VERBOSE)
+            if not range_re.match(constraint):
+                raise ConstraintFormatError("\"{0}\" is not a valid constraint for type \"{1}\"".format(constraint, self.name))
+
+            # That regex returns ('min', 'max') tuples, convert content to integers
+            ranges = map(lambda x: (int(x[0]), int(x[1])), range_re.findall(constraint))
+            if True not in map(lambda x: True if x[0] <= value_int <= x[1] else False, ranges):
+                raise ValidationError("\"{0}\" does not fall in range \"{1}\"".format(value, constraint))
 
