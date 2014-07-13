@@ -43,6 +43,33 @@ class TestDummyValidators(unittest.TestCase):
         self.assertRaises(types.ValidationError, base.StringValidator.validate,
                           ("fgsfds", "[0-9]+"))
 
+    # IntegerValidator
+    def test_integer_valid(self):
+        base.IntegerValidator.validate(42)
+
+    def test_integer_invalid(self):
+        # We don't want negative integers in configs
+        self.assertRaises(types.ValidationError, base.IntegerValidator.validate, -42)
+
+    def test_integer_from_string_valid(self):
+        base.IntegerValidator.validate("9000")
+
+    def test_integer_from_string_invalid(self):
+        self.assertRaises(types.ValidationError, base.IntegerValidator.validate, "fgsfds")
+
+    def test_integer_from_string_bad_constraint(self):
+        self.assertRaises(types.ConstraintFormatError, base.IntegerValidator.validate,
+                          "9000", "fgsfds")
+
+    def test_integer_from_string_matches_constraint(self):
+        base.IntegerValidator.validate("42", "0-42")
+
+    def test_integer_from_string_multipart_constraint(self):
+        base.IntegerValidator.validate("42", "10-15,40-92")
+
+    def test_integer_from_string_doesnt_match_constraint(self):
+        self.assertRaises(types.ValidationError, base.IntegerValidator.validate,
+                          "9000", "10-15,9001-9003")
 
 if __name__ == '__main__':
     unittest.main()
