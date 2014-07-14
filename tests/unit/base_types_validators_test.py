@@ -23,7 +23,7 @@ import unittest
 import vyconf.types as types
 import vyconf.types.base as base
 
-class TestDummyValidators(unittest.TestCase):
+class TestBaseTypeValidators(unittest.TestCase):
     # StringValidator
     def test_string_valid(self):
         base.StringValidator.validate("fgsfds")
