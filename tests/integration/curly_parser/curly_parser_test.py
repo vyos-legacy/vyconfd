@@ -49,5 +49,21 @@ class TestCurlyParser(unittest.TestCase):
         ast = self.parser.parse("foo { bar 0; }")
         self.assertEqual(ast, result)
 
+    def test_leaf_single_leaf_node_with_comment(self):
+        result = [('node', {'comment': None, 'content':
+                   [('leaf-node', {'comment': 'Foo', 'name': ['bar'], 'value': 0})], 'name': ['foo']})]
+        ast = self.parser.parse("foo { /* Foo */ bar 0; }")
+        self.assertEqual(ast, result)
+
+    def test_multiple_leaf_nodes(self):
+        result = [('node', {'comment': None, 'content':
+                              [('leaf-node', {'comment': 'Foo', 'name': ['bar'], 'value': 0}),
+                               ('leaf-node', {'comment': None, 'name': ['baz'], 'value': 'quux'})],
+                            'name': ['foo']})]
+        ast = self.parser.parse(""" foo {  /* Foo */ bar 0; baz "quux"; } """)
+        self.assertEqual(ast, result)
+
+
+
 if __name__ == '__main__':
     unittest.main()
