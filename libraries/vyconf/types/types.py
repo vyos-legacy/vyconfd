@@ -44,9 +44,9 @@ class TypeValidator(object):
         so it can be called without instantiating the object.
     """
 
-    """ Type variable stores symbolic type name that is used in 
+    """ Type name variable stores symbolic type name that is used in 
         interface definitions """
-    type = None
+    name = None
 
     def __init__(self):
         pass
