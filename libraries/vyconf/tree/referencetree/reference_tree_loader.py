@@ -102,6 +102,11 @@ class ReferenceTreeLoader(object):
             # because it's already expressed in the RELAX-NG XML grammar
             if (xml_child.tag == NODE_ELEMENT) or (xml_child.tag == TAG_NODE_ELEMENT):
                 next_reference_node = reference_node.insert_child([xml_child.attrib[NODE_NAME_ATTRIBUTE]])
+
+                # If it's a tag node, we need to set a flag in the reference_node object
+                if xml_child.tag == TAG_NODE_ELEMENT:
+                   next_reference_node.set_tag()
+
                 self._walk_xml_node(xml_child, next_reference_node)
             elif xml_child.tag == NAME_CONSTRAINT_ELEMENT:
                 # Blind faith here again, type= attribute is required by the grammar
