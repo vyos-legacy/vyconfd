@@ -44,6 +44,18 @@ class TestVytreeReferenceLoader(unittest.TestCase):
         child = self.reference_tree.get_child(['foo', 'bar'])
         self.assertIsInstance(child, vyconf.tree.referencetree.ReferenceNode)
 
+    def test_should_not_be_tag_node(self):
+        child = self.reference_tree.get_child(['foo'])
+        self.assertFalse(child.is_tag())
+
+    def test_should_be_tag_node(self):
+        child = self.reference_tree.get_child(['foo', 'bar'])
+        self.assertTrue(child.is_tag())
+
+    def test_should_be_leaf_node(self):
+        child = self.reference_tree.get_child(['foo', 'bar', 'baz'])
+
+    # Try loading an invalid definition
     def test_invalid_interface_definition(self):
         data_dir = os.environ["VYCONF_DATA_DIR"]
         test_data_dir = os.environ["VYCONF_TEST_DATA_DIR"]
