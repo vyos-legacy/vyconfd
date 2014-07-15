@@ -19,6 +19,7 @@
 
 # The language of this file is compact form RELAX-NG
 # http://relaxng.org/compact-tutorial-20030326.htm
+# (unless converted to XML, then just RELAX-NG :)
 
 # Interface definition starts with nodeList tag that may contain node tags
 start = element nodeList { node* }
