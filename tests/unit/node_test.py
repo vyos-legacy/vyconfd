@@ -54,7 +54,7 @@ class TestVytreeNode(unittest.TestCase):
     def test_get_child(self):
         node = vyconf.tree.Node("root")
         child = node.insert_child(['foo'])
-        self.assertIsInstance(child, vyconf.tree.Node)
+        self.assertEqual(child, node.get_child(['foo']))
 
     def test_get_child_multi_level(self):
         node = vyconf.tree.Node("root")
