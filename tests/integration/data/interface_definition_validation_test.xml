@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<nodeList>
+  <node name="foo">
+    <tagNode name="bar">
+      <nameConstraint type="alwaysvalid" constraint="asdf"/>
+      <helpString description="Sample node bar"/>
+      <leafNode name="baz">
+        <valueConstraint type="alwaysvalid" constraint="foobar"/>
+      </leafNode>
+    </tagNode>
+    <node name="quux">
+      <leafNode name="xyzzy">
+        <valueConstraint type="nevervalid" error-message="nevervalid"/>
+      </leafNode>
+    </node>
+  </node>
+</nodeList>
