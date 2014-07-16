@@ -53,6 +53,21 @@ class Node(object):
         self.__properties = {}
         self.__parent = parent
 
+    @staticmethod
+    def to_list(arg):
+        """ If the argument is not a list, makes a single-item list of it.
+            Many functions of this class treat path as a list internally,
+            but converting it manually in calls is too annoying.
+
+            Args:
+                arg (list): list to be returned unchanges
+                arg (any):  anything to be converted to list
+        """
+        if not isinstance(arg, list):
+            return [arg]
+        else:
+            return arg
+
     def get_name(self):
         """ Returns node name.
         """
@@ -88,12 +103,12 @@ class Node(object):
         names = [x.get_name() for x in self.__children]
         return names
 
-    def get_child(self, path):
+    def get_child(self, path_or_name):
         """ Finds a child node by path
 
             Args:
-                path (list): The path to child node
-                (e.g. ['organization', 'branches', 'departments'])
+                path_or_name: The path to child node
+                (e.g. ['organization', 'branches', 'departments'], or 'branches')
 
             Returns:
                 Node: Child node
@@ -101,6 +116,7 @@ class Node(object):
             Raises:
                 ChildNotFoundError
         """
+        path = self.to_list(path_or_name)
         next_level = path.pop(0)
         if not path:
             # It was the last path level
@@ -112,11 +128,11 @@ class Node(object):
             child = self.find_child(next_level)
             return child.get_child(path)
 
-    def insert_child(self, path):
+    def insert_child(self, path_or_name):
         """ Inserts a new child
 
             Args:
-                path (list): The path to child node
+                path_or_name: The path to child node
 
             Returns:
                 child (node): the inserted node
@@ -124,6 +140,7 @@ class Node(object):
             Raises:
                 ChildNotFoundError, ChildAlreadyExistsError
         """
+        path = self.to_list(path_or_name)
         next_level = path.pop(0)
         if not path:
             # That was the last item of the path,
@@ -148,12 +165,13 @@ class Node(object):
 
             return next_child.insert_child(path)
 
-    def delete_child(self, path):
+    def delete_child(self, path_or_name):
         """ Delete child node
 
             Args:
-                path (list): The path to child node
+                path_or_name: The path to child node
         """
+        path = self.to_list(path_or_name)
         next_level = path.pop(0)
         if not path:
             # It was the last path level
@@ -165,8 +183,9 @@ class Node(object):
             child = self.find_child(next_level)
             child.delete_child(path)
 
-    def child_exists(self, path):
+    def child_exists(self, path_or_name):
         """ Checks if specific path to a child exists """
+        path = self.to_list(path_or_name)
         try:
             self.get_child(path)
             return True

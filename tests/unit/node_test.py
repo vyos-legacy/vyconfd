@@ -38,6 +38,11 @@ class TestVytreeNode(unittest.TestCase):
         child = node.insert_child(['foo'])
         self.assertIsInstance(child, vyconf.tree.Node)
 
+    def test_insert_immediate_child_string_arg(self):
+        node = vyconf.tree.Node("root")
+        child = node.insert_child('foo')
+        self.assertIsInstance(child, vyconf.tree.Node)
+
     def test_insert_duplicate_child(self):
         node = vyconf.tree.Node("root")
         node.insert_child(['foo'])
@@ -56,6 +61,11 @@ class TestVytreeNode(unittest.TestCase):
         child = node.insert_child(['foo'])
         self.assertEqual(child, node.get_child(['foo']))
 
+    def test_get_child_string_arg(self):
+        node = vyconf.tree.Node("root")
+        child = node.insert_child('foo')
+        self.assertEqual(child, node.get_child('foo'))
+
     def test_get_child_multi_level(self):
         node = vyconf.tree.Node("root")
         foo_child = node.insert_child(['foo'])
@@ -69,6 +79,14 @@ class TestVytreeNode(unittest.TestCase):
         self.assertRaises(vyconf.tree.ChildNotFoundError,
                           node.find_child,
                           ['foo'])
+
+    def test_delete_child_string_arg(self):
+        node = vyconf.tree.Node("root")
+        node.insert_child('foo')
+        node.delete_child('foo')
+        self.assertRaises(vyconf.tree.ChildNotFoundError,
+                          node.find_child,
+                          'foo')
 
     def test_delete_child_multi_level(self):
         node = vyconf.tree.Node("root")
@@ -92,6 +110,11 @@ class TestVytreeNode(unittest.TestCase):
         node = vyconf.tree.Node('root')
         node.insert_child(['foo', 'bar'])
         self.assertTrue(node.child_exists(['foo', 'bar']))
+
+    def test_exists_string_arg(self):
+        node = vyconf.tree.Node('root')
+        node.insert_child(['foo', 'bar'])
+        self.assertTrue(node.child_exists('foo'))
 
     def test_does_not_exist(self):
         node = vyconf.tree.Node('root')
