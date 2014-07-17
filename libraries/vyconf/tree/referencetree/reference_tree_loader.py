@@ -128,5 +128,6 @@ class ReferenceTreeLoader(object):
                 reference_node.set_help_string(help_string)
             elif xml_child.tag == LEAF_NODE_ELEMENT:
                 next_reference_node = reference_node.insert_child([xml_child.attrib[NODE_NAME_ATTRIBUTE]])
+                next_reference_node.set_leaf()
                 self._walk_xml_leaf_node(xml_child, next_reference_node)
 
