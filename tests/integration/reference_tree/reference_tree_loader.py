@@ -54,6 +54,7 @@ class TestVytreeReferenceLoader(unittest.TestCase):
 
     def test_should_be_leaf_node(self):
         child = self.reference_tree.get_child(['foo', 'bar', 'baz'])
+        self.assertTrue(child.is_leaf())
 
     # Try loading an invalid definition
     def test_invalid_interface_definition(self):
