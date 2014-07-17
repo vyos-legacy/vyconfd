@@ -40,7 +40,7 @@ class StringValidator(TypeValidator):
                 raise ConstraintFormatError("Constraint must be a string")
             try:
                 constraint_re = re.compile(constraint)
-            except:
+            except Exception:
                 raise ConstraintFormatError("\"{0}\" is not a valid constraint for type \"{1}\"".format(self.to_string_safe(constraint), self.name))
 
             # Check the value against constraint
@@ -79,7 +79,7 @@ class IntegerValidator(TypeValidator):
         if isinstance(value, str):
             try:
                 value_int = int(value)
-            except:
+            except Exception:
                 # Likely ValueError, but we don't really care which error it was
                 raise ValidationError("{0} is not a valid integer".format(value, self.name))
         else:

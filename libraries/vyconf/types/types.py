@@ -63,7 +63,7 @@ class TypeValidator(object):
         if not isinstance(value, str):
             try:
                 value_str = repr(value)
-            except:
+            except Exception:
                 pass
         return value_str
 
