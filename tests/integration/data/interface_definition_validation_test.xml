@@ -8,10 +8,13 @@
         <valueConstraint type="alwaysvalid" constraint="foobar"/>
       </leafNode>
     </tagNode>
-    <node name="quux">
-      <leafNode name="xyzzy">
-        <valueConstraint type="nevervalid" error-message="nevervalid"/>
-      </leafNode>
-    </node>
+  </node>
+  <node name="quux">
+    <leafNode name="xyzzy">
+      <valueConstraint type="nevervalid" error-message="nevervalid"/>
+    </leafNode>
+    <leafNode name="spam">
+        <valueConstraint type="alwaysvalid"/>
+    </leafNode>
   </node>
 </nodeList>
