@@ -73,6 +73,9 @@ class Node(object):
         """
         return self.__name
 
+    def dump_properties(self):
+        return self.__properties
+
     def find_child(self, name):
         """ Finds an immediate child by name.
 
