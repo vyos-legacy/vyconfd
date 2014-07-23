@@ -18,7 +18,6 @@
 #    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301
 #    USA
 
-
 import vyconf.tree
 
 class ReferenceNodeError(Exception):
@@ -29,7 +28,34 @@ class ReferenceNodeError(Exception):
         super(ReferenceNodeError, self).__init__(message)
         self.strerror = message
 
+
 class ReferenceNode(vyconf.tree.Node):
+    """ Reference nodes store information about available configuration
+        tree paths.
+
+        Nodes are divided into:
+        1. Regular nodes that can have children with predetermined names.
+        2. Tag nodes that can have children with names that satisfy certain
+           constraint (such as "users someusername" or "ethernet eth0").
+        3. Leaf nodes that can't have children.
+
+        Leaf nodes may have none, one, or multiple values. We call leaf nodes
+        that are allowed to have multiple values "multi" nodes.
+
+        Names of tag node children or values of a leaf node have type and
+        may have constraint associated with that type (e.g. type "string"
+        and a regex to match specific format as its constraint).
+        Leaf nodes that can't have children (usually those are flags like
+        "disable" and such) are referred to as "typeless".
+
+        Every node may have a help string as a piece of embedded documentation,
+        leaf nodes may also have value help strings that describe possible values.
+
+        Primary purpose of the reference nodes is to verify whether some path
+        used as set/delete operation argument is valid and if the value attached to
+        it satisfies the constraints.
+    """
+
     def __init__(self, name, parent=None):
         super(ReferenceNode, self).__init__(name, parent)
 
