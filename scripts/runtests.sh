@@ -31,7 +31,12 @@ if [ $? != 0 ]; then
 fi
 
 if $(scripts/checkmodule.py coverage); then
-    COVERAGE_OPTIONS="--with-coverage --cover-branches"
+    COVERAGE_OPTIONS="--with-coverage"
+    if $($NOSETESTS --help | grep "cover-branches" 2>&1 >/dev/null); then
+        COVERAGE_OPTIONS=$COVERAGE_OPTIONS" --cover-branches"
+    else
+        echo "Warning: Branch coverage reporting is not supported"
+    fi
 else
     echo "Warning: install python coverage module (http://nedbatchelder.com/code/coverage/) to enable coverage report"
     COVERAGE_OPTIONS=""
