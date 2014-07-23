@@ -18,7 +18,7 @@
 #    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301
 #    USA
 
-if [ "$NOSETESTS" == "" ]; then
+if [ "$NOSETESTS" = "" ]; then
     NOSETESTS=nosetests
 fi
 echo "Using $NOSETESTS for nosetests binary"
