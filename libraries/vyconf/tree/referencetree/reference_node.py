@@ -18,6 +18,15 @@
 #    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301
 #    USA
 
+# Animals are divided into: (a) belonging to the emperor, (b) embalmed,
+# (c) tame, (d) sucking pigs, (e) sirens, (f) fabulous, (g) stray dogs,
+# (h) included in the present classification, (i) frenzied, (j) innumerable,
+# (k) drawn with a very fine camelhair brush, (l) et cetera, (m) having just
+# broken the water pitcher, (n) that from a long way off look like flies.
+#     From "The Analytical Language of John Wilkins" by
+#     Jorge Luis Borges
+# Our config nodes classification is just a little simpler.
+
 import vyconf.tree
 
 class ReferenceNodeError(Exception):
