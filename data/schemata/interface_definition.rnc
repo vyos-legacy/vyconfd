@@ -1,4 +1,4 @@
-#    vyos_interface_definition.rnc: VyConf reference tree XML grammar
+#    interface_definition.rnc: VyConf reference tree XML grammar
 #
 #    Copyright (C) 2014 VyOS Development Group <maintainers@vyos.net>
 #
