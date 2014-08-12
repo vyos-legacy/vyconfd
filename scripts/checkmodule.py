@@ -23,11 +23,16 @@
 import sys
 import importlib
 
-module_name = sys.argv[1]
+if len(sys.argv) > 1:
+    module_name = sys.argv[1]
+else:
+    print("Usage: {0} <module name>".format(sys.argv[0]))
+    sys.exit(1)
 
 try:
     importlib.import_module(module_name)
 except ImportError:
+    print("Module '{0}' not found".format(module_name))
     sys.exit(1)
 
 sys.exit(0)
