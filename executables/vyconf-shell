@@ -1,0 +1,195 @@
+#!/usr/bin/env python
+#
+#    vyconf-shell: VyConf interactive shell
+#
+#    Copyright (C) 2014 VyOS Development Group <maintainers@vyos.net>
+#
+#    This library is free software; you can redistribute it and/or
+#    modify it under the terms of the GNU Lesser General Public
+#    License as published by the Free Software Foundation; either
+#    version 2.1 of the License, or (at your option) any later version.
+#
+#    This library is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+#    Lesser General Public License for more details.
+#
+#    You should have received a copy of the GNU Lesser General Public
+#    License along with this library; if not, write to the Free Software
+#    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301
+#    USA
+
+
+import sys
+import os
+import socket
+import readline
+import logging
+
+
+OP_MODE = 0
+CONF_MODE = 1
+
+
+op_mode_commands = { "configure": { "help": "Enter configuration mode",
+                                    "options": { "exclusive": "Lock the configuration" }
+                                  }
+                   }
+
+conf_mode_commands = { "set": { "help": "Set the value of a parameter or create new parameter" },
+                       "delete": { "help": "Delete a parameter" }
+                     }
+
+def build_help(commands):
+    help_lines = []
+    for command in commands:
+        help_line = "{0}\t{1}".format(command, commands[command]["help"])
+        help_lines.append(help_line)
+    return "\n".join(help_lines)
+
+
+def get_node_name():
+    hostname = socket.gethostname()
+    nodename = hostname.split(".")[0]
+    return nodename
+
+def make_prompt(mode, path=""):
+    user = os.getlogin()
+    node = get_node_name()
+
+    if mode == OP_MODE:
+        symbol = "$"
+    else:
+        symbol = "#"
+
+    # If we are not at the top level, display path
+    # as "user@node:[foo bar]#"
+    level = ""
+    if path:
+        level = ":[{0}]".format(path)
+    prompt = "{0}@{1}{2}{3}".format(user, node, level, symbol)
+    return prompt
+
+def get_pipe_parts(string):
+    return string.split("|")
+
+def error(msg):
+    print("\n" + msg + "\n")
+
+def show_banner():
+    print("This is VyConf shell")
+    print("Type ? for help")
+
+## Builtins
+def __exit_configure():
+    pass    
+
+# Global state
+global_state = { "prompt": make_prompt(OP_MODE),
+          "level": '',
+          "comp_matches": []
+        }
+
+def complete(text, state):
+    response = None
+    buffer = readline.get_line_buffer()
+    comp_words = buffer.split()
+    if not text:
+        # We are at the start of the line
+        if state == 0:
+            sys.stdout.write("\nAvailable commands:\n")
+            sys.stdout.write(build_help(op_mode_commands))
+            sys.stdout.write("\r\n")
+            sys.stdout.write(global_state["prompt"])
+            readline.redisplay(force=True)
+            return None
+        else:
+            return ""
+    else:
+        response = None
+        comp_words = buffer.split()
+        if state == 0:
+            # This is the first time for this text, so build a match list.
+            if text:
+                global_state["comp_matches"] = [s
+                                for s in op_mode_commands.keys()
+                                if s and s.startswith(text)]
+            else:
+                global_state["matches"] = op_mode_commands.keys()
+        
+        # Return the state'th item from the match list,
+        # if we have that many.
+        try:
+            response = global_state["comp_matches"][state]
+        except IndexError:
+            response = None
+        return response
+
+
+def input_loop():
+    line = ''
+    global_state["mode"] = OP_MODE # Op mode by default
+    show_banner()
+    while True:
+        try:
+            line = raw_input(global_state["prompt"])
+            # Split the command by |
+            pipe_parts = get_pipe_parts(line)
+
+            # The first part has special meaning
+            command = pipe_parts[0].split()
+            if not command:
+                continue
+
+            # The first part of the first part has very special meaning:
+            # it's the operation
+            op = command.pop(0)
+
+            if op == "configure":
+                exclusive = False
+                if command:
+                    configure_option = command.pop()
+                    if configure_option == "exclusive":
+                        exclusive = True
+                    else:
+                        error("{0} is not a valid configure option".format(configure_option))
+                # Enter conf mode here
+                global_state["mode"] = CONF_MODE
+                global_state["prompt"] = make_prompt(CONF_MODE)
+            if op == "edit":
+                global_state["level"] = command
+                global_state["prompt"] = make_prompt(CONF_MODE, " ".join(global_state["level"]))
+            if op == "top":
+                global_state["level"] = []
+                global_state["prompt"] = make_prompt(CONF_MODE)
+            elif op == "up":
+                if global_state["level"]:
+                    global_state["level"].pop()
+                global_state["prompt"] = make_prompt(CONF_MODE, " ".join(level))
+            if op == "exit":
+                if global_state["mode"] == CONF_MODE:
+                    __exit_configure()
+                    global_state["mode"] = OP_MODE
+                    global_state["prompt"] = make_prompt(OP_MODE)
+                else:
+                    sys.exit(0)
+        except EOFError:
+            if global_state["mode"] == CONF_MODE:
+                error("""Use "exit" to leave configuration mode""")
+            else:
+                sys.exit(0)
+
+
+# Register our completer function
+readline.set_completer(complete)
+
+# Use the tab key for completion
+readline.parse_and_bind('tab: complete')
+readline.parse_and_bind('set show-all-if-ambiguous')
+readline.parse_and_bind('set completion-display-width 0')
+
+# Bind '?' key to show completion too
+readline.parse_and_bind('?: possible-completions')
+
+
+input_loop()
