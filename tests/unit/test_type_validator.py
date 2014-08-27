@@ -35,7 +35,3 @@ class TestDummyValidators(unittest.TestCase):
 
     def test_get_types_values(self):
         self.assertTrue(issubclass(types.get_types(MockTypeSet)["a_type"], types.TypeValidator))
-
-if __name__ == '__main__':
-    unittest.main()
-

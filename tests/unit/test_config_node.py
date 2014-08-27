@@ -44,8 +44,3 @@ class TestVytreeConfigNode(unittest.TestCase):
         node = vyconf.tree.configtree.ConfigNode('root')
         node.set_comment("This is a comment")
         self.assertEqual(node.get_comment(), "This is a comment")
-
-
-if __name__ == '__main__':
-    unittest.main()
-

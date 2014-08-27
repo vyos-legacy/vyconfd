@@ -62,8 +62,3 @@ class TestCurlyParser(unittest.TestCase):
                             'name': ['foo']})]
         ast = self.parser.parse(""" foo {  /* Foo */ bar 0; baz "quux"; } """)
         self.assertEqual(ast, result)
-
-
-
-if __name__ == '__main__':
-    unittest.main()

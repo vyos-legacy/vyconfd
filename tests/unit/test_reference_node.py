@@ -124,8 +124,3 @@ class TestVytreeReferenceNode(unittest.TestCase):
     def test_help_string_default(self):
         node = vyconf.tree.referencetree.ReferenceNode('root')
         self.assertEqual(node.get_help_string(), "")
-
-
-if __name__ == '__main__':
-    unittest.main()
-
