@@ -50,7 +50,17 @@ coverage.xml
 *.pot
 
 # Sphinx documentation
-docs/_build/
+docs/build/
 
 # pyenv
 .python-version
+
+# testr / testrepository generated
+.testrepository
+
+# Schema files
+*.rng
+
+# PBR generated
+AUTHORS
+ChangeLog
