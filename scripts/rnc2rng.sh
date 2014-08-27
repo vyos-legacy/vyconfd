@@ -40,7 +40,7 @@ function compile_all_in_path() {
 }
 
 case $1 in
-   all)
+    all)
         path=${SCHEMAS_PATH:-$2}
         echo "Compiling all rnc schemas in $path"
         compile_all_in_path "$path"
