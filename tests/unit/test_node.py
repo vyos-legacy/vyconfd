@@ -154,7 +154,3 @@ class TestVytreeNode(unittest.TestCase):
     def test_get_property_nonexistent_key(self):
         node = vyconf.tree.Node('test')
         self.assertIsNone(node.get_property('fgsfds'))
-
-
-if __name__ == '__main__':
-    unittest.main()

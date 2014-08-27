@@ -37,8 +37,3 @@ class TestDummyValidators(unittest.TestCase):
         self.assertRaises(vyconf.types.ConstraintFormatError,
                           dummy.BadConstraint.validate,
                           ["fgsfds", "dsgfd"])
-
-
-if __name__ == '__main__':
-    unittest.main()
-

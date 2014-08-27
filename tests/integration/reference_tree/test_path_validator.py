@@ -34,10 +34,10 @@ class TestVytreePathValidator(unittest.TestCase):
         data_dir = os.environ["VYCONF_DATA_DIR"]
         test_data_dir = os.environ["VYCONF_TEST_DATA_DIR"]
         xml_file = os.path.join(test_data_dir, "interface_definition_validation_test.xml")
-        schema_file = os.path.join(data_dir, "schemata", "interface_definition.rng")
+        schema_file = os.path.join(data_dir, "schemas", "interface_definition.rng")
         loader = reftree.ReferenceTreeLoader(xml_file, self.types_dict, schema=schema_file)
         loader.load(self.reference_tree)
-        
+
         self.validator = reftree.PathValidator(self.types_dict, self.reference_tree)
 
     def test_path_exists(self):

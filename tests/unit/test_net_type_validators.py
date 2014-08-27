@@ -33,7 +33,7 @@ class TestNetTypeValidators(unittest.TestCase):
                           "fgsfds")
 
     def test_mac_addr_bad_constraint(self):
-         self.assertRaises(types.ConstraintFormatError, 
+         self.assertRaises(types.ConstraintFormatError,
                             nettypes.MacAddressValidator.validate,
                             "00:aa:bb:cc:dd:ee", "badconstraint")
 
@@ -44,7 +44,3 @@ class TestNetTypeValidators(unittest.TestCase):
         self.assertRaises(types.ValidationError,
                           nettypes.MacAddressValidator.validate,
                           "0f:aa:bb:cc:dd:ee", "unicast")
-
-if __name__ == '__main__':
-    unittest.main()
-

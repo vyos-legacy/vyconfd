@@ -35,7 +35,7 @@ class TestVytreeReferenceLoader(unittest.TestCase):
         test_data_dir = os.environ["VYCONF_TEST_DATA_DIR"]
         self.reference_tree = vyconf.tree.referencetree.ReferenceNode('root')
         xml_file = os.path.join(test_data_dir, "interface_definition_valid.xml")
-        schema_file = os.path.join(data_dir, "schemata", "interface_definition.rng")
+        schema_file = os.path.join(data_dir, "schemas", "interface_definition.rng")
 
         loader = vyconf.tree.referencetree.ReferenceTreeLoader(xml_file, {"mock": MockType}, schema=schema_file)
         loader.load(self.reference_tree)
@@ -61,7 +61,7 @@ class TestVytreeReferenceLoader(unittest.TestCase):
         data_dir = os.environ["VYCONF_DATA_DIR"]
         test_data_dir = os.environ["VYCONF_TEST_DATA_DIR"]
         xml_file = os.path.join(test_data_dir, "interface_definition_invalid.xml")
-        schema_file = os.path.join(data_dir, "schemata", "interface_definition.rng")
+        schema_file = os.path.join(data_dir, "schemas", "interface_definition.rng")
         self.assertRaises(vyconf.tree.referencetree.ReferenceTreeLoaderError,
                           vyconf.tree.referencetree.ReferenceTreeLoader,
                           xml_file, {"mock": MockType}, schema=schema_file)
