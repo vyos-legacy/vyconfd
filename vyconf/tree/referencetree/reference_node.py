@@ -1,4 +1,4 @@
-#    vyconf.tree.referencetree.reference_node: 
+#    vyconf.tree.referencetree.reference_node:
 #    Interface definition storage classes for VyConf
 #
 #    Copyright (C) 2014 VyOS Development Group <maintainers@vyos.net>
@@ -29,6 +29,7 @@
 
 import vyconf.tree
 
+
 class ReferenceNodeError(Exception):
     """ Raised on attempts to create incorrectly configure ReferenceNode
         instance (e.g. set mutually exlusive flags at the same time)
@@ -58,11 +59,12 @@ class ReferenceNode(vyconf.tree.Node):
         "disable" and such) are referred to as "typeless".
 
         Every node may have a help string as a piece of embedded documentation,
-        leaf nodes may also have value help strings that describe possible values.
+        leaf nodes may also have value help strings that describe possible
+        values.
 
         Primary purpose of the reference nodes is to verify whether some path
-        used as set/delete operation argument is valid and if the value attached to
-        it satisfies the constraints.
+        used as set/delete operation argument is valid and if the value
+        attached to it satisfies the constraints.
     """
 
     def __init__(self, name, parent=None):
@@ -93,33 +95,41 @@ class ReferenceNode(vyconf.tree.Node):
         self.set_property("multi", True)
 
     def is_multi(self):
-       	return self.get_property("multi")
+        return self.get_property("multi")
 
-    def set_name_constraint(self, type_string, constraint_string, name_error_message=None):
-        self.set_property("name_constraint", {"type": type_string,
-                                              "constraint": constraint_string,
-                                              "error_message": name_error_message
-                                             })
+    def set_name_constraint(self, type_string, constraint_string,
+                            name_error_message=None):
+        data = {
+            "type": type_string,
+            "constraint": constraint_string,
+            "error_message": name_error_message
+        }
+        self.set_property("name_constraint", data)
 
     def get_name_constraint(self):
         return self.get_property("name_constraint")
 
-    def add_value_constraint(self, type_string, constraint_string, value_error_message=None):
-        if (not isinstance(type_string, str)) and (not isinstance(constraint_string, str)):
+    def add_value_constraint(self, type_string, constraint_string,
+                             value_error_message=None):
+        if (not isinstance(type_string, str) and
+                not isinstance(constraint_string, str)):
             raise TypeError("Type and constraint must be strings")
-        self.get_property("value_constraints").append({"type": type_string,
-                                                       "constraint": constraint_string,
-                                                       "error_message": value_error_message
-                                                      })
+        data = {
+            "type": type_string,
+            "constraint": constraint_string,
+            "error_message": value_error_message
+        }
+        self.get_property("value_constraints").append(data)
 
     def get_value_constraints(self):
         return self.get_property("value_constraints")
 
     def add_value_help_string(self, format_string, help_string):
-        if (not isinstance(format_string, str)) and (not isinstance(help_string, str)):
+        if (not isinstance(format_string, str) and
+                not isinstance(help_string, str)):
             raise TypeError("Format and help must be strings")
-        self.get_property("value_help_strings").append({"format": format_string,
-                                                        "help": help_string})
+        data = {"format": format_string, "help": help_string}
+        self.get_property("value_help_strings").append(data)
 
     def get_value_help_strings(self):
         return self.get_property("value_help_strings")
@@ -129,5 +139,3 @@ class ReferenceNode(vyconf.tree.Node):
 
     def get_help_string(self):
         return self.get_property("help_string")
-
-

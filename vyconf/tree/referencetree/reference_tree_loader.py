@@ -35,6 +35,7 @@ DESCRIPTION_ATTRIBUTE = "description"
 VALUE_ATTRIBUTE = "value"
 ERROR_MESSAGE_ATTRIBUTE = "error-message"
 
+
 class ReferenceTreeLoaderError(Exception):
     """ Raised on attempts to create a reference tree from incorrect
         interface definition
@@ -51,11 +52,12 @@ class ReferenceTreeLoader(object):
         self.__types = types
 
         if schema:
-           relaxng_xml = ET.parse(schema)
-           validator = ET.RelaxNG(relaxng_xml)
-           if not validator.validate(self.__xml_tree):
-               raise ReferenceTreeLoaderError("Malformed interface definition: {0}".format(xml_source))
-        
+            relaxng_xml = ET.parse(schema)
+            validator = ET.RelaxNG(relaxng_xml)
+            if not validator.validate(self.__xml_tree):
+                raise ReferenceTreeLoaderError(
+                    "Malformed interface definition: %s" % xml_source)
+
     def load(self, reference_tree):
         self._walk_xml_node(self.__xml_root, reference_tree)
 
@@ -71,11 +73,14 @@ class ReferenceTreeLoader(object):
                 if CONSTRAINT_ATTRIBUTE in xml_child.attrib:
                     value_constraint = xml_child.attrib[CONSTRAINT_ATTRIBUTE]
                 if ERROR_MESSAGE_ATTRIBUTE in xml_child.attrib:
-                    value_error_message = xml_child.attrib[ERROR_MESSAGE_ATTRIBUTE]
-                reference_node.add_value_constraint(value_type, value_constraint, value_error_message)
+                    value_error_message = \
+                        xml_child.attrib[ERROR_MESSAGE_ATTRIBUTE]
+                reference_node.add_value_constraint(
+                    value_type, value_constraint, value_error_message)
             elif xml_child.tag == VALUE_HELP_STRING_ELEMENT:
                 # A lot of blind faith: the point is that <valueHelpString>
-                # can have either value= attribute or type= and constaint= attributes
+                # can have either value= attribute or type= and
+                # constaint= attributes
                 help_string = xml_child.attrib[DESCRIPTION_ATTRIBUTE]
                 value_type = None
                 value_constraint = None
@@ -90,7 +95,8 @@ class ReferenceTreeLoader(object):
 
                 format = None
                 if value_type is not None:
-                    format = self.__types[value_type].get_format_string(value_constraint)
+                    format = self.__types[value_type].get_format_string(
+                        value_constraint)
                 else:
                     format = value
 
@@ -98,18 +104,23 @@ class ReferenceTreeLoader(object):
 
     def _walk_xml_node(self, xml_node, reference_node):
         for xml_child in xml_node:
-            # <tagNode> can not contain another <tagNode>, but we do not reflect it here
+            # <tagNode> can not contain another <tagNode>, but we do not
+            # reflect it here
             # because it's already expressed in the RELAX-NG XML grammar
-            if (xml_child.tag == NODE_ELEMENT) or (xml_child.tag == TAG_NODE_ELEMENT):
-                next_reference_node = reference_node.insert_child([xml_child.attrib[NODE_NAME_ATTRIBUTE]])
+            if (xml_child.tag == NODE_ELEMENT or
+                    xml_child.tag == TAG_NODE_ELEMENT):
+                next_reference_node = reference_node.insert_child(
+                    [xml_child.attrib[NODE_NAME_ATTRIBUTE]])
 
-                # If it's a tag node, we need to set a flag in the reference_node object
+                # If it's a tag node, we need to set a flag in the
+                # reference_node object
                 if xml_child.tag == TAG_NODE_ELEMENT:
-                   next_reference_node.set_tag()
+                    next_reference_node.set_tag()
 
                 self._walk_xml_node(xml_child, next_reference_node)
             elif xml_child.tag == NAME_CONSTRAINT_ELEMENT:
-                # Blind faith here again, type= attribute is required by the grammar
+                # Blind faith here again, type= attribute is required by the
+                # grammar
                 name_type = xml_child.attrib[TYPE_ATTRIBUTE]
 
                 # constraint= arribute is optional, needs a check
@@ -120,14 +131,16 @@ class ReferenceTreeLoader(object):
                 # error-message= is optional as well
                 name_error_message = None
                 if ERROR_MESSAGE_ATTRIBUTE in xml_child.attrib:
-                    value_error_message = xml_child.attrib[ERROR_MESSAGE_ATTRIBUTE]
+                    value_error_message = \
+                        xml_child.attrib[ERROR_MESSAGE_ATTRIBUTE]
 
-                reference_node.set_name_constraint(name_type, name_constraint, name_error_message)
+                reference_node.set_name_constraint(
+                    name_type, name_constraint, name_error_message)
             elif xml_child.tag == HELP_STRING_ELEMENT:
                 help_string = xml_child.attrib[DESCRIPTION_ATTRIBUTE]
                 reference_node.set_help_string(help_string)
             elif xml_child.tag == LEAF_NODE_ELEMENT:
-                next_reference_node = reference_node.insert_child([xml_child.attrib[NODE_NAME_ATTRIBUTE]])
+                next_reference_node = reference_node.insert_child(
+                    [xml_child.attrib[NODE_NAME_ATTRIBUTE]])
                 next_reference_node.set_leaf()
                 self._walk_xml_leaf_node(xml_child, next_reference_node)
-

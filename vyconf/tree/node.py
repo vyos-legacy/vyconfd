@@ -23,6 +23,7 @@
 # Green by Urth's well does it ever grow.
 #                   From The Poetic Edda, Voluspa
 
+
 class ChildNotFoundError(Exception):
     """ Raised on attempts to look up a non-existent path
     """
@@ -111,7 +112,8 @@ class Node(object):
 
             Args:
                 path_or_name: The path to child node
-                (e.g. ['organization', 'branches', 'departments'], or 'branches')
+                (e.g. ['organization', 'branches', 'departments'], or
+                'branches')
 
             Returns:
                 Node: Child node
@@ -210,7 +212,8 @@ class Node(object):
         try:
             self.__properties[key] = value
         except TypeError:
-            raise TypeError("Wrong property key type: {0}".format(type(key).__name__))
+            raise TypeError("Wrong property key type: {0}".format(
+                type(key).__name__))
 
     def get_property(self, key):
         """ Get property value by key """
@@ -221,4 +224,5 @@ class Node(object):
             else:
                 return None
         except TypeError:
-            raise TypeError("Wrong property key type: {0}".format(type(key).__name__))
+            raise TypeError("Wrong property key type: {0}".format(
+                type(key).__name__))
