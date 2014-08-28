@@ -17,8 +17,8 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301
 # USA
 
-import sys
 import inspect
+
 
 class ValidationError(Exception):
     """ Raised when the value fails validation """
@@ -39,12 +39,12 @@ class TypeValidator(object):
     """ Type validator base class.
 
         This is not supposed to be used directly,
-        
+
         The validate() method in ancestors should be a class method,
         so it can be called without instantiating the object.
     """
 
-    """ Type name variable stores symbolic type name that is used in 
+    """ Type name variable stores symbolic type name that is used in
         interface definitions """
     name = None
 
@@ -77,4 +77,3 @@ def get_types(module):
         if issubclass(c[1], TypeValidator):
             types[c[1].name] = c[1]
     return types
-

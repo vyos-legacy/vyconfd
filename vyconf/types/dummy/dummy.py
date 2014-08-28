@@ -41,7 +41,10 @@ class NeverValid(TypeValidator):
 
     @classmethod
     def validate(self, value, constraint=None):
-        raise ValidationError("Value {0} is not a valid value of type {1}".format(value, self.name))
+        raise ValidationError(
+            "Value '%s' is not a valid value of type '%s'" %
+            (value, self.name))
+
 
 class BadConstraint(TypeValidator):
     """ Dumb type validator, always complains about constraint format """
@@ -52,4 +55,6 @@ class BadConstraint(TypeValidator):
 
     @classmethod
     def validate(self, value, constraint=None):
-        raise ConstraintFormatError("Constraint string {0} is not valid for type {1}".format(value, self.name))
+        raise ConstraintFormatError(
+            "Constraint string '%s' is not valid for type '%s'" %
+            (value, self.name))

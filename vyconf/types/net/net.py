@@ -20,6 +20,7 @@
 import re
 from vyconf.types import TypeValidator, ValidationError, ConstraintFormatError
 
+
 class MacAddressValidator(TypeValidator):
     """ Validator for string values """
 
@@ -28,22 +29,24 @@ class MacAddressValidator(TypeValidator):
     __mac_re = r'^([0-9a-f]{2}:){5}[0-9a-f]{2}$'
 
     def __init__(self):
-       	super(MacAddressValidator, self).__init__()
+        super(MacAddressValidator, self).__init__()
 
     @classmethod
     def validate(self, value, constraint=None):
         """ Validates MAC address.
 
-            
+
         """
         mac_re = re.compile(self.__mac_re, re.IGNORECASE)
 
         if not isinstance(value, str):
-            raise ValidationError("\"{0}\" is not a valid string".format(self.to_string_safe(value)))
+            raise ValidationError(
+                "%s' is not a valid string" % self.to_string_safe(value))
 
         # Check if it's valid at all
         if not re.match(mac_re, value):
-            raise ValidationError("\"{0}\" is not a valid MAC address".format(value, constraint))
+            raise ValidationError(
+                "\"{0}\" is not a valid MAC address".format(value, constraint))
 
         if constraint:
             if not isinstance(constraint, str):
@@ -52,14 +55,17 @@ class MacAddressValidator(TypeValidator):
                 raise ConstraintFormatError("Constraint must be a string")
 
             if constraint != "unicast":
-                raise ConstraintFormatError("\"{0}\" is not a valid constraint for type \"{1}\"".format(constraint, self.name))
+                raise ConstraintFormatError(
+                    "'%s' is not a valid constraint for type %s" %
+                    (constraint, self.name))
 
             if constraint == "unicast":
-                # Unicast addresses always have the most significant bit of the most
+                # Unicast addresses always have the most significant bit of
+                # the most
                 # significant byte set to 0
                 msb = int(value[:2], 16)
                 if msb & 1 != 0:
-                    raise ValidationError("\"{0}\" is not a unicast MAC address".format(value))
+                    raise ValidationError(
+                        "'%s' is not a unicast MAC address" % value)
         else:
             return True
-
