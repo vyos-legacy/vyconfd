@@ -22,6 +22,7 @@
 import unittest
 import vyconf.types as types
 
+
 class MockTypeSet(object):
     class FirstMockType(types.TypeValidator):
         name = "a_type"
@@ -29,9 +30,12 @@ class MockTypeSet(object):
     class SecondMockType(types.TypeValidator):
         name = "b_type"
 
+
 class TestDummyValidators(unittest.TestCase):
     def test_get_types_keys(self):
-        self.assertEqual(sorted(list(types.get_types(MockTypeSet).keys())), ["a_type", "b_type"])
+        mock = sorted(list(types.get_types(MockTypeSet).keys()))
+        self.assertEqual(mock, ["a_type", "b_type"])
 
     def test_get_types_values(self):
-        self.assertTrue(issubclass(types.get_types(MockTypeSet)["a_type"], types.TypeValidator))
+        self.assertTrue(issubclass(types.get_types(MockTypeSet)["a_type"],
+                                   types.TypeValidator))

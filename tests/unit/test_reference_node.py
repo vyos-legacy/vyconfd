@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 #
-#    reference_node_test.py: unit tests for vyconf.tree.referencetree.ReferenceNode
+#    reference_node_test.py: unit tests for
+#        vyconf.tree.referencetree.ReferenceNode
 #    Copyright (C) 2014 VyOS Development Group <maintainers@vyos.net>
 #
 #    This library is free software; you can redistribute it and/or
@@ -66,51 +67,62 @@ class TestVytreeReferenceNode(unittest.TestCase):
                                                       "error_message": "baz"})
 
     def test_name_constraint_default(self):
-       	node = vyconf.tree.referencetree.ReferenceNode('root')
+        node = vyconf.tree.referencetree.ReferenceNode('root')
         self.assertFalse(node.get_name_constraint())
 
     def test_value_constraints(self):
-       	node = vyconf.tree.referencetree.ReferenceNode('root')
+        node = vyconf.tree.referencetree.ReferenceNode('root')
         node.add_value_constraint("foo", "bar")
-        self.assertEqual(node.get_value_constraints(), [{"type":
-                                                         "foo",
-                                                         "constraint": "bar",
-                                                         "error_message": None}])
+
+        data = [{
+            "type": "foo",
+            "constraint": "bar",
+            "error_message": None
+        }]
+        self.assertEqual(node.get_value_constraints(), data)
 
     def test_value_constraints_with_message(self):
         node = vyconf.tree.referencetree.ReferenceNode('root')
         node.add_value_constraint("foo", "bar", "baz")
-        self.assertEqual(node.get_value_constraints(), [{"type":
-                                                         "foo",
-                                                         "constraint": "bar",
-                                                         "error_message": "baz"}])
+        data = [{
+            "type": "foo",
+            "constraint": "bar",
+            "error_message": "baz"
+        }]
+        self.assertEqual(node.get_value_constraints(), )
 
     def test_value_constraints_multiple(self):
-       	node = vyconf.tree.referencetree.ReferenceNode('root')
+        node = vyconf.tree.referencetree.ReferenceNode('root')
         node.add_value_constraint("foo", "bar")
         node.add_value_constraint("baz", "quux")
-        self.assertEqual(node.get_value_constraints(), [{"type": "foo",
-                                                         "constraint": "bar",
-                                                         "error_message": None},
-                                                        {"type": "baz",
-                                                         "constraint": "quux",
-                                                         "error_message": None}])
+        data = [
+            {"type": "foo",
+             "constraint": "bar",
+             "error_message": None},
+            {"type": "baz",
+             "constraint": "quux",
+             "error_message": None}]
+        self.assertEqual(node.get_value_constraints(), data)
 
     def test_value_constraints_default(self):
-       	node = vyconf.tree.referencetree.ReferenceNode('root')
+        node = vyconf.tree.referencetree.ReferenceNode('root')
         self.assertEqual(node.get_value_constraints(), [])
 
     def test_value_help_strings(self):
         node = vyconf.tree.referencetree.ReferenceNode('root')
         node.add_value_help_string("foo", "Foo value")
-        self.assertEqual(node.get_value_help_strings(), [{"format": "foo", "help": "Foo value"}])
+        self.assertEqual(
+            node.get_value_help_strings(),
+            [{"format": "foo", "help": "Foo value"}])
 
     def test_value_help_strings_multiple(self):
         node = vyconf.tree.referencetree.ReferenceNode('root')
         node.add_value_help_string("foo", "bar")
         node.add_value_help_string("baz", "quux")
-        self.assertEqual(node.get_value_help_strings(), [{"format": "foo", "help": "bar"},
-                                                         {"format": "baz", "help": "quux"}])
+        data = [
+            {"format": "foo", "help": "bar"},
+            {"format": "baz", "help": "quux"}]
+        self.assertEqual(node.get_value_help_strings(), data)
 
     def test_value_help_strings_default(self):
         node = vyconf.tree.referencetree.ReferenceNode('root')
