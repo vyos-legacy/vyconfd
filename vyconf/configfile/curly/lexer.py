@@ -20,6 +20,7 @@
 import ply.lex as lex
 import re
 
+
 class Lexer(object):
 
     __number_regex = re.compile('\d+')
@@ -27,7 +28,7 @@ class Lexer(object):
     # Multiline comment can't be extracted with regex,
     # so we have exclusive state for it
     states = (
-         ('COMMENT', 'exclusive'),
+        ('COMMENT', 'exclusive'),
     )
 
     tokens = (
@@ -40,7 +41,7 @@ class Lexer(object):
     )
 
     t_LBRACE = r'\{'
-    t_RBRACE  = r'\}'
+    t_RBRACE = r'\}'
     t_SEMICOLON = r';'
 
     # /* */ comment. This is a bit complicated.
@@ -64,7 +65,7 @@ class Lexer(object):
 
     def t_COMMENT_end(self, t):
         r'\*/'
-        tmp_str = t.lexer.lexdata[t.lexer.code_start:t.lexer.lexpos-2]
+        tmp_str = t.lexer.lexdata[t.lexer.code_start:t.lexer.lexpos - 2]
         t.value = tmp_str.strip()
         t.type = "NODE_COMMENT"
         t.lexer.lineno += t.value.count('\n')
@@ -110,7 +111,7 @@ class Lexer(object):
         t.value = new_str
         return t
 
-    t_ignore  = ' \t\n'
+    t_ignore = ' \t\n'
 
     # Error handling rule
     def t_error(self, t):

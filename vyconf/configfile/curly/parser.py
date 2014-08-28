@@ -25,6 +25,7 @@
 import ply.yacc as yacc
 from .lexer import Lexer
 
+
 class ParseError(Exception):
     """ Raised when incorrect token is found
     """
@@ -34,7 +35,7 @@ class ParseError(Exception):
         if token:
             token_str = token.value
             position = token.lineno
-        message = "Unexpected token '{0}' at line {1}".format(token_str, position)
+        message = "Unexpected token '%s' at line %s" % (token_str, position)
         super(ParseError, self).__init__(message)
         self.strerror = message
 
@@ -58,14 +59,14 @@ class Parser(object):
             debug=yacc_debug,
             optimize=yacc_optimize)
 
-    def parse(self, text, filename='', debuglevel=0,positiontracking=True):
+    def parse(self, text, filename='', debuglevel=0, positiontracking=True):
         self.lexer.filename = filename
         self._last_yielded_token = None
         return self.parser.parse(
-                input=text,
-                lexer=self.lexer,
-                debug=debuglevel,
-                tracking=positiontracking)
+            input=text,
+            lexer=self.lexer,
+            debug=debuglevel,
+            tracking=positiontracking)
 
     def p_value(self, p):
         ''' value : IDENTIFIER
@@ -133,7 +134,7 @@ class Parser(object):
                          | leaf_nodes nodes leaf_nodes
                          | nodes
         '''
-	# This is to avoid producing a nested list
+        # This is to avoid producing a nested list
         # when there are leaf/non-leaf nodes mixed together,
         # since we return those as lists
         if len(p) == 2:
@@ -158,17 +159,21 @@ class Parser(object):
         '''
         if len(p) == 4:
             # Empty node without comment
-            p[0] = ('node', {"comment": None, "name": p[1][1], "content": None})
+            p[0] = ('node',
+                    {"comment": None, "name": p[1][1], "content": None})
         elif len(p) == 5:
             if p[2] == '{':
                 # Non-empty node without comment
-                p[0] = ('node', {"comment": None, "name": p[1][1], "content": p[3]})
+                p[0] = ('node',
+                        {"comment": None, "name": p[1][1], "content": p[3]})
             else:
                 # Empty node with comment
-                p[0] = ('node', {"comment": p[1][1], "name": p[2][1], "content": None})
+                p[0] = ('node',
+                        {"comment": p[1][1], "name": p[2][1], "content": None})
         else:
             # Non-empty node with comment
-            p[0] = ('node', {"comment": p[1][1], "name": p[2][1], "content": p[4]})
+            p[0] = ('node',
+                    {"comment": p[1][1], "name": p[2][1], "content": p[4]})
 
     def p_config(self, p):
         ''' config : nodes '''
