@@ -89,7 +89,7 @@ class TestVytreeReferenceNode(unittest.TestCase):
             "constraint": "bar",
             "error_message": "baz"
         }]
-        self.assertEqual(node.get_value_constraints(), )
+        self.assertEqual(node.get_value_constraints(), data)
 
     def test_value_constraints_multiple(self):
         node = vyconf.tree.referencetree.ReferenceNode('root')
