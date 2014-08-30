@@ -1,1 +1,1 @@
-from .net import MacAddressValidator
+from .net import MacAddressValidator  # noqa

@@ -23,6 +23,7 @@ import vyconf.types
 import vyconf.tree
 import vyconf.tree.referencetree
 
+
 class PathValidationError(Exception):
     """ Raised when config path validation fails
     """
@@ -56,7 +57,8 @@ class PathValidator(object):
 
             Args:
                 types (dict): a dict of vyconf.types.TypeValidator ancestors
-                node (vyconf.tree.referencetree.ReferenceNode): a leaf or tag node
+                node (vyconf.tree.referencetree.ReferenceNode): a leaf or
+                tag node
                 value: a value (or name) to validate
         """
         valid = False
@@ -82,7 +84,7 @@ class PathValidator(object):
         path = config_path[:]
         node_name = path.pop(0)
 
-	# There are two tricky cases: tag nodes and leaf nodes,
+        # There are two tricky cases: tag nodes and leaf nodes,
         # which need special validation of the immediate child.
 
         # So we get a reference tree child first
@@ -94,14 +96,16 @@ class PathValidator(object):
             try:
                 next_item = path.pop()
             except IndexError:
-                raise PathValidationError("""Path "{0}" is incomplete""".format(config_path))
+                raise PathValidationError(
+                    'Path "%s" is incomplete' % config_path)
             self._validate_leaf_or_tag_node(self.types, next_node, next_item)
         else:
-             # It's a normal node, just recurse to it, if we have where to recurse
-             if path:
-                 self._validate(path, next_node)
-             else:
-                 return True
+             # It's a normal node, just recurse to it, if we have where to
+             # recurse
+            if path:
+                self._validate(path, next_node)
+            else:
+                return True
 
     def validate(self, config_path, config_level=None):
         """ Validates a config path against
@@ -116,4 +120,5 @@ class PathValidator(object):
         try:
             self._validate(path, self.tree)
         except vyconf.tree.ChildNotFoundError as e:
-            raise PathValidationError("""Configuration path "{0}" is not valid """.format(config_path))
+            raise PathValidationError(
+                "Configuration path %s is not valid" % config_path)

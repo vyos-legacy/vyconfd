@@ -1,4 +1,4 @@
-#    vyconf.tree.configtree.config_node: 
+#    vyconf.tree.configtree.config_node:
 #    Config storage classes for VyConf configuration management backend
 #
 #    Copyright (C) 2014 VyOS Development Group <maintainers@vyos.net>
@@ -21,6 +21,7 @@
 
 import vyconf.tree
 
+
 class ConfigNode(vyconf.tree.Node):
     def __init__(self, name, parent=None):
         super(ConfigNode, self).__init__(name, parent)
@@ -40,5 +41,3 @@ class ConfigNode(vyconf.tree.Node):
 
     def get_comment(self):
         return self.get_property("comment")
-
-    

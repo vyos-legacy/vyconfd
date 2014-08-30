@@ -1,1 +1,1 @@
-from .base import StringValidator, IntegerValidator
+from .base import StringValidator, IntegerValidator  # noqa

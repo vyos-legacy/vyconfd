@@ -25,40 +25,47 @@ import unittest
 # Comparing to a complete datastructure is sort of ugly, but I don't see
 # a better way to make sure it works correctly yet.
 
+
 class TestCurlyParser(unittest.TestCase):
     def setUp(self):
         self.parser = vyconf.configfile.curly.Parser()
 
     def test_empty_config(self):
-        self.assertRaises(vyconf.configfile.curly.ParseError, self.parser.parse, "")
+        self.assertRaises(
+            vyconf.configfile.curly.ParseError, self.parser.parse, "")
 
     def test_single_empty_node(self):
         parser = vyconf.configfile.curly.Parser()
-        result = [('node', {'comment': None, 'content': None, 'name': ['foo']})]
-        ast = parser.parse("foo { }",positiontracking=False)
+        result = [('node',
+                  {'comment': None, 'content': None, 'name': ['foo']})]
+        ast = parser.parse("foo { }", positiontracking=False)
         self.assertEqual(ast, result)
 
     def test_single_node_with_comment(self):
-        result = [('node', {'comment': 'Foo', 'content': None, 'name': ['foo']})]
-        ast = self.parser.parse("/* Foo */ foo {}",positiontracking=True)
+        result = [('node',
+                  {'comment': 'Foo', 'content': None, 'name': ['foo']})]
+        ast = self.parser.parse("/* Foo */ foo {}", positiontracking=True)
         self.assertEqual(ast, result)
 
     def test_single_non_empty_node(self):
-        result = [('node', {'comment': None, 'content':
-                   [('leaf-node', {'comment': None, 'name': ['bar'], 'value': 0})], 'name': ['foo']})]
+        leaf = [('leaf-node', {'comment': None, 'name': ['bar'], 'value': 0})]
+        result = [('node',
+                  {'comment': None, 'content': leaf, 'name': ['foo']})]
         ast = self.parser.parse("foo { bar 0; }")
         self.assertEqual(ast, result)
 
     def test_leaf_single_leaf_node_with_comment(self):
-        result = [('node', {'comment': None, 'content':
-                   [('leaf-node', {'comment': 'Foo', 'name': ['bar'], 'value': 0})], 'name': ['foo']})]
+        leaf = [('leaf-node', {'comment': 'Foo', 'name': ['bar'], 'value': 0})]
+        result = [('node',
+                  {'comment': None, 'content': leaf, 'name': ['foo']})]
         ast = self.parser.parse("foo { /* Foo */ bar 0; }")
         self.assertEqual(ast, result)
 
     def test_multiple_leaf_nodes(self):
-        result = [('node', {'comment': None, 'content':
-                              [('leaf-node', {'comment': 'Foo', 'name': ['bar'], 'value': 0}),
-                               ('leaf-node', {'comment': None, 'name': ['baz'], 'value': 'quux'})],
-                            'name': ['foo']})]
+        leaf1 = ('leaf-node', {'comment': 'Foo', 'name': ['bar'], 'value': 0})
+        leaf2 = ('leaf-node', {'comment': None, 'name': ['baz'],
+                 'value': 'quux'})
+        result = [('node', {'comment': None, 'content': [leaf1, leaf2],
+                   'name': ['foo']})]
         ast = self.parser.parse(""" foo {  /* Foo */ bar 0; baz "quux"; } """)
         self.assertEqual(ast, result)

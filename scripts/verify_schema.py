@@ -38,4 +38,3 @@ if not validator.validate(xml_tree):
     print(validator.error_log)
     print("File {0} does not match the schema!".format(xml_source))
     sys.exit(1)
-

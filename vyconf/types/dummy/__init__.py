@@ -1,1 +1,1 @@
-from .dummy import AlwaysValid, NeverValid, BadConstraint
+from .dummy import AlwaysValid, NeverValid, BadConstraint  # noqa

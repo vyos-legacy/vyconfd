@@ -23,6 +23,7 @@ import unittest
 import vyconf.types as types
 import vyconf.types.net as nettypes
 
+
 class TestNetTypeValidators(unittest.TestCase):
     def test_mac_addr_no_constraint(self):
         nettypes.MacAddressValidator.validate("00:aa:bb:cc:dd:ee")
@@ -33,9 +34,10 @@ class TestNetTypeValidators(unittest.TestCase):
                           "fgsfds")
 
     def test_mac_addr_bad_constraint(self):
-         self.assertRaises(types.ConstraintFormatError,
-                            nettypes.MacAddressValidator.validate,
-                            "00:aa:bb:cc:dd:ee", "badconstraint")
+        self.assertRaises(types.ConstraintFormatError,
+                          nettypes.MacAddressValidator.validate,
+                          "00:aa:bb:cc:dd:ee",
+                          "badconstraint")
 
     def test_mac_addr_unicast_constraint_good(self):
         nettypes.MacAddressValidator.validate("00:aa:bb:cc:dd:ee", "unicast")

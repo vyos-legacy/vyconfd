@@ -1,1 +1,2 @@
-from .types import TypeValidator, ValidationError, ConstraintFormatError, get_types
+from .types import (  # noqa
+    TypeValidator, ValidationError, ConstraintFormatError, get_types)
