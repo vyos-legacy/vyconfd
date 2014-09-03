@@ -20,11 +20,13 @@
 
 import copy
 
+
 class DependencyError(Exception):
     def __init__(self, message, components):
         super(DependencyError, self).__init__(message)
         self.strerror = message
         self.components = components
+
 
 class DependencyList(object):
 
@@ -32,7 +34,8 @@ class DependencyList(object):
         missing = self._check_missing_deps(components)
         if missing:
             error = ""
-            line_format = "Component \"{0}\" required by \"{1}\" does not exist\n"
+            line_format = \
+                "Component \"{0}\" required by \"{1}\" does not exist\n"
             for i in missing:
                 line = line_format.format(i[1], i[0])
                 error = error + line
@@ -92,4 +95,4 @@ class DependencyList(object):
             sorted.append(cur_level)
             seen_deps = seen_deps + cur_level
 
-        return sorted        
+        return sorted

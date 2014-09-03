@@ -100,8 +100,8 @@ class PathValidator(object):
                     'Path "%s" is incomplete' % config_path)
             self._validate_leaf_or_tag_node(self.types, next_node, next_item)
         else:
-             # It's a normal node, just recurse to it, if we have where to
-             # recurse
+            # It's a normal node, just recurse to it, if we have where to
+            # recurse
             if path:
                 self._validate(path, next_node)
             else:
@@ -119,6 +119,6 @@ class PathValidator(object):
 
         try:
             self._validate(path, self.tree)
-        except vyconf.tree.ChildNotFoundError as e:
+        except vyconf.tree.ChildNotFoundError:
             raise PathValidationError(
                 "Configuration path %s is not valid" % config_path)

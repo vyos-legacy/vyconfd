@@ -7,7 +7,7 @@ from vyconf.tree import referencetree as reftree
 
 DATA_DIR = os.environ.get(
     'VYCONF_DATA_DIR',
-     os.path.join(os.getcwd(), 'data'))
+    os.path.join(os.getcwd(), 'data'))
 
 TEST_DATA_DIR = os.environ.get(
     'VYCONF_TEST_DATA_DIR',
