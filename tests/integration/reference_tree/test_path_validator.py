@@ -19,26 +19,24 @@
 #    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301
 #    USA
 
-import os
 import vyconf.tree.referencetree as reftree
 import vyconf.types as types
 import vyconf.types.dummy as dummytypes
-import unittest
+
+from tests.integration import base
 
 
-class TestVytreePathValidator(unittest.TestCase):
+class TestVytreePathValidator(base.TestCase):
     def setUp(self):
+        super(TestVytreePathValidator, self).setUp()
         self.types_dict = types.get_types(dummytypes)
 
         self.reference_tree = reftree.ReferenceNode('root')
-        data_dir = os.environ["VYCONF_DATA_DIR"]
-        test_data_dir = os.environ["VYCONF_TEST_DATA_DIR"]
-        xml_file = os.path.join(
-            test_data_dir, "interface_definition_validation_test.xml")
-        schema_file = os.path.join(
-            data_dir, "schemas", "interface_definition.rng")
-        loader = reftree.ReferenceTreeLoader(
-            xml_file, self.types_dict, schema=schema_file)
+
+        loader = self.get_loader(
+            'interface_definition_validation_test.xml',
+            self.types_dict,
+            'schemas/interface_definition.rng')
         loader.load(self.reference_tree)
 
         self.validator = reftree.PathValidator(
