@@ -77,8 +77,9 @@ class DependencyList(object):
             cur_level = []
             cur_len = len(_components)
 
-            for key in _components.keys():
-                if self._subset_of(_components[key], seen_deps):
+            __components = copy.deepcopy(_components)
+            for key in __components.keys():
+                if self._subset_of(__components[key], seen_deps):
                     cur_level.append(key)
                     del _components[key]
 
