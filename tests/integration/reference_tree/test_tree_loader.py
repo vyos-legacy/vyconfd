@@ -18,10 +18,11 @@
 #    License along with this library; if not, write to the Free Software
 #    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301
 #    USA
+import testtools
 
-import os
-import vyconf.tree.referencetree
-import unittest
+from vyconf.tree import referencetree as reftree
+
+from tests.integration import base
 
 
 class MockType(object):
@@ -30,23 +31,21 @@ class MockType(object):
         return "fgsfds"
 
 
-class TestVytreeReferenceLoader(unittest.TestCase):
+class TestVytreeReferenceLoader(base.TestCase):
     def setUp(self):
-        data_dir = os.environ["VYCONF_DATA_DIR"]
-        test_data_dir = os.environ["VYCONF_TEST_DATA_DIR"]
-        self.reference_tree = vyconf.tree.referencetree.ReferenceNode('root')
-        xml_file = os.path.join(
-            test_data_dir, "interface_definition_valid.xml")
-        schema_file = os.path.join(
-            data_dir, "schemas", "interface_definition.rng")
+        super(TestVytreeReferenceLoader, self).setUp()
+        self.reference_tree = reftree.ReferenceNode('root')
 
-        loader = vyconf.tree.referencetree.ReferenceTreeLoader(
-            xml_file, {"mock": MockType}, schema=schema_file)
+        loader = self.get_loader(
+            "interface_definition_valid.xml",
+            {"mock": MockType},
+            'schemas/interface_definition.rng')
+
         loader.load(self.reference_tree)
 
     def test_get_child(self):
         child = self.reference_tree.get_child(['foo', 'bar'])
-        self.assertIsInstance(child, vyconf.tree.referencetree.ReferenceNode)
+        self.assertIsInstance(child, reftree.ReferenceNode)
 
     def test_should_not_be_tag_node(self):
         child = self.reference_tree.get_child(['foo'])
@@ -62,12 +61,8 @@ class TestVytreeReferenceLoader(unittest.TestCase):
 
     # Try loading an invalid definition
     def test_invalid_interface_definition(self):
-        data_dir = os.environ["VYCONF_DATA_DIR"]
-        test_data_dir = os.environ["VYCONF_TEST_DATA_DIR"]
-        xml_file = os.path.join(
-            test_data_dir, "interface_definition_invalid.xml")
-        schema_file = os.path.join(
-            data_dir, "schemas", "interface_definition.rng")
-        self.assertRaises(vyconf.tree.referencetree.ReferenceTreeLoaderError,
-                          vyconf.tree.referencetree.ReferenceTreeLoader,
-                          xml_file, {"mock": MockType}, schema=schema_file)
+        with testtools.ExpectedException(reftree.ReferenceTreeLoaderError):
+            self.get_loader(
+                'interface_definition_invalid.xml',
+                {"mock": MockType},
+                'schemas/interface_definition.rng')
