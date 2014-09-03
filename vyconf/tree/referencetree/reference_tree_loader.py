@@ -131,9 +131,8 @@ class ReferenceTreeLoader(object):
                 # error-message= is optional as well
                 name_error_message = None
                 if ERROR_MESSAGE_ATTRIBUTE in xml_child.attrib:
-                    value_error_message = \
+                    name_error_message = \
                         xml_child.attrib[ERROR_MESSAGE_ATTRIBUTE]
-
                 reference_node.set_name_constraint(
                     name_type, name_constraint, name_error_message)
             elif xml_child.tag == HELP_STRING_ELEMENT:
