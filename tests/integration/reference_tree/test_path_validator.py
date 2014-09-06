@@ -43,7 +43,7 @@ class TestVytreePathValidator(ReferenceTreeTestCase):
             self.types_dict, self.reference_tree)
 
     def test_path_exists(self):
-        self.validator.validate(['foo', 'bar', 'somename'])
+        self.validator.validate(['foo'])
 
     def test_path_doesnt_exist(self):
         self.assertRaises(
@@ -51,5 +51,27 @@ class TestVytreePathValidator(ReferenceTreeTestCase):
             self.validator.validate,
             ['foo', 'baz'])
 
-    def test_leaf_node_valid_value(self):
-        self.validator.validate(['quux', 'spam', 'somevalue'])
+    def test_incomplete_tag_node_path(self):
+        self.assertRaises(
+            reftree.PathValidationError,
+            self.validator.validate,
+            ['foo', 'bar'])
+
+    def test_incomplete_leaf_node_path(self):
+        self.assertRaises(
+            reftree.PathValidationError,
+            self.validator.validate,
+            ['foo', 'bar', 'aaa', 'baz'])
+
+    def test_leaf_node_value_valid(self):
+        self.validator.validate(['quux', 'spam', '123'])
+
+    def test_leaf_node_value_invalid(self):
+        self.assertRaises(
+            reftree.PathValidationError,
+            self.validator.validate,
+            ['quuz', 'xyzzy', 'aaa'])
+
+    def test_tag_node_content_valid(self):
+        self.validator.validate(['foo', 'bar', 'qwerty', 'baz', 'xyz'])
+
