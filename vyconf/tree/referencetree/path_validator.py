@@ -63,7 +63,14 @@ class PathValidator(object):
         """
         valid = False
         errors = []
-        for constraint_dict in node.get_value_constraints():
+
+        constraint_list = None
+        if node.is_leaf():
+            constraint_list = node.get_value_constraints()
+        else:
+            constraint_list = [node.get_name_constraint()]
+
+        for constraint_dict in constraint_list:
             current_type = constraint_dict['type']
             current_constraint = constraint_dict['constraint']
             try:
@@ -82,27 +89,42 @@ class PathValidator(object):
     def _validate(self, config_path, node):
         # We are going to mangle it, so copy it first
         path = config_path[:]
-        node_name = path.pop(0)
 
         # There are two tricky cases: tag nodes and leaf nodes,
         # which need special validation of the immediate child.
 
-        # So we get a reference tree child first
-        next_node = node.find_child(node_name)
-
         # If it's a leaf node, we just need to validate the value
-        if next_node.is_leaf() or next_node.is_tag():
+        if node.is_leaf() or node.is_tag():
             next_item = None
             try:
-                next_item = path.pop()
+                next_item = path.pop(0)
             except IndexError:
                 raise PathValidationError(
                     'Path "%s" is incomplete' % config_path)
-            self._validate_leaf_or_tag_node(self.types, next_node, next_item)
+            (result, errors) = self._validate_leaf_or_tag_node(self.types,
+                                                               node,
+                                                               next_item)
+            if not result:
+                msg = ""
+                if node.is_leaf():
+                    msg = "Value validation failed"
+                else:
+                    msg = "Node name validation failed"
+                raise PathValidationError(msg,
+                                          additional_messages=errors)
+            else:
+                if node.is_leaf():
+                    return True
+                else:
+                    if path:
+                        next_item = path.pop(0)
+                        next_node = node.find_child(next_item)
+                        self._validate(path, next_node)
         else:
             # It's a normal node, just recurse to it, if we have where to
             # recurse
             if path:
+                next_node = node.find_child(path.pop(0))
                 self._validate(path, next_node)
             else:
                 return True
