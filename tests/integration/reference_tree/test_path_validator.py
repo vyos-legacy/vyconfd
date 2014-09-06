@@ -74,4 +74,3 @@ class TestVytreePathValidator(ReferenceTreeTestCase):
 
     def test_tag_node_content_valid(self):
         self.validator.validate(['foo', 'bar', 'qwerty', 'baz', 'xyz'])
-
