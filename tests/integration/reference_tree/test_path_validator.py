@@ -70,7 +70,13 @@ class TestVytreePathValidator(ReferenceTreeTestCase):
         self.assertRaises(
             reftree.PathValidationError,
             self.validator.validate,
-            ['quuz', 'xyzzy', 'aaa'])
+            ['quux', 'xyzzy', 'aaa'])
+
+    def test_garbage_after_leaf_node(self):
+        self.assertRaises(
+            reftree.PathValidationError,
+            self.validator.validate,
+            ['quux', 'spam', 'aaa', 'bbb'])
 
     def test_tag_node_content_valid(self):
         self.validator.validate(['foo', 'bar', 'qwerty', 'baz', 'xyz'])
