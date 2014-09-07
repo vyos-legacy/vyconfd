@@ -22,6 +22,7 @@ import vyconf.tree
 import vyconf.types
 import vyconf.tree
 import vyconf.tree.referencetree
+import vyconf.pathutils as vpu
 
 
 class PathValidationError(Exception):
@@ -40,6 +41,8 @@ class PathValidator(object):
 
             Args:
                 types (dict): dictionary of type names and validators
+                tree (vyconf.tree.ReferenceTree):
+                    a reference tree instance
         """
         if types is None:
             self.types = {}
@@ -87,20 +90,20 @@ class PathValidator(object):
             return (False, errors)
 
     def _validate(self, config_path, node):
-        # We are going to mangle it, so copy it first
+        # We are going to mangle the path, so copy it first
         path = config_path[:]
 
         # There are two tricky cases: tag nodes and leaf nodes,
         # which need special validation of the immediate child.
-
-        # If it's a leaf node, we just need to validate the value
         if node.is_leaf() or node.is_tag():
             next_item = None
-            try:
+            if path:
                 next_item = path.pop(0)
-            except IndexError:
+            else:
                 raise PathValidationError(
-                    'Path "%s" is incomplete' % config_path)
+                    "Configuration path [%s] is incomplete" %
+                    vpu.path_string(config_path))
+
             (result, errors) = self._validate_leaf_or_tag_node(self.types,
                                                                node,
                                                                next_item)
@@ -114,12 +117,20 @@ class PathValidator(object):
                                           additional_messages=errors)
             else:
                 if node.is_leaf():
-                    return True
+                    if not path:
+                        return True
+                    else:
+                        # There are extra items after a leaf node
+                        raise PathValidationError(
+                            "Configuration path [%s] has extra items" %
+                            vpu.path_string(config_path))
                 else:
                     if path:
                         next_item = path.pop(0)
                         next_node = node.find_child(next_item)
                         self._validate(path, next_node)
+                    else:
+                        return True
         else:
             # It's a normal node, just recurse to it, if we have where to
             # recurse
@@ -143,4 +154,5 @@ class PathValidator(object):
             self._validate(path, self.tree)
         except vyconf.tree.ChildNotFoundError:
             raise PathValidationError(
-                "Configuration path %s is not valid" % config_path)
+                "Configuration path [%s] is not valid"
+                % vpu.path_string(config_path))
