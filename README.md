@@ -105,13 +105,31 @@ are restored and commit is aborted.
 
 VyConf is written in Python. For hacking it, apart from a Python interpreter, you will need:
 
-* nosetests, for automated tests discovery and execution
 * trang (http://www.thaiopensource.com/relaxng/trang.html), for converting compact RelaxNG to XML
-* make (e.g. GNU Make) for automated build/test/etc. execution
 * lxml, ply (http://www.dabeaz.com/ply/) for VyConf dependencies
 
 The rules for contributed code are:
 
 * Follow PEP8 whenever possible
 * Make it both 2 and 3 compatible (2 is not going anywhere for a while)
-* Add unit tests whenever possible
+* Add tests whenever possible
+
+## Tests
+
+### Running tests
+
+You need tox (https://testrun.org/tox/latest/) to run tests.
+
+To run all tests, just run "tox" from the top level dir.
+
+### Types of tests
+
+Test classification is a bit fuzzy, but VyConf maintainer defines it as follows:
+
+* Unit tests: test a method or (at most) a class in isolation, any external entities, data and code, are mocked
+* Integration tests: test interactions between two or more units
+* Acceptance tests: test a component as a whole
+
+Every part of the system should have unit tests. Exceptions to this rule include:
+* Glue code whose only purpose is to communicate to entities not feasible to mock.
+
