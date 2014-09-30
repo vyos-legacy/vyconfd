@@ -1,5 +1,4 @@
 # vyconf.components.dependencies: dependency sorting functions
-# reference tree XML loader.
 #
 # Copyright (C) 2014 VyOS Development Group <maintainers@vyos.net>
 #
