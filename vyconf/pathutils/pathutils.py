@@ -22,7 +22,7 @@
 import re
 
 
-def path_string(path, separator=" "):
+def path_to_string(path, separator=" "):
     """ Converts path list to a string """
     if not isinstance(separator, str):
         raise ValueError("Separator must be a string")

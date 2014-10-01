@@ -102,7 +102,7 @@ class PathValidator(object):
             else:
                 raise PathValidationError(
                     "Configuration path [%s] is incomplete" %
-                    vpu.path_string(config_path))
+                    vpu.path_to_string(config_path))
 
             (result, errors) = self._validate_leaf_or_tag_node(self.types,
                                                                node,
@@ -123,7 +123,7 @@ class PathValidator(object):
                         # There are extra items after a leaf node
                         raise PathValidationError(
                             "Configuration path [%s] has extra items" %
-                            vpu.path_string(config_path))
+                            vpu.path_to_string(config_path))
                 else:
                     if path:
                         next_item = path.pop(0)
@@ -155,4 +155,4 @@ class PathValidator(object):
         except vyconf.tree.ChildNotFoundError:
             raise PathValidationError(
                 "Configuration path [%s] is not valid"
-                % vpu.path_string(config_path))
+                % vpu.path_to_string(config_path))
