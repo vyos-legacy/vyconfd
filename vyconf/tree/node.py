@@ -122,6 +122,12 @@ class Node(object):
                 ChildNotFoundError
         """
         path = self.to_list(path_or_name)
+
+        # Special case for empty path
+        # Returning self is probably the most reasonable approach
+        if not path:
+            return self
+
         next_level = path.pop(0)
         if not path:
             # It was the last path level

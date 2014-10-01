@@ -29,6 +29,10 @@ class TestVytreeNode(unittest.TestCase):
         node = vyconf.tree.Node("root")
         self.assertIsInstance(node, vyconf.tree.Node)
 
+    def test_empty_path(self):
+        node = vyconf.tree.Node("root")
+        self.assertEqual(node, node.get_child([]))
+
     def test_get_name(self):
         node = vyconf.tree.Node("root")
         self.assertEqual(node.get_name(), "root")
