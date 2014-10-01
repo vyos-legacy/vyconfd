@@ -21,8 +21,15 @@
 # http://relaxng.org/compact-tutorial-20030326.htm
 # (unless converted to XML, then just RELAX-NG :)
 
-# Interface definition starts with nodeList tag that may contain node tags
-start = element nodeList { node* }
+# Interface definition starts with interfaceDefinition tag that may contain node tags
+# It also may contain "extends" tags, if nodes must be appended to certain path
+start = element interfaceDefinition { extends*, nodeList }
+
+nodeList = element nodeList { node* }
+
+# Extends tag defines path prepended to the nodes
+extends = element extends { path }
+path = attribute path { text }
 
 # node tag may contain node, leafNode, or tagNode tags
 # Those are intermediate configuration nodes that may only contain

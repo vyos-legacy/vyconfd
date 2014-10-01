@@ -36,6 +36,9 @@ class TestVytreeReferenceLoader(ReferenceTreeTestCase):
         super(TestVytreeReferenceLoader, self).setUp()
         self.reference_tree = reftree.ReferenceNode('root')
 
+        # For testing interface that expands other node
+        self.reference_tree.insert_child(['quux'])
+
         loader = self.get_loader(
             "interface_definition_valid.xml",
             {"mock": MockType},
@@ -44,19 +47,19 @@ class TestVytreeReferenceLoader(ReferenceTreeTestCase):
         loader.load(self.reference_tree)
 
     def test_get_child(self):
-        child = self.reference_tree.get_child(['foo', 'bar'])
+        child = self.reference_tree.get_child(['quux', 'foo', 'bar'])
         self.assertIsInstance(child, reftree.ReferenceNode)
 
     def test_should_not_be_tag_node(self):
-        child = self.reference_tree.get_child(['foo'])
+        child = self.reference_tree.get_child(['quux', 'foo'])
         self.assertFalse(child.is_tag())
 
     def test_should_be_tag_node(self):
-        child = self.reference_tree.get_child(['foo', 'bar'])
+        child = self.reference_tree.get_child(['quux', 'foo', 'bar'])
         self.assertTrue(child.is_tag())
 
     def test_should_be_leaf_node(self):
-        child = self.reference_tree.get_child(['foo', 'bar', 'baz'])
+        child = self.reference_tree.get_child(['quux', 'foo', 'bar', 'baz'])
         self.assertTrue(child.is_leaf())
 
     # Try loading an invalid definition

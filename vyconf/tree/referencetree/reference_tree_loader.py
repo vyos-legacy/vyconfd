@@ -19,6 +19,7 @@
 #    USA
 
 from lxml import etree as ET
+import vyconf.pathutils as vpu
 
 NODE_ELEMENT = "node"
 TAG_NODE_ELEMENT = "tagNode"
@@ -27,6 +28,7 @@ NAME_CONSTRAINT_ELEMENT = "nameConstraint"
 VALUE_CONSTRAINT_ELEMENT = "valueConstraint"
 HELP_STRING_ELEMENT = "helpString"
 VALUE_HELP_STRING_ELEMENT = "valueHelpString"
+EXTENDS_ELEMENT = "extends"
 
 NODE_NAME_ATTRIBUTE = "name"
 TYPE_ATTRIBUTE = "type"
@@ -34,6 +36,7 @@ CONSTRAINT_ATTRIBUTE = "constraint"
 DESCRIPTION_ATTRIBUTE = "description"
 VALUE_ATTRIBUTE = "value"
 ERROR_MESSAGE_ATTRIBUTE = "error-message"
+PATH_ATTRIBUTE = "path"
 
 
 class ReferenceTreeLoaderError(Exception):
@@ -59,7 +62,21 @@ class ReferenceTreeLoader(object):
                     "Malformed interface definition: %s" % xml_source)
 
     def load(self, reference_tree):
-        self._walk_xml_node(self.__xml_root, reference_tree)
+        # Blind faith, required by the schema
+        node_list_element = self.__xml_root.find("nodeList")
+
+        path_strs = self._get_base_paths(self.__xml_root)
+        if not path_strs:
+            path_strs = [""]
+        for path_str in path_strs:
+            path = vpu.string_to_path(path_str)
+            reference_node = reference_tree.get_child(path)
+            self._walk_xml_node(node_list_element, reference_node)
+
+    def _get_base_paths(self, root):
+        path_elements = root.findall(EXTENDS_ELEMENT)
+        paths = [x.attrib[PATH_ATTRIBUTE] for x in path_elements]
+        return paths
 
     def _walk_xml_leaf_node(self, xml_node, reference_node):
         for xml_child in xml_node:
