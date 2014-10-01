@@ -43,3 +43,8 @@ def path_to_string(path, separator=" "):
         item_list.append(item_str)
 
     return separator.join(item_list)
+
+def string_to_path(path_str, separator=" "):
+    """ Converts a string to a path list. """
+    path = path_str.split(separator)
+    return path
