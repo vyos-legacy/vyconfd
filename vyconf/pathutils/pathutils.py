@@ -46,5 +46,13 @@ def path_to_string(path, separator=" "):
 
 def string_to_path(path_str, separator=" "):
     """ Converts a string to a path list. """
-    path = path_str.split(separator)
-    return path
+    if not isinstance(path_str, str):
+        raise ValueError("Path must be a string")
+    if not isinstance(separator, str):
+        raise ValueError("Separator must be a string")
+
+    if not path_str:
+        return []
+    else:
+        path = path_str.split(separator)
+        return path
