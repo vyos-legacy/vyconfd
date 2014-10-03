@@ -1,12 +1,32 @@
 #!/bin/bash
+#
+#    rnc2rng.sh: a script for converting compact form RelaxNG to XML
+#                with trang.
+#
+#    Copyright (C) 2014 VyOS Development Group <maintainers@vyos.net>
+#
+#    This library is free software; you can redistribute it and/or
+#    modify it under the terms of the GNU Lesser General Public
+#    License as published by the Free Software Foundation; either
+#    version 2.1 of the License, or (at your option) any later version.
+#
+#    This library is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+#    Lesser General Public License for more details.
+#
+#    You should have received a copy of the GNU Lesser General Public
+#    License along with this library; if not, write to the Free Software
+#    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301
+#    USA
 
 which trang 2>&1 >/dev/null
 if [ $? != 0 ]; then
     echo "trang binary not found"
-    echo "Install trang (http://www.thaiopensource.com/relaxng/trang.html) or make sure it is in your PATH"
+    echo "Install trang (http://www.thaiopensource.com/relaxng/trang.html)"
+    echo "or make sure it is in your $PATH"
     exit 1
 fi
-
 
 function compile_one() {
     local src=$1
@@ -24,7 +44,8 @@ function compile_one() {
     trang -Irnc -Orng $src $dst
 }
 
-# Loop over all rnc files in a directory compiling them to rnc with the same name with different ending
+# Loop over all .rnc files in a directory compiling
+# them to .rng with the same name and new extension
 function compile_all_in_path() {
     local path=$1
     if [ ! -d "$path"  ]; then
@@ -50,7 +71,7 @@ case $1 in
     ;;
     *)
         echo "Usage:"
-        echo "$0 all <path>: compiles rnc all schemas in <path> to rng"
+        echo "$0 all <path>: compiles all rnc schemas in <path> to rng"
         echo "$0 one <source> <destination>: compiles rnc <source> to rng <destination>"
     ;;
 esac
