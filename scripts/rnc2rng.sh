@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 #
 #    rnc2rng.sh: a script for converting compact form RelaxNG to XML
 #                with trang.
@@ -28,7 +28,7 @@ if [ $? != 0 ]; then
     exit 1
 fi
 
-function compile_one() {
+compile_one() {
     local src=$1
     local dst=$2
     if [ ! -f "$src" ]; then
@@ -46,7 +46,7 @@ function compile_one() {
 
 # Loop over all .rnc files in a directory compiling
 # them to .rng with the same name and new extension
-function compile_all_in_path() {
+compile_all_in_path() {
     local path=$1
     if [ ! -d "$path"  ]; then
         echo "Directory $path was not found"
