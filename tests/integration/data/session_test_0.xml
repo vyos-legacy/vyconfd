@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<interfaceDefinition>
+  <nodeList>
+    <node name="foo">
+      <helpString description="test"/>
+    </node>
+  </nodeList>
+</interfaceDefinition>
+

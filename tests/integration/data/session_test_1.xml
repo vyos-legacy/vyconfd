@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<interfaceDefinition>
+  <extends path="foo"/>
+  <nodeList>
+    <node name="bar">
+      <tagNode name="baz">
+        <nameConstraint type="alwaysvalid" constraint="asdf"/>
+        <helpString description="Sample node bar"/>
+        <leafNode name="eggs">
+          <valueConstraint type="alwaysvalid" constraint="foobar"/>
+        </leafNode>
+      </tagNode>
+    </node>
+    <node name="quux">
+      <leafNode name="xyzzy">
+        <valueConstraint type="nevervalid" error-message="nevervalid"/>
+      </leafNode>
+      <leafNode name="spam">
+          <valueConstraint type="alwaysvalid"/>
+      </leafNode>
+    </node>
+  </nodeList>
+</interfaceDefinition>
+

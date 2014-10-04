@@ -1,15 +1,28 @@
+import copy
+
+import vyconf.tree.referencetree as rt
+import vyconf.tree.configtree as ct
+
+OP_MODE = 0
+CONF_MODE = 1
+
 class Session(object):
     def __init__(self,
                  running_config,
-                 reference_tree,
+                 validator,
                  user):
-        self.__running_config = running_config
-        self.__reference_tree = reference_tree
-        self.__user = user
-        self.level = None
+        self._running_config = running_config
+        self._proposed_config = None
+        self._validator = validator
+        self._user = user
+        self._level = None
+        self._mode = OP_MODE
+        self._changed = False
 
     def configure(self):
-        pass
+        self._proposed_config = \
+            copy.deepcopy(self._running_config)
+        self._mode = CONF_MODE
 
     def set(self, path):
         pass
