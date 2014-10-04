@@ -94,3 +94,9 @@ class TestVytreePathValidator(ReferenceTreeTestCase):
 
         self.assertTrue(
             (path == ['foo', 'bar', 'eggs']) and (value is None))
+
+    def test_split_path_nonleaf(self):
+        path, value = self.validator.split_path(
+            ['foo', 'bar'])
+        self.assertTrue(
+            (path == ['foo', 'bar']) and (value is None))

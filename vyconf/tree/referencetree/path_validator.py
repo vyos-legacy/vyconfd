@@ -142,13 +142,22 @@ class PathValidator(object):
 
     def _find_value(self, config_path, node):
         path = config_path
+
+        # The last node is a non-leaf node
+        if not path:
+            return None
+
+        # Or it's a leaf node
         if node.is_leaf():
+            # It can have value
             if len(path) == 1:
                 value = path.pop()
                 return value
             else:
+                # Or it's typeless
                 return None
         else:
+            # Or it's not yet the last node
             next_name = path.pop(0)
             next_child = node.find_child(next_name)
             return self._find_value(path, next_child)
