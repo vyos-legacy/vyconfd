@@ -140,6 +140,19 @@ class PathValidator(object):
             else:
                 return True
 
+    def _find_value(self, config_path, node):
+        path = config_path
+        if node.is_leaf():
+            if len(path) == 1:
+                value = path.pop()
+                return value
+            else:
+                return None
+        else:
+            next_name = path.pop(0)
+            next_child = node.find_child(next_name)
+            return self._find_value(path, next_child)
+
     def validate(self, config_path, config_level=None):
         """ Validates a config path against
 
@@ -156,3 +169,21 @@ class PathValidator(object):
             raise PathValidationError(
                 "Configuration path [%s] is not valid"
                 % vpu.path_to_string(config_path))
+
+    def split_path(self, config_path, config_level=None):
+        """ Splits a path into path part and value part.
+            Assumes the path is valid.
+
+            Args:
+                config_path (list): a list representing config path
+        """
+        path = config_path[:]
+        if config_level is not None:
+            path = config_level + path
+
+        value = self._find_value(path[:], self.tree)
+        if value is None:
+            return config_path, None
+        else:
+            path.pop()
+            return path, value

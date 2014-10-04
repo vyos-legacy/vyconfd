@@ -8,6 +8,8 @@
         <leafNode name="baz">
           <valueConstraint type="alwaysvalid" constraint="foobar"/>
         </leafNode>
+        <leafNode name="eggs">
+        </leafNode>
       </tagNode>
     </node>
     <node name="quux">

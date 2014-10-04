@@ -80,3 +80,17 @@ class TestVytreePathValidator(ReferenceTreeTestCase):
 
     def test_tag_node_content_valid(self):
         self.validator.validate(['foo', 'bar', 'qwerty', 'baz', 'xyz'])
+
+    def test_split_path(self):
+        path, value = self.validator.split_path(
+            ['quux', 'spam', '123'])
+
+        self.assertTrue(
+            (path == ['quux', 'spam']) and (value == '123'))
+
+    def test_split_path_typeless(self):
+        path, value = self.validator.split_path(
+            ['foo', 'bar', 'eggs'])
+
+        self.assertTrue(
+            (path == ['foo', 'bar', 'eggs']) and (value is None))
