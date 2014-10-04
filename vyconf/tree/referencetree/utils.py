@@ -1,4 +1,5 @@
-#    vyconf.tree.referencetree._init__: package init file.
+#    vyconf.tree.referencetree.utils:
+#        auxillary functions for the reference tree.
 #
 #    Copyright (C) 2014 VyOS Development Group <maintainers@vyos.net>
 #
@@ -17,20 +18,22 @@
 #    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301
 #    USA
 
-from vyconf.tree.node import (  # noqa
-    Node,
-    ChildNotFoundError,
-    ChildAlreadyExistsError,
-)
+from .reference_node import ReferenceNode
+from .reference_tree_loader import ReferenceTreeLoader
 
-from .reference_node import (  # noqa
-    ReferenceNode,
-    ReferenceNodeError)
 
-from .reference_tree_loader import (  # noqa
-    ReferenceTreeLoader,
-    ReferenceTreeLoaderError)
+def load_reference_tree(types, xml_sources, schema_source, tree=None):
+    rt = None
+    if not tree:
+        rt = ReferenceNode("root")
+    else:
+        rt = tree
 
-from .path_validator import PathValidator, PathValidationError  # noqa
+    if not isinstance(xml_sources, list):
+        xml_sources = [xml_sources]
 
-from .utils import load_reference_tree  # noqa
+    for xml_source in xml_sources:
+        rtl = ReferenceTreeLoader(xml_source, types, schema=schema_source)
+        rtl.load(rt)
+
+    return rt
