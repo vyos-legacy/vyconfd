@@ -25,14 +25,38 @@ class Session(object):
             copy.deepcopy(self._running_config)
         self._mode = CONF_MODE
 
-    def set(self, path):
-        pass
+    def set(self, config_path):
+        path = config_path[:]
+        self._validator.validate(path)
+
+        path = config_path[:]
+        path, value = self._validator.split_path(path)
+        last_node = self._proposed_config.insert_child(path)
+
+        if value:
+            last_node.add_value(value)
 
     def delete(self, path):
         pass
 
     def set_level(self, level):
         pass
+
+    def exists(self, config_path):
+        path = config_path[:]
+        _path, value = self._validator.split_path(path)
+        self._validator.validate(path)
+        try:
+            node = self._proposed_config.get_child(_path)
+            if value is not None:
+                if value in node.get_values():
+                    return True
+                else:
+                    return False
+            else:
+                return True
+        except:
+            return False
 
     def commit(self):
         pass

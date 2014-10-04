@@ -19,6 +19,8 @@
       <leafNode name="spam">
           <valueConstraint type="alwaysvalid"/>
       </leafNode>
+      <leafNode name="cheese">
+      </leafNode>
     </node>
   </nodeList>
 </interfaceDefinition>

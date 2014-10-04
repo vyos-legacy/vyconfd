@@ -62,5 +62,16 @@ class SessionTest(unittest.TestCase):
             self.user)
         self.session.configure()
 
-    def test_(self):
+    def test_set(self):
         self.session.set(['foo', 'bar'])
+        self.assertTrue(self.session.exists(['foo', 'bar']))
+
+    def test_set_with_value(self):
+        self.session.set(['foo', 'quux', 'spam', 'fgsfds'])
+        self.assertTrue(self.session.exists(['foo', 'quux', 'spam', 'fgsfds']))
+
+    def test_set_tag_node(self):
+        self.session.set(
+            ['foo', 'bar', 'baz', 'asdf', 'eggs', 'fghj'])
+        self.assertTrue(
+            self.session.exists(['foo', 'bar', 'baz', 'asdf', 'eggs', 'fghj']))

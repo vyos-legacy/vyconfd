@@ -158,6 +158,12 @@ class PathValidator(object):
                 return None
         else:
             # Or it's not yet the last node
+
+            # Tag node successors are its immediate
+            # children in a reference tree
+            if node.is_tag():
+                path.pop(0)
+
             next_name = path.pop(0)
             next_child = node.find_child(next_name)
             return self._find_value(path, next_child)

@@ -90,13 +90,20 @@ class TestVytreePathValidator(ReferenceTreeTestCase):
 
     def test_split_path_typeless(self):
         path, value = self.validator.split_path(
-            ['foo', 'bar', 'eggs'])
+            ['quux', 'cheese'])
 
         self.assertTrue(
-            (path == ['foo', 'bar', 'eggs']) and (value is None))
+            (path == ['quux', 'cheese']) and (value is None))
 
     def test_split_path_nonleaf(self):
         path, value = self.validator.split_path(
             ['foo', 'bar'])
         self.assertTrue(
             (path == ['foo', 'bar']) and (value is None))
+
+    def test_split_path_tag(self):
+        path, value = self.validator.split_path(
+            ['foo', 'bar', 'asdf', 'baz', '123'])
+        self.assertTrue(
+            (path == ['foo', 'bar', 'asdf', 'baz'])
+            and (value == '123'))
