@@ -79,4 +79,3 @@ class TestVytreeReferenceLoader(ReferenceTreeTestCase):
             t = reftree.ReferenceNode("root")
             l.load(t)
             l.load(t)
-

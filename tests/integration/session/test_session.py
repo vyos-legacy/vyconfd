@@ -44,18 +44,22 @@ schema_file = "schemas/interface_definition.rng"
 
 schema_path = os.path.join(DATA_DIR, schema_file)
 
+
 class SessionTest(unittest.TestCase):
     def setUp(self):
         self.user = "vyconfadmin"
         self.types_dict = vtypes.get_types(dummytypes)
         self.rt = vrt.load_reference_tree(
-                           self.types_dict,
-                           xmls,
-                           schema_path)
- 
+            self.types_dict,
+            xmls,
+            schema_path)
+
         self.config_tree = vct.ConfigNode("root")
         self.validator = vrt.PathValidator(tree=self.rt, types=self.types_dict)
-        self.session = vsession.Session(self.config_tree, self.validator, self.user )
+        self.session = vsession.Session(
+            self.config_tree,
+            self.validator,
+            self.user)
         self.session.configure()
 
     def test_(self):

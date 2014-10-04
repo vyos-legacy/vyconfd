@@ -1,4 +1,6 @@
 <?xml version="1.0"?>
-<nodeList>
-  <foo/>
-</nodeList>
+<interfaceDefinition>
+  <nodeList>
+    <foo/>
+  </nodeList>
+</interfaceDefinition>

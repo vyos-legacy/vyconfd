@@ -6,6 +6,7 @@ import vyconf.tree.configtree as ct
 OP_MODE = 0
 CONF_MODE = 1
 
+
 class Session(object):
     def __init__(self,
                  running_config,
@@ -32,6 +33,6 @@ class Session(object):
 
     def set_level(self, level):
         pass
-        
+
     def commit(self):
         pass

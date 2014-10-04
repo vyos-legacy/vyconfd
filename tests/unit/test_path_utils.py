@@ -40,4 +40,3 @@ class TestPathUtils(unittest.TestCase):
     def test_string_to_path_separator(self):
         path = vpu.string_to_path("foo:bar:baz", separator=":")
         self.assertEqual(path, ['foo', 'bar', 'baz'])
-

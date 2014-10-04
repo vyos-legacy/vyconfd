@@ -137,10 +137,11 @@ class ReferenceTreeLoader(object):
                     next_name = xml_child.attrib[NODE_NAME_ATTRIBUTE]
                     next_reference_node = reference_node.insert_child(
                         next_name)
-                except vt.ChildAlreadyExistsError as e:
+                except vt.ChildAlreadyExistsError:
                     cur_name = reference_node.get_name()
                     raise ReferenceTreeLoaderError(
-                        dup_child_msg.format("{0} {1} ".format(cur_name, next_name),
+                        dup_child_msg.format(
+                            "{0} {1} ".format(cur_name, next_name),
                             self._xml_source))
 
                 # If it's a tag node, we need to set a flag in the
@@ -174,10 +175,11 @@ class ReferenceTreeLoader(object):
                     next_name = xml_child.attrib[NODE_NAME_ATTRIBUTE]
                     next_reference_node = reference_node.insert_child(
                         next_name)
-                except vt.ChildAlreadyExistsError as e:
+                except vt.ChildAlreadyExistsError:
                     cur_name = reference_node.get_name()
                     raise ReferenceTreeLoaderError(
-                        dup_child_msg.format("{0} {1} ".format(cur_name, next_name),
+                        dup_child_msg.format(
+                            "{0} {1} ".format(cur_name, next_name),
                             self._xml_source))
                 next_reference_node.set_leaf()
                 self._walk_xml_leaf_node(xml_child, next_reference_node)

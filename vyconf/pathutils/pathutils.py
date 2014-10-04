@@ -44,6 +44,7 @@ def path_to_string(path, separator=" "):
 
     return separator.join(item_list)
 
+
 def string_to_path(path_str, separator=" "):
     """ Converts a string to a path list. """
     if not isinstance(path_str, str):
