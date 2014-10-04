@@ -69,3 +69,14 @@ class TestVytreeReferenceLoader(ReferenceTreeTestCase):
                 'interface_definition_invalid.xml',
                 {"mock": MockType},
                 'schemas/interface_definition.rng')
+
+    def test_duplicate_node(self):
+        with testtools.ExpectedException(reftree.ReferenceTreeLoaderError):
+            l = self.get_loader(
+                'interface_definition_duplicate.xml',
+                {"mock": MockType},
+                'schemas/interface_definition.rng')
+            t = reftree.ReferenceNode("root")
+            l.load(t)
+            l.load(t)
+

@@ -19,6 +19,8 @@
 #    USA
 
 from lxml import etree as ET
+
+import vyconf.tree as vt
 import vyconf.pathutils as vpu
 
 NODE_ELEMENT = "node"
@@ -38,6 +40,10 @@ VALUE_ATTRIBUTE = "value"
 ERROR_MESSAGE_ATTRIBUTE = "error-message"
 PATH_ATTRIBUTE = "path"
 
+dup_child_msg = """\
+Interface definition conflict: node '{0}' defined in '{1}' \
+is already defined elsewhere"""
+
 
 class ReferenceTreeLoaderError(Exception):
     """ Raised on attempts to create a reference tree from incorrect
@@ -50,6 +56,7 @@ class ReferenceTreeLoaderError(Exception):
 
 class ReferenceTreeLoader(object):
     def __init__(self, xml_source, types, schema=None):
+        self._xml_source = xml_source
         self.__xml_tree = ET.parse(xml_source)
         self.__xml_root = self.__xml_tree.getroot()
         self.__types = types
@@ -126,8 +133,15 @@ class ReferenceTreeLoader(object):
             # because it's already expressed in the RELAX-NG XML grammar
             if (xml_child.tag == NODE_ELEMENT or
                     xml_child.tag == TAG_NODE_ELEMENT):
-                next_reference_node = reference_node.insert_child(
-                    [xml_child.attrib[NODE_NAME_ATTRIBUTE]])
+                try:
+                    next_name = xml_child.attrib[NODE_NAME_ATTRIBUTE]
+                    next_reference_node = reference_node.insert_child(
+                        next_name)
+                except vt.ChildAlreadyExistsError as e:
+                    cur_name = reference_node.get_name()
+                    raise ReferenceTreeLoaderError(
+                        dup_child_msg.format("{0} {1} ".format(cur_name, next_name),
+                            self._xml_source))
 
                 # If it's a tag node, we need to set a flag in the
                 # reference_node object
@@ -156,7 +170,14 @@ class ReferenceTreeLoader(object):
                 help_string = xml_child.attrib[DESCRIPTION_ATTRIBUTE]
                 reference_node.set_help_string(help_string)
             elif xml_child.tag == LEAF_NODE_ELEMENT:
-                next_reference_node = reference_node.insert_child(
-                    [xml_child.attrib[NODE_NAME_ATTRIBUTE]])
+                try:
+                    next_name = xml_child.attrib[NODE_NAME_ATTRIBUTE]
+                    next_reference_node = reference_node.insert_child(
+                        next_name)
+                except vt.ChildAlreadyExistsError as e:
+                    cur_name = reference_node.get_name()
+                    raise ReferenceTreeLoaderError(
+                        dup_child_msg.format("{0} {1} ".format(cur_name, next_name),
+                            self._xml_source))
                 next_reference_node.set_leaf()
                 self._walk_xml_leaf_node(xml_child, next_reference_node)
