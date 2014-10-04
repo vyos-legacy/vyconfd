@@ -34,7 +34,7 @@ path = attribute path { text }
 # node tag may contain node, leafNode, or tagNode tags
 # Those are intermediate configuration nodes that may only contain
 # other nodes and must not have values
-node = element node { ownerAttr?, nodeNameAttr, helpString?, (node | tagNode | leafNode)+ }
+node = element node { ownerAttr?, nodeNameAttr, helpString?, (node | tagNode | leafNode)* }
 
 # All nodes must have "name" attribute
 nodeNameAttr = attribute name { text }
