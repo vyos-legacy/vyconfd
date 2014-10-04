@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<interfaceDefinition>
+  <nodeList>
+    <node name="foo">
+      <tagNode name="bar">
+        <nameConstraint type="mock" constraint="asdf" error-message=""/>
+        <helpString description="Sample node bar"/>
+        <leafNode name="baz">
+          <valueConstraint type="mock"/>
+        </leafNode>
+      </tagNode>
+    </node>
+  </nodeList>
+</interfaceDefinition>
+
