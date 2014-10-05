@@ -58,5 +58,11 @@ class Session(object):
         except:
             return False
 
+    def get_values(self, config_path):
+        path = config_path[:]
+        node = self._proposed_config.get_child(path)
+        values = node.get_values()
+        return values
+
     def commit(self):
         pass
