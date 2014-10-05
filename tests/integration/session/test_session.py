@@ -56,22 +56,37 @@ class SessionTest(unittest.TestCase):
 
         self.config_tree = vct.ConfigNode("root")
         self.validator = vrt.PathValidator(tree=self.rt, types=self.types_dict)
-        self.session = vsession.Session(
+
+    def _make_session(self):
+        session = vsession.Session(
             self.config_tree,
             self.validator,
             self.user)
-        self.session.configure()
+        session.configure()
+        return session
 
     def test_set(self):
-        self.session.set(['foo', 'bar'])
-        self.assertTrue(self.session.exists(['foo', 'bar']))
+        session = self._make_session()
+        session.set(['foo', 'bar'])
+        self.assertTrue(session.exists(['foo', 'bar']))
 
     def test_set_with_value(self):
-        self.session.set(['foo', 'quux', 'spam', 'fgsfds'])
-        self.assertTrue(self.session.exists(['foo', 'quux', 'spam', 'fgsfds']))
+        session = self._make_session()
+        session.set(['foo', 'quux', 'spam', 'fgsfds'])
+        self.assertTrue(session.exists(['foo', 'quux', 'spam', 'fgsfds']))
 
     def test_set_tag_node(self):
-        self.session.set(
+        session = self._make_session()
+        session.set(
             ['foo', 'bar', 'baz', 'asdf', 'eggs', 'fghj'])
         self.assertTrue(
-            self.session.exists(['foo', 'bar', 'baz', 'asdf', 'eggs', 'fghj']))
+            session.exists(['foo', 'bar', 'baz', 'asdf', 'eggs', 'fghj']))
+
+    def test_get_values(self):
+        session = self._make_session()
+        session.set(['foo', 'quux', 'spam', 'fgsfds'])
+        self.assertTrue(
+            session.get_values(['foo', 'quux', 'spam']) ==
+            ['fgsfds'])
+
+
