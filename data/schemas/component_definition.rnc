@@ -17,20 +17,52 @@
 #    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301
 #    USA
 
-start = element component { nameAttr, description*, dependencies*, executables }
+start = element component
+{
+    nameAttr,
+    description*,
+    dependencies*,
+    executables
+}
 
-nameAttr = attribute name { text }
+nameAttr = attribute name
+{
+    text
+}
 
-description = element description { text }
+description = element description
+{
+    text
+}
 
-dependencies = element dependencies { dependency+ }
+dependencies = element dependencies
+{
+    dependency+
+}
 
-dependency = element dependency { text }
+dependency = element dependency
+{
+    text
+}
 
-executables = element executables { verify, update, apply }
+executables = element executables
+{
+    verify,
+    update,
+    apply
+}
 
-verify = element verify { text }
+verify = element verify
+{
+    text
+}
 
-update = element update { text }
+update = element update
+{
+    text
+}
 
-apply = element apply { text }
+apply = element apply
+{
+    text
+}

@@ -23,69 +23,141 @@
 
 # Interface definition starts with interfaceDefinition tag that may contain node tags
 # It also may contain "extends" tags, if nodes must be appended to certain path
-start = element interfaceDefinition { extends*, nodeList }
+start = element interfaceDefinition
+{
+    extends*, nodeList
+}
 
-nodeList = element nodeList { node* }
+nodeList = element nodeList
+{
+    node*
+}
 
 # Extends tag defines path prepended to the nodes
-extends = element extends { path }
-path = attribute path { text }
+extends = element extends
+{
+    path
+}
+
+path = attribute path
+{
+    text
+}
 
 # node tag may contain node, leafNode, or tagNode tags
 # Those are intermediate configuration nodes that may only contain
 # other nodes and must not have values
-node = element node { ownerAttr?, nodeNameAttr, helpString?, (node | tagNode | leafNode)* }
+node = element node
+{
+    ownerAttr?,
+    nodeNameAttr,
+    helpString?,
+    (node | tagNode | leafNode)*
+}
 
 # All nodes must have "name" attribute
-nodeNameAttr = attribute name { text }
+nodeNameAttr = attribute name
+{
+    text
+}
 
 # Ordinary nodes and tag nodes can have "owner" attribute.
 # Owner is the component that is notified when node changes.
-ownerAttr = attribute owner { text }
+ownerAttr = attribute owner
+{
+    text
+}
 
 # Tag nodes are containers for nodes without predefined names, like network interfaces
 # or user names (e.g. "interfaces ethernet eth0" or "user jrandomhacker")
 # Tag nodes may	contain	node and leafNode elements, and also nameConstraint tags
 # They must not contain other tag nodes
-tagNode = element tagNode { ownerAttr?, nodeNameAttr, nameConstraint?, helpString?, (node | leafNode)+ }
+tagNode = element tagNode
+{
+    ownerAttr?,
+    nodeNameAttr,
+    nameConstraint?,
+    helpString?,
+    (node | leafNode)+
+}
 
 # Tag nodes may also contain nameConstraint tag with type and constraint
 # attributes. It provides information required to validate child name.
-nameConstraint = element nameConstraint { typeAttr, constraintAttr?, errorMessageAttr?, empty }
+nameConstraint = element nameConstraint
+{
+    typeAttr,
+    constraintAttr?,
+    errorMessageAttr?,
+    empty
+}
 
 # Leaf nodes are terminal configuration nodes that can't have children,
 # but can have values.
 # Leaf node may contain one or more valueConstraint tags
 # If multiple valueConstraint tags are used, they work a logical OR
-leafNode = element leafNode { nodeNameAttr, helpString?, (valueHelpString | valueConstraint)* }
+leafNode = element leafNode
+{
+    nodeNameAttr,
+    helpString?,
+    (valueHelpString | valueConstraint)*
+}
 
 # valueConstraint tag contains information required to validate node values
 # It must have two attributes, "type" and "constraint".
-valueConstraint = element valueConstraint { typeAttr, constraintAttr?, errorMessageAttr?, empty }
+valueConstraint = element valueConstraint
+{
+    typeAttr,
+    constraintAttr?,
+    errorMessageAttr?,
+    empty
+}
 
 # helpString tag contains brief description of the purpose of the node
 # Must have description= attribute
-helpString = element helpString { descriptionAttr, empty }
+helpString = element helpString
+{
+    descriptionAttr, empty
+}
 
 # valueHelpString tag contain information about acceptable value format
 # It may be exact value in value= attribute, or a placeholder taken from
 # type specified in type= attribute
-valueHelpString = element valueHelpString { ((typeAttr, constraintAttr?)|valueAttr), descriptionAttr, empty }
+valueHelpString = element valueHelpString
+{
+    ((typeAttr, constraintAttr?) | valueAttr),
+    descriptionAttr,
+    empty
+}
 
 # description= attribute contains help strings for nodes
-descriptionAttr = attribute description { text }
+descriptionAttr = attribute description
+{
+    text
+}
 
 # value= attributes contains one of allowed values for leaf nodes
-valueAttr = attribute value { text }
+valueAttr = attribute value
+{
+    text
+}
 
 # type= attribute is used in leaf nodes and contains name of a type
 # to take value placeholder from
-typeAttr = attribute type { text }
+typeAttr = attribute type
+{
+    text
+}
 
 # constraint= attribute contains additional information for type validation,
 # used in valueContrating tags
-constraintAttr = attribute constraint { text }
+constraintAttr = attribute constraint
+{
+    text
+}
 
 # error-message= attribute is used to override default error message
 # in nameConstraint and valueConstraint attributes
-errorMessageAttr = attribute error-message { text }
+errorMessageAttr = attribute error-message
+{
+    text
+}
