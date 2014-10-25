@@ -26,11 +26,9 @@ class Session(object):
         self._mode = CONF_MODE
 
     def set(self, config_path):
-        path = config_path[:]
-        self._validator.validate(path)
+        self._validator.validate(config_path)
 
-        path = config_path[:]
-        path, value = self._validator.split_path(path)
+        path, value = self._validator.split_path(config_path)
         last_node = self._proposed_config.insert_child(path)
 
         if value:
@@ -43,11 +41,10 @@ class Session(object):
         pass
 
     def exists(self, config_path):
-        path = config_path[:]
-        _path, value = self._validator.split_path(path)
-        self._validator.validate(path)
+        self._validator.validate(config_path)
+        path, value = self._validator.split_path(config_path)
         try:
-            node = self._proposed_config.get_child(_path)
+            node = self._proposed_config.get_child(path)
             if value is not None:
                 if value in node.get_values():
                     return True
@@ -59,8 +56,7 @@ class Session(object):
             return False
 
     def get_values(self, config_path):
-        path = config_path[:]
-        node = self._proposed_config.get_child(path)
+        node = self._proposed_config.get_child(config_path)
         values = node.get_values()
         return values
 
