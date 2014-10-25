@@ -89,12 +89,12 @@ class Node(object):
             Raises:
                 ChildNotFoundError
         """
-        result = None
-        for child in self.__children:
-            if child.get_name() == name:
-                result = child
+
+        # XXX: insert function guarantees that names are unique,
+        # so we don't check it here
+        result = [x for x in self.__children if x.get_name() == name]
         if result:
-            return result
+            return result[0]
         else:
             raise ChildNotFoundError(self.get_name(), name)
 
