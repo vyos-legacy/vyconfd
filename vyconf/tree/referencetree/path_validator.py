@@ -208,3 +208,24 @@ class PathValidator(object):
         else:
             path.pop()
             return path, value
+
+    def _check_node_aux(self, path, node, funct):
+        if not path:
+            return funct(node)
+        else:
+            if node.is_tag():
+                path.pop(0)
+            next_name = path.pop(0)
+            next_child = node.find_child(next_name)
+            return self._check_node_aux(path, next_child, funct)
+
+    def check_node(self, config_path, funct):
+        """ Applies a function to a reference tree node
+            and returns result.
+
+            Args:
+                path (list): config path
+                funct (function): function to apply to the node
+        """
+        path = config_path[:]
+        return self._check_node_aux(path, self.tree, funct)
