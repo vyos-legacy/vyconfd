@@ -102,3 +102,18 @@ class SessionTest(unittest.TestCase):
         session.delete(['foo', 'quux', 'spam', 'fgsfds'])
         self.assertTrue(session.exists(['foo', 'quux']))
         self.assertFalse(session.exists(['foo', 'quux', 'spam', 'fgsfds']))
+
+    def test_delete_with_multiple_values(self):
+        session = self._make_session()
+        session.set(['foo', 'quux', 'spam', 'fgsfds'])
+        session.set(['foo', 'quux', 'spam', 'asdfgh'])
+        session.delete(['foo', 'quux', 'spam', 'fgsfds'])
+        self.assertTrue(session.exists(['foo', 'quux', 'spam', 'asdfgh']))
+        self.assertFalse(session.exists(['foo', 'quux', 'spam', 'fgsfds']))
+
+    def test_delete_subtree(self):
+        session = self._make_session()
+        session.set(['foo', 'quux', 'spam', 'fgsfds'])
+        session.delete(['foo', 'quux'])
+        self.assertTrue(session.exists(['foo']))
+        self.assertFalse(session.exists(['foo', 'quux', 'spam', 'fgsfds']))
