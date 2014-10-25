@@ -26,19 +26,26 @@ class Session(object):
         self._mode = OP_MODE
         self._changed = False
 
+    def _make_path(self, config_path, abspath):
+        if self._level and (not abspath):
+            return self._level + config_path
+        else:
+            return config_path[:]
+
     def configure(self):
         self._proposed_config = \
             copy.deepcopy(self._running_config)
         self._mode = CONF_MODE
 
-    def set(self, config_path):
-        self._validator.validate(config_path)
+    def set(self, config_path, abspath=False):
+        _config_path = self._make_path(config_path, abspath)
+        self._validator.validate(_config_path)
 
-        path, value = self._validator.split_path(config_path)
+        path, value = self._validator.split_path(_config_path)
 
         if value:
             node = None
-            if not self.exists(path):
+            if not self.exists(path, abspath=True):
                 node = self._proposed_config.insert_child(path)
             else:
                 node = self._proposed_config.get_child(path)
@@ -50,9 +57,10 @@ class Session(object):
         else:
             self._proposed_config.insert_child(path)
 
-    def delete(self, config_path):
-        self._validator.validate(config_path)
-        path, value = self._validator.split_path(config_path)
+    def delete(self, config_path, abspath=False):
+        _config_path = self._make_path(config_path, abspath)
+        self._validator.validate(_config_path)
+        path, value = self._validator.split_path(_config_path)
         node = self._proposed_config.get_child(path)
 
         if value and (len(node.get_values()) > 1):
@@ -74,8 +82,9 @@ class Session(object):
     def get_level(self):
         return self._level
 
-    def exists(self, config_path):
-        path, value = self._validator.split_path(config_path)
+    def exists(self, config_path, abspath=False):
+        _config_path = self._make_path(config_path, abspath)
+        path, value = self._validator.split_path(_config_path)
         try:
             node = self._proposed_config.get_child(path)
             if value is not None:
@@ -88,8 +97,9 @@ class Session(object):
         except:
             return False
 
-    def get_values(self, config_path):
-        node = self._proposed_config.get_child(config_path)
+    def get_values(self, config_path, abspath=False):
+        _config_path = self._make_path(config_path, abspath)
+        node = self._proposed_config.get_child(_config_path)
         values = node.get_values()
         return values
 

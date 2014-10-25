@@ -131,3 +131,29 @@ class SessionTest(unittest.TestCase):
         session.delete(['foo', 'quux'])
         self.assertTrue(session.exists(['foo']))
         self.assertFalse(session.exists(['foo', 'quux', 'spam', 'fgsfds']))
+
+    def test_set_get_level(self):
+        session = self._make_session()
+        session.set_level(['foo', 'quux'])
+        self.assertEqual(session.get_level(), ['foo', 'quux'])
+
+    def test_reset_level(self):
+        session = self._make_session()
+        session.set_level(['foo', 'quux'])
+        session.set_level([])
+        self.assertEqual(session.get_level(), [])
+
+    def test_set_with_level(self):
+        session = self._make_session()
+        session.set_level(['foo', 'quux'])
+        session.set(['spam', 'asdf'])
+        session.set_level([])
+        self.assertTrue(session.exists(['foo', 'quux', 'spam', 'asdf']))
+
+    def test_delete_with_level(self):
+        session = self._make_session()
+        session.set_level(['foo', 'quux'])
+        session.set(['spam', 'rtyu'])
+        session.delete(['spam', 'rtyu'])
+        session.set_level([])
+        self.assertFalse(session.exists(['foo', 'quux', 'spam', 'rtyu']))
