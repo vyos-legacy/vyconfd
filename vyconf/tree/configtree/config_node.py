@@ -33,6 +33,9 @@ class ConfigNode(vyconf.tree.Node):
     def delete_value(self, value):
         self.get_property("value_list").remove(value)
 
+    def set_value(self, value):
+        self.set_property("value_list", [value])
+
     def get_values(self):
         return self.get_property("value_list")
 
