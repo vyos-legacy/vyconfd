@@ -19,6 +19,8 @@
 #    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301
 #    USA
 
+import copy
+
 import vyconf.tree.referencetree as reftree
 import vyconf.types as types
 import vyconf.types.dummy as dummytypes
@@ -107,3 +109,18 @@ class TestVytreePathValidator(ReferenceTreeTestCase):
         self.assertTrue(
             (path == ['foo', 'bar', 'asdf', 'baz'])
             and (value == '123'))
+
+    # Ensure methods that take a list argument do not
+    # mangle it
+
+    def test_validate_non_destructive(self):
+        path = ['foo', 'bar', 'asdf', 'baz', '123']
+        _path = copy.copy(path)
+        self.validator.validate(path)
+        self.assertEqual(path, _path)
+
+    def test_split_path_non_destructive(self):
+        path = ['foo', 'bar', 'asdf', 'baz', '123']
+        _path = copy.copy(path)
+        self.validator.split_path(path)
+        self.assertEqual(path, _path)

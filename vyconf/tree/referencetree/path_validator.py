@@ -140,9 +140,10 @@ class PathValidator(object):
             else:
                 return True
 
-    def _find_value(self, config_path, node):
-        path = config_path
-
+    def _find_value_aux(self, path, node):
+        """ Helper function for the _find_value() that destroys its
+            list argument.
+        """
         # The last node is a non-leaf node
         if not path:
             return None
@@ -166,7 +167,11 @@ class PathValidator(object):
 
             next_name = path.pop(0)
             next_child = node.find_child(next_name)
-            return self._find_value(path, next_child)
+            return self._find_value_aux(path, next_child)
+
+    def _find_value(self, config_path, node):
+        path = config_path[:]
+        return self._find_value_aux(path, node)
 
     def validate(self, config_path, config_level=None):
         """ Validates a config path against
@@ -175,6 +180,7 @@ class PathValidator(object):
                 config_path (list): a list representing config path
         """
         path = config_path[:]
+
         if config_level is not None:
             path = config_level + path
 
@@ -196,7 +202,7 @@ class PathValidator(object):
         if config_level is not None:
             path = config_level + path
 
-        value = self._find_value(path[:], self.tree)
+        value = self._find_value(path, self.tree)
         if value is None:
             return config_path, None
         else:
