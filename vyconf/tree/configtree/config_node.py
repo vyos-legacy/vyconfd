@@ -30,7 +30,7 @@ class ConfigNode(vyconf.tree.Node):
     def add_value(self, value):
         self.get_property("value_list").append(value)
 
-    def remove_value(self, value):
+    def delete_value(self, value):
         self.get_property("value_list").remove(value)
 
     def get_values(self):

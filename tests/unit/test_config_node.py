@@ -29,11 +29,11 @@ class TestVytreeConfigNode(unittest.TestCase):
         node.add_value("foo")
         self.assertEqual(node.get_values(), ["foo"])
 
-    def test_remove_value(self):
+    def test_delete_value(self):
         node = vyconf.tree.configtree.ConfigNode('root')
         node.add_value("foo")
         node.add_value("bar")
-        node.remove_value("foo")
+        node.delete_value("foo")
         self.assertEqual(node.get_values(), ["bar"])
 
     def test_get_comment_before_its_set(self):
