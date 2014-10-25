@@ -23,6 +23,7 @@ import unittest
 
 import vyconf.tree
 
+
 class TestVytreeNode(unittest.TestCase):
 
     def test_create_node(self):

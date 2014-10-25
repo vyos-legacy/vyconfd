@@ -25,6 +25,7 @@
 
 import copy
 
+
 class ChildNotFoundError(Exception):
     """ Raised on attempts to look up a non-existent path
     """

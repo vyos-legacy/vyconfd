@@ -19,8 +19,6 @@
 
 import copy
 
-import vyconf.tree.referencetree as rt
-import vyconf.tree.configtree as ct
 
 OP_MODE = 0
 CONF_MODE = 1
