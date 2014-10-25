@@ -39,6 +39,7 @@ DESCRIPTION_ATTRIBUTE = "description"
 VALUE_ATTRIBUTE = "value"
 ERROR_MESSAGE_ATTRIBUTE = "error-message"
 PATH_ATTRIBUTE = "path"
+MULTI_ATTRIBUTE = "multi"
 
 dup_child_msg = """\
 Interface definition conflict: node '{0}' defined in '{1}' \
@@ -182,4 +183,7 @@ class ReferenceTreeLoader(object):
                             "{0} {1} ".format(cur_name, next_name),
                             self._xml_source))
                 next_reference_node.set_leaf()
+                if MULTI_ATTRIBUTE in xml_child.attrib:
+                    if xml_child.attrib[MULTI_ATTRIBUTE] == "true":
+                        next_reference_node.set_multi()
                 self._walk_xml_leaf_node(xml_child, next_reference_node)
