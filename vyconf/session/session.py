@@ -52,7 +52,6 @@ class Session(object):
         pass
 
     def exists(self, config_path):
-        self._validator.validate(config_path)
         path, value = self._validator.split_path(config_path)
         try:
             node = self._proposed_config.get_child(path)
