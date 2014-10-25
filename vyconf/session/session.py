@@ -34,8 +34,19 @@ class Session(object):
         if value:
             last_node.add_value(value)
 
-    def delete(self, path):
-        pass
+    def delete(self, config_path):
+        self._validator.validate(config_path)
+        path, value = self._validator.split_path(config_path)
+        node = self._proposed_config.get_child(path)
+
+        if value and (len(node.get_values()) > 1):
+            # If the node has more than one value,
+            # delete only specified value
+            node.delete_value(value)
+        else:
+            # Otherwise delete the whole node,
+            # since we don't allow leaf nodes without values
+            self._proposed_config.delete_child(path)
 
     def set_level(self, level):
         pass

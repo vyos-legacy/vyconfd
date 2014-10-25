@@ -89,4 +89,16 @@ class SessionTest(unittest.TestCase):
             session.get_values(['foo', 'quux', 'spam']) ==
             ['fgsfds'])
 
+    def test_delete(self):
+        session = self._make_session()
+        session.set(['foo', 'bar'])
+        session.delete(['foo', 'bar'])
+        self.assertTrue(session.exists(['foo']))
+        self.assertFalse(session.exists(['foo', 'bar']))
 
+    def test_delete_with_value(self):
+        session = self._make_session()
+        session.set(['foo', 'quux', 'spam', 'fgsfds'])
+        session.delete(['foo', 'quux', 'spam', 'fgsfds'])
+        self.assertTrue(session.exists(['foo', 'quux']))
+        self.assertFalse(session.exists(['foo', 'quux', 'spam', 'fgsfds']))
