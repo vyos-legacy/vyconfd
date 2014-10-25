@@ -7,6 +7,12 @@ OP_MODE = 0
 CONF_MODE = 1
 
 
+class SessionError(object):
+    def __init__(self, msg):
+        super(SessionError, self).__init__(msg)
+        self.strerror = msg
+
+
 class Session(object):
     def __init__(self,
                  running_config,
