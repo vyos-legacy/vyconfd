@@ -95,9 +95,12 @@ nameConstraint = element nameConstraint
 # but can have values.
 # Leaf node may contain one or more valueConstraint tags
 # If multiple valueConstraint tags are used, they work a logical OR
+# Leaf nodes can have "multi" attribute that indicated that it can have
+# more than one value
 leafNode = element leafNode
 {
     nodeNameAttr,
+    multiAttr?,
     helpString?,
     (valueHelpString | valueConstraint)*
 }
@@ -160,4 +163,12 @@ constraintAttr = attribute constraint
 errorMessageAttr = attribute error-message
 {
     text
+}
+
+# multi=<true|false> attribute indicates that a leaf node can have
+# multiple values
+# If not present, treated as "false"
+multiAttr = attribute multi
+{
+    xsd:boolean
 }
