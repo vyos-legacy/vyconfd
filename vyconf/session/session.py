@@ -65,7 +65,14 @@ class Session(object):
             self._proposed_config.delete_child(path)
 
     def set_level(self, level):
-        pass
+        if not isinstance(level, list):
+            raise SessionError(
+                "{0} is not a valid config level".format(repr(level)))
+        else:
+            self._level = level
+
+    def get_level(self):
+        return self._level
 
     def exists(self, config_path):
         path, value = self._validator.split_path(config_path)
