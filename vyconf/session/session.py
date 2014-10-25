@@ -29,10 +29,20 @@ class Session(object):
         self._validator.validate(config_path)
 
         path, value = self._validator.split_path(config_path)
-        last_node = self._proposed_config.insert_child(path)
 
         if value:
-            last_node.add_value(value)
+            node = None
+            if not self.exists(path):
+                node = self._proposed_config.insert_child(path)
+            else:
+                node = self._proposed_config.get_child(path)
+
+            if self._validator.check_node(path, lambda x: x.is_multi()):
+                node.add_value(value)
+            else:
+                node.set_value(value)
+        else:
+            self._proposed_config.insert_child(path)
 
     def delete(self, config_path):
         self._validator.validate(config_path)

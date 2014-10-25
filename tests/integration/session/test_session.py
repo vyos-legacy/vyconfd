@@ -75,6 +75,20 @@ class SessionTest(unittest.TestCase):
         session.set(['foo', 'quux', 'spam', 'fgsfds'])
         self.assertTrue(session.exists(['foo', 'quux', 'spam', 'fgsfds']))
 
+    def test_set_with_value_multi(self):
+        session = self._make_session()
+        session.set(['foo', 'quux', 'spam', 'fgsfds'])
+        session.set(['foo', 'quux', 'spam', 'vbnm'])
+        self.assertTrue(session.exists(['foo', 'quux', 'spam', 'fgsfds']))
+        self.assertTrue(session.exists(['foo', 'quux', 'spam', 'vbnm']))
+
+    def test_set_with_value_non_multi(self):
+        session = self._make_session()
+        session.set(['foo', 'quux', 'eggs', 'fgsfds'])
+        session.set(['foo', 'quux', 'eggs', 'fghj'])
+        self.assertTrue(session.exists(['foo', 'quux', 'eggs', 'fghj']))
+        self.assertFalse(session.exists(['foo', 'quux', 'eggs', 'fgsfds']))
+
     def test_set_tag_node(self):
         session = self._make_session()
         session.set(
@@ -105,11 +119,11 @@ class SessionTest(unittest.TestCase):
 
     def test_delete_with_multiple_values(self):
         session = self._make_session()
-        session.set(['foo', 'quux', 'spam', 'fgsfds'])
-        session.set(['foo', 'quux', 'spam', 'asdfgh'])
-        session.delete(['foo', 'quux', 'spam', 'fgsfds'])
-        self.assertTrue(session.exists(['foo', 'quux', 'spam', 'asdfgh']))
-        self.assertFalse(session.exists(['foo', 'quux', 'spam', 'fgsfds']))
+        session.set(['foo', 'quux', 'spam', 'tyuiop'])
+        session.set(['foo', 'quux', 'spam', 'zxcvb'])
+        session.delete(['foo', 'quux', 'spam', 'zxcvb'])
+        self.assertTrue(session.exists(['foo', 'quux', 'spam', 'tyuiop']))
+        self.assertFalse(session.exists(['foo', 'quux', 'spam', 'zxcvb']))
 
     def test_delete_subtree(self):
         session = self._make_session()

@@ -15,7 +15,10 @@
       <leafNode name="xyzzy">
         <valueConstraint type="nevervalid" error-message="nevervalid"/>
       </leafNode>
-      <leafNode name="spam">
+      <leafNode name="spam" multi="true">
+          <valueConstraint type="alwaysvalid"/>
+      </leafNode>
+      <leafNode name="eggs">
           <valueConstraint type="alwaysvalid"/>
       </leafNode>
     </node>
