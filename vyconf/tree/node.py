@@ -23,6 +23,7 @@
 # Green by Urth's well does it ever grow.
 #                   From The Poetic Edda, Voluspa
 
+import copy
 
 class ChildNotFoundError(Exception):
     """ Raised on attempts to look up a non-existent path
@@ -68,6 +69,11 @@ class Node(object):
             return [arg]
         else:
             return arg
+
+    @classmethod
+    def _make_path(self, arg):
+        _arg = self.to_list(arg)
+        return copy.copy(_arg)
 
     def get_name(self):
         """ Returns node name.
@@ -121,7 +127,7 @@ class Node(object):
             Raises:
                 ChildNotFoundError
         """
-        path = self.to_list(path_or_name)
+        path = self._make_path(path_or_name)
 
         # Special case for empty path
         # Returning self is probably the most reasonable approach
@@ -151,7 +157,8 @@ class Node(object):
             Raises:
                 ChildNotFoundError, ChildAlreadyExistsError
         """
-        path = self.to_list(path_or_name)
+        path = self._make_path(path_or_name)
+
         next_level = path.pop(0)
         if not path:
             # That was the last item of the path,
@@ -182,7 +189,8 @@ class Node(object):
             Args:
                 path_or_name: The path to child node
         """
-        path = self.to_list(path_or_name)
+        path = self._make_path(path_or_name)
+
         next_level = path.pop(0)
         if not path:
             # It was the last path level

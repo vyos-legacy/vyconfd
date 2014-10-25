@@ -18,10 +18,10 @@
 #    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301
 #    USA
 
-
-import vyconf.tree
+import copy
 import unittest
 
+import vyconf.tree
 
 class TestVytreeNode(unittest.TestCase):
 
@@ -158,3 +158,29 @@ class TestVytreeNode(unittest.TestCase):
     def test_get_property_nonexistent_key(self):
         node = vyconf.tree.Node('test')
         self.assertIsNone(node.get_property('fgsfds'))
+
+    # Check that all methods that take a list argument
+    # do not mangle it
+
+    def test_insert_child_non_destructive(self):
+        path = ['foo', 'bar']
+        _path = copy.copy(path)
+        node = vyconf.tree.Node('test')
+        node.insert_child(path)
+        self.assertEqual(path, _path)
+
+    def test_get_child_non_destructive(self):
+        path = ['foo', 'bar']
+        _path = copy.copy(path)
+        node = vyconf.tree.Node('test')
+        node.insert_child(['foo', 'bar'])
+        node.get_child(path)
+        self.assertEqual(path, _path)
+
+    def test_delete_child_non_destructive(self):
+        path = ['foo', 'bar']
+        _path = copy.copy(path)
+        node = vyconf.tree.Node('test')
+        node.insert_child(['foo', 'bar'])
+        node.delete_child(path)
+        self.assertEqual(path, _path)
