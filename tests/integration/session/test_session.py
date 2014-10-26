@@ -157,3 +157,12 @@ class SessionTest(unittest.TestCase):
         session.delete(['spam', 'rtyu'])
         session.set_level([])
         self.assertFalse(session.exists(['foo', 'quux', 'spam', 'rtyu']))
+
+    def test_set_get_comment(self):
+        session = self._make_session()
+        session.set(['foo', 'quux', 'spam', 'rtyu'])
+        session.set_comment(['foo', 'quux', 'spam'],
+                            "test")
+        self.assertEqual(session.get_comment(
+                         ['foo', 'quux', 'spam']),
+                         "test")

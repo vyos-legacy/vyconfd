@@ -120,5 +120,21 @@ class Session(object):
         values = node.get_values()
         return values
 
+    def set_comment(self, config_path, comment, abspath=False):
+        if not isinstance(comment, str):
+            raise SessionError(
+                "{0} is not a valid comment strine".format(comment))
+
+        _config_path = self._make_path(config_path, abspath)
+        path, value = self._validator.split_path(_config_path)
+        node = self._proposed_config.get_child(_config_path)
+        node.set_comment(comment)
+
+    def get_comment(self, config_path, abspath=False):
+        _config_path = self._make_path(config_path, abspath)
+        path, value = self._validator.split_path(_config_path)
+        node = self._proposed_config.get_child(path)
+        return node.get_comment()
+
     def commit(self):
         pass
