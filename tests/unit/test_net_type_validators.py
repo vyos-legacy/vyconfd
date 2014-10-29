@@ -20,6 +20,7 @@
 # USA
 
 import unittest
+
 import vyconf.types as types
 import vyconf.types.net as nettypes
 

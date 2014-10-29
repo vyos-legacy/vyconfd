@@ -1,3 +1,6 @@
+# Don't change import order.
+hacking>=0.9.2,<0.10
+
 coverage
 Sphinx
 testtools

@@ -23,7 +23,7 @@ import re
 
 
 def path_to_string(path, separator=" "):
-    """ Converts path list to a string """
+    """Converts path list to a string."""
     if not isinstance(separator, str):
         raise ValueError("Separator must be a string")
 
@@ -46,7 +46,7 @@ def path_to_string(path, separator=" "):
 
 
 def string_to_path(path_str, separator=" "):
-    """ Converts a string to a path list. """
+    """Converts a string to a path list."""
     if not isinstance(path_str, str):
         raise ValueError("Path must be a string")
     if not isinstance(separator, str):

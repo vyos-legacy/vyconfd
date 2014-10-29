@@ -17,8 +17,9 @@
 #    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301
 #    USA
 
-import ply.lex as lex
 import re
+
+import ply.lex as lex
 
 
 class Lexer(object):

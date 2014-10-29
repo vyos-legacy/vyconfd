@@ -18,8 +18,8 @@
 #    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301
 #    USA
 
-from .reference_node import ReferenceNode
-from .reference_tree_loader import ReferenceTreeLoader
+from vyconf.tree.reference_node import ReferenceNode
+from vyconf.tree.reference_tree_loader import ReferenceTreeLoader
 
 
 def load_reference_tree(types, xml_sources, schema_source, tree=None):

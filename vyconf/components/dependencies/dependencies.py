@@ -62,7 +62,7 @@ class DependencyList(object):
         return missing
 
     def _sort_dependencies(self, components):
-        """ Sorts dependencies in topological order
+        """Sorts dependencies in topological order
 
             Args:
                 components (dict): A dictionary of component names and lists

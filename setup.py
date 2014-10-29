@@ -1,6 +1,4 @@
-# vyconf.types: base classes for VyConf node value validation
-#
-# Copyright (C) 2014 VyOS Development Group <maintainers@vyos.net>
+# Copyright (C) 2014 VyOS Development Group <maintainers@vyos.net>u
 #
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public

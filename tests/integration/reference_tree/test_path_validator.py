@@ -21,14 +21,13 @@
 
 import copy
 
+from vyconf.tests.integration.reference_tree import base
 import vyconf.tree.referencetree as reftree
 import vyconf.types as types
 import vyconf.types.dummy as dummytypes
 
-from .base import ReferenceTreeTestCase
 
-
-class TestVytreePathValidator(ReferenceTreeTestCase):
+class TestVytreePathValidator(base.ReferenceTreeTestCase):
     def setUp(self):
         super(TestVytreePathValidator, self).setUp()
         self.types_dict = types.get_types(dummytypes)

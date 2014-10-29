@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-#
 # base_types_test.py: unit tests for vyconf.types.base
 #
 # Copyright (C) 2014 VyOS Development Group <maintainers@vyos.net>
@@ -20,6 +18,7 @@
 # USA
 
 import unittest
+
 import vyconf.types as types
 import vyconf.types.base as base
 

@@ -18,11 +18,12 @@
 # USA
 
 import re
-from vyconf.types import TypeValidator, ValidationError, ConstraintFormatError
+
+from vyconf.types import types
 
 
-class StringValidator(TypeValidator):
-    """ Validator for string values """
+class StringValidator(types.TypeValidator):
+    """Validator for string values."""
 
     name = "string"
 
@@ -32,25 +33,26 @@ class StringValidator(TypeValidator):
     @classmethod
     def validate(self, value, constraint=None):
         if not isinstance(value, str):
-            raise ValidationError(
+            raise types.ValidationError(
                 "'%s' is not a valid string" % str)
 
         if constraint:
             if not isinstance(constraint, str):
                 # If we take a precompiled regex, how are we going to issue
                 # a meaningful error message?
-                raise ConstraintFormatError("Constraint must be a string")
+                raise types.ConstraintFormatError(
+                    "Constraint must be a string")
             try:
                 constraint_re = re.compile(constraint)
             except Exception:
-                raise ConstraintFormatError(
+                raise types.ConstraintFormatError(
                     "'%s' is not a valid constraint for type '%s'" %
                     (self.to_string_safe(constraint), self.name))
 
             # Check the value against constraint
             # XXX: do we need to force strict ^...$ match here?
             if not re.match(constraint_re, str(value)):
-                raise ValidationError(
+                raise types.ValidationError(
                     "'%s' does not match pattern '%s'" % (value, constraint))
             else:
                 return True
@@ -58,8 +60,8 @@ class StringValidator(TypeValidator):
             return True
 
 
-class IntegerValidator(TypeValidator):
-    """ Validates unsigned integer values """
+class IntegerValidator(types.TypeValidator):
+    """Validates unsigned integer values """
     name = "integer"
 
     __range_re_str = """
@@ -77,10 +79,11 @@ class IntegerValidator(TypeValidator):
 
     @classmethod
     def validate(self, value, constraint=None):
-        """ Validate an integer. Takes either string representation or
-            actual integer """
+        """Validate an integer. Takes either string representation or
+           actual integer
+        """
         if (not isinstance(value, str)) and (not isinstance(value, int)):
-            raise ValidationError(
+            raise types.ValidationError(
                 "'%s' is not a valid integer" % self.to_string_safe(value))
 
         value_int = None
@@ -90,23 +93,25 @@ class IntegerValidator(TypeValidator):
             except Exception:
                 # Likely ValueError, but we don't really care which error
                 # it was
-                raise ValidationError(
+                raise types.ValidationError(
                     "{0} is not a valid integer".format(value, self.name))
         else:
             value_int = value
 
         if value_int < 0:
             # Anyone wants negative integers in configs?
-            raise ValidationError("\"{0}\" is not a non-negative integer")
+            raise types.ValidationError(
+                "\"{0}\" is not a non-negative integer")
 
         if constraint:
             if not isinstance(constraint, str):
-                raise ConstraintFormatError("Constraint must be a string")
+                raise types.ConstraintFormatError(
+                    "Constraint must be a string")
 
             # XXX: needs really strict validation?
             range_re = re.compile(self.__range_re_str, re.VERBOSE)
             if not range_re.match(constraint):
-                raise ConstraintFormatError(
+                raise types.ConstraintFormatError(
                     "'%s' is not a valid constraint for type '%s." %
                     (constraint, self.name))
 
@@ -117,7 +122,7 @@ class IntegerValidator(TypeValidator):
             data = map(lambda x: True if x[0] <= value_int <= x[1] else
                        False, ranges)
             if True not in data:
-                raise ValidationError(
+                raise types.ValidationError(
                     "'%s' does not fall in range '%s'" % (value, constraint))
 
         # If no exceptions were raised by this time, everything is fine

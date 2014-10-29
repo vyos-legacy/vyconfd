@@ -20,6 +20,7 @@
 # USA
 
 import unittest
+
 import vyconf.types as types
 
 
