@@ -23,14 +23,14 @@ from vyconf.tree.node import (  # noqa
     ChildAlreadyExistsError,
 )
 
-from .reference_node import (  # noqa
+from vyconf.tree.referencetree.reference_node import (  # noqa
     ReferenceNode,
     ReferenceNodeError)
 
-from .reference_tree_loader import (  # noqa
+from vyconf.tree.referencetree.reference_tree_loader import (  # noqa
     ReferenceTreeLoader,
     ReferenceTreeLoaderError)
 
-from .path_validator import PathValidator, PathValidationError  # noqa
+from vyconf.tree.referencetree.path_validator import PathValidator, PathValidationError  # noqa
 
-from .utils import load_reference_tree  # noqa
+from vyconf.tree.referencetree.utils import load_reference_tree  # noqa

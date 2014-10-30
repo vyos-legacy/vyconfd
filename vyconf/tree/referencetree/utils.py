@@ -18,14 +18,14 @@
 #    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301
 #    USA
 
-from vyconf.tree.reference_node import ReferenceNode
-from vyconf.tree.reference_tree_loader import ReferenceTreeLoader
+from vyconf.tree.referencetree import reference_node
+from vyconf.tree.referencetree import reference_tree_loader
 
 
 def load_reference_tree(types, xml_sources, schema_source, tree=None):
     rt = None
     if not tree:
-        rt = ReferenceNode("root")
+        rt = reference_node.ReferenceNode("root")
     else:
         rt = tree
 
@@ -33,7 +33,8 @@ def load_reference_tree(types, xml_sources, schema_source, tree=None):
         xml_sources = [xml_sources]
 
     for xml_source in xml_sources:
-        rtl = ReferenceTreeLoader(xml_source, types, schema=schema_source)
+        rtl = reference_tree_loader.ReferenceTreeLoader(
+            xml_source, types, schema=schema_source)
         rtl.load(rt)
 
     return rt

@@ -11,7 +11,7 @@ DATA_DIR = os.environ.get(
 
 TEST_DATA_DIR = os.environ.get(
     'VYCONF_TEST_DATA_DIR',
-    os.path.join(os.path.join(os.getcwd(), 'tests/integration/data')))
+    os.path.join(os.path.join(os.getcwd(), 'vyconf/tests/integration/data')))
 
 
 class ReferenceTreeTestCase(testcase.TestCase):
