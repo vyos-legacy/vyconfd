@@ -47,7 +47,7 @@ is already defined elsewhere"""
 
 
 class ReferenceTreeLoaderError(Exception):
-    """ Raised on attempts to create a reference tree from incorrect
+    """Raised on attempts to create a reference tree from incorrect
         interface definition
     """
     def __init__(self, message):

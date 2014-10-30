@@ -111,7 +111,8 @@ class Session(object):
                     return False
             else:
                 return True
-        except:
+        # TODO(dmbaturin): Fixup to use more specific exceptions
+        except Exception:
             return False
 
     def get_values(self, config_path, abspath=False):

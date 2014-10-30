@@ -17,17 +17,14 @@
 #    License along with this library; if not, write to the Free Software
 #    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301
 #    USA
-
-import vyconf.tree
-import vyconf.types
+import vyconf.pathutils as vpu
 import vyconf.tree
 import vyconf.tree.referencetree
-import vyconf.pathutils as vpu
+import vyconf.types
 
 
 class PathValidationError(Exception):
-    """ Raised when config path validation fails
-    """
+    """Raised when config path validation fails"""
     def __init__(self, message, additional_messages=None):
         super(PathValidationError, self).__init__(message)
         self.strerror = message
@@ -37,12 +34,11 @@ class PathValidationError(Exception):
 
 class PathValidator(object):
     def __init__(self, types=None, tree=None):
-        """ Creates a path validator object
+        """Creates a path validator object
 
-            Args:
-                types (dict): dictionary of type names and validators
-                tree (vyconf.tree.ReferenceTree):
-                    a reference tree instance
+        :param types: Dictionary of type names and validators.
+        :param tree: A instance of Referencetree.
+        :type tree: vyconf.tree.ReferenceTree
         """
         if types is None:
             self.types = {}
@@ -56,13 +52,12 @@ class PathValidator(object):
             self.tree = tree
 
     def _validate_leaf_or_tag_node(self, types, node, value):
-        """ Validates a value or next child name against node constraints.
+        """Validates a value or next child name against node constraints.
 
-            Args:
-                types (dict): a dict of vyconf.types.TypeValidator ancestors
-                node (vyconf.tree.referencetree.ReferenceNode): a leaf or
-                tag node
-                value: a value (or name) to validate
+        :param types: Dictionary of vyconf.types.TypeValidator ancestors node
+                      (vyconf.tree.referencetree.ReferenceNode): a leaf or tag
+                      node.
+        :param value: A value (or name) to validate
         """
         valid = False
         errors = []
@@ -141,8 +136,8 @@ class PathValidator(object):
                 return True
 
     def _find_value_aux(self, path, node):
-        """ Helper function for the _find_value() that destroys its
-            list argument.
+        """Helper function for the _find_value() that destroys its
+        list argument.
         """
         # The last node is a non-leaf node
         if not path:
@@ -174,10 +169,11 @@ class PathValidator(object):
         return self._find_value_aux(path, node)
 
     def validate(self, config_path, config_level=None):
-        """ Validates a config path against
+        """Validates a config path against
 
-            Args:
-                config_path (list): a list representing config path
+        :param config_path: A list representing config path
+        :type config_path: list
+        :param config_level: The level for the config path.
         """
         path = config_path[:]
 
@@ -192,11 +188,12 @@ class PathValidator(object):
                 % vpu.path_to_string(config_path))
 
     def split_path(self, config_path, config_level=None):
-        """ Splits a path into path part and value part.
+        """Splits a path into path part and value part.
             Assumes the path is valid.
 
-            Args:
-                config_path (list): a list representing config path
+        :param config_path: A list representing config path
+        :type config_path: list
+        :param config_level: The level for the config path.
         """
         path = config_path[:]
         if config_level is not None:
@@ -220,12 +217,12 @@ class PathValidator(object):
             return self._check_node_aux(path, next_child, funct)
 
     def check_node(self, config_path, funct):
-        """ Applies a function to a reference tree node
+        """Applies a function to a reference tree node
             and returns result.
 
-            Args:
-                path (list): config path
-                funct (function): function to apply to the node
+        :param config_path: A list representing config path
+        :type config_path: list
+        :param funct: function to apply to the node.
         """
         path = config_path[:]
         return self._check_node_aux(path, self.tree, funct)

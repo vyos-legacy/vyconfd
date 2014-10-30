@@ -18,11 +18,12 @@
 # USA
 
 import re
-from vyconf.types import TypeValidator, ValidationError, ConstraintFormatError
+
+from vyconf import types
 
 
-class MacAddressValidator(TypeValidator):
-    """ Validator for string values """
+class MacAddressValidator(types.TypeValidator):
+    """Validator for string values."""
 
     name = "mac_address"
 
@@ -33,29 +34,27 @@ class MacAddressValidator(TypeValidator):
 
     @classmethod
     def validate(self, value, constraint=None):
-        """ Validates MAC address.
-
-
-        """
+        """Validates MAC address."""
         mac_re = re.compile(self.__mac_re, re.IGNORECASE)
 
         if not isinstance(value, str):
-            raise ValidationError(
+            raise types.ValidationError(
                 "%s' is not a valid string" % self.to_string_safe(value))
 
         # Check if it's valid at all
         if not re.match(mac_re, value):
-            raise ValidationError(
+            raise types.ValidationError(
                 "\"{0}\" is not a valid MAC address".format(value, constraint))
 
         if constraint:
             if not isinstance(constraint, str):
                 # If we take a precompiled regex, how are we going to issue
                 # a meaningful error message?
-                raise ConstraintFormatError("Constraint must be a string")
+                raise types.ConstraintFormatError(
+                    "Constraint must be a string")
 
             if constraint != "unicast":
-                raise ConstraintFormatError(
+                raise types.ConstraintFormatError(
                     "'%s' is not a valid constraint for type %s" %
                     (constraint, self.name))
 
@@ -65,7 +64,7 @@ class MacAddressValidator(TypeValidator):
                 # significant byte set to 0
                 msb = int(value[:2], 16)
                 if msb & 1 != 0:
-                    raise ValidationError(
+                    raise types.ValidationError(
                         "'%s' is not a unicast MAC address" % value)
         else:
             return True

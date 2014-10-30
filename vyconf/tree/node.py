@@ -27,8 +27,7 @@ import copy
 
 
 class ChildNotFoundError(Exception):
-    """ Raised on attempts to look up a non-existent path
-    """
+    """Raised on attempts to look up a non-existent path."""
     def __init__(self, node, child):
         message = "Node {0} has no child {1}".format(node, child)
         super(ChildNotFoundError, self).__init__(message)
@@ -36,8 +35,7 @@ class ChildNotFoundError(Exception):
 
 
 class ChildAlreadyExistsError(Exception):
-    """ Raised on attempts to insert the same child more than one time
-    """
+    """Raised on attempts to insert the same child more than one time."""
     def __init__(self, node, child):
         message = "Node {0} already has child {1}".format(node, child)
         super(ChildAlreadyExistsError, self).__init__(message)
@@ -45,7 +43,7 @@ class ChildAlreadyExistsError(Exception):
 
 
 class Node(object):
-    """ The base class for configuration and reference tree nodes.
+    """The base class for configuration and reference tree nodes.
 
         This class is not supposed to be used directly.
     """
@@ -58,13 +56,12 @@ class Node(object):
 
     @staticmethod
     def to_list(arg):
-        """ If the argument is not a list, makes a single-item list of it.
+        """If the argument is not a list, makes a single-item list of it.
             Many functions of this class treat path as a list internally,
             but converting it manually in calls is too annoying.
 
-            Args:
-                arg (list): list to be returned unchanges
-                arg (any):  anything to be converted to list
+        :param arg: list to be returned unchanges or anything that converts to
+                    list
         """
         if not isinstance(arg, list):
             return [arg]
@@ -77,24 +74,20 @@ class Node(object):
         return copy.copy(_arg)
 
     def get_name(self):
-        """ Returns node name.
-        """
+        """Returns node name."""
         return self.__name
 
     def dump_properties(self):
         return self.__properties
 
     def find_child(self, name):
-        """ Finds an immediate child by name.
+        """Finds an immediate child by name.
 
-            Args:
-                name (str): Child name
+        :param name: Child name
+        :type name: str
 
-            Returns:
-                Node
-
-            Raises:
-                ChildNotFoundError
+        :rtype: None
+        :raises: ChildNotFoundError
         """
 
         # XXX: insert function guarantees that names are unique,
@@ -106,27 +99,23 @@ class Node(object):
             raise ChildNotFoundError(self.get_name(), name)
 
     def list_children(self):
-        """ Lists immediate children
+        """Lists immediate children.
 
-            Returns:
-                List of node names
+        :returns: List of node names
         """
         names = [x.get_name() for x in self.__children]
         return names
 
     def get_child(self, path_or_name):
-        """ Finds a child node by path
+        """Finds a child node by path.
 
-            Args:
-                path_or_name: The path to child node
-                (e.g. ['organization', 'branches', 'departments'], or
-                'branches')
+        :param path_or_name: The path to a child node.
+                             Example: ["org", "branches", "depts"] or
+                                      "branches"
+        :type path_or_name: str
 
-            Returns:
-                Node: Child node
-
-            Raises:
-                ChildNotFoundError
+        :returns: Node: Child node
+        :raises: ChildNotFoundError
         """
         path = self._make_path(path_or_name)
 
@@ -147,16 +136,12 @@ class Node(object):
             return child.get_child(path)
 
     def insert_child(self, path_or_name):
-        """ Inserts a new child
+        """Inserts a new child.
 
-            Args:
-                path_or_name: The path to child node
+        :param args: The path to a child node.
 
-            Returns:
-                child (node): the inserted node
-
-            Raises:
-                ChildNotFoundError, ChildAlreadyExistsError
+        :returns: Node: Inserted child node
+        :raises: ChildNotFoundError ChildAlreadyExistsError
         """
         path = self._make_path(path_or_name)
 
@@ -185,10 +170,9 @@ class Node(object):
             return next_child.insert_child(path)
 
     def delete_child(self, path_or_name):
-        """ Delete child node
+        """Delete child node.
 
-            Args:
-                path_or_name: The path to child node
+        :param path_or_name: The path to a child node.
         """
         path = self._make_path(path_or_name)
 
@@ -204,7 +188,7 @@ class Node(object):
             child.delete_child(path)
 
     def child_exists(self, path_or_name):
-        """ Checks if specific path to a child exists """
+        """Checks if specific path to a child exists."""
         path = self.to_list(path_or_name)
         try:
             self.get_child(path)
@@ -213,7 +197,7 @@ class Node(object):
             return False
 
     def is_empty(self):
-        """ Checks if a node has any children """
+        """Checks if a node has any children."""
         if self.list_children():
             return False
         else:
@@ -223,7 +207,7 @@ class Node(object):
         return self.__parent
 
     def set_property(self, key, value):
-        """ Set property value by key """
+        """Set property value by key."""
         try:
             self.__properties[key] = value
         except TypeError:
@@ -231,7 +215,7 @@ class Node(object):
                 type(key).__name__))
 
     def get_property(self, key):
-        """ Get property value by key """
+        """Get property value by key."""
 
         try:
             if key in self.__properties:

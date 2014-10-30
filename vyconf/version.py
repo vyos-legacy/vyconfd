@@ -1,5 +1,5 @@
-#    vyconf.tree.referencetree.utils:
-#        auxillary functions for the reference tree.
+#    vyconf.pathutils.pathutils:
+#        miscellaneous path handling functions
 #
 #    Copyright (C) 2014 VyOS Development Group <maintainers@vyos.net>
 #
@@ -17,23 +17,6 @@
 #    License along with this library; if not, write to the Free Software
 #    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301
 #    USA
+import pbr.version
 
-from vyconf.tree.reference_node import ReferenceNode
-from vyconf.tree.reference_tree_loader import ReferenceTreeLoader
-
-
-def load_reference_tree(types, xml_sources, schema_source, tree=None):
-    rt = None
-    if not tree:
-        rt = ReferenceNode("root")
-    else:
-        rt = tree
-
-    if not isinstance(xml_sources, list):
-        xml_sources = [xml_sources]
-
-    for xml_source in xml_sources:
-        rtl = ReferenceTreeLoader(xml_source, types, schema=schema_source)
-        rtl.load(rt)
-
-    return rt
+version_info = pbr.version.VersionInfo('vyconf')

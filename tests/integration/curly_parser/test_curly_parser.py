@@ -18,9 +18,9 @@
 #    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301
 #    USA
 
+import unittest
 
 import vyconf.configfile.curly
-import unittest
 
 # Comparing to a complete datastructure is sort of ugly, but I don't see
 # a better way to make sure it works correctly yet.

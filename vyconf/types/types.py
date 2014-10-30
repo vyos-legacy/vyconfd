@@ -21,31 +21,32 @@ import inspect
 
 
 class ValidationError(Exception):
-    """ Raised when the value fails validation """
+    """Raised when the value fails validation."""
     def __init__(self, message):
         super(ValidationError, self).__init__(message)
         self.strerror = message
 
 
 class ConstraintFormatError(Exception):
-    """ Raised when value constraint doesn't match the format
-        the validator expects. """
+    """Raised when value constraint doesn't match the format the validator
+        expects.
+    """
     def __init(self, message):
         super(ConstraintFormatError, self).__init__(message)
         self.strerror = message
 
 
 class TypeValidator(object):
-    """ Type validator base class.
+    """Type validator base class.
 
-        This is not supposed to be used directly,
+    This is not supposed to be used directly,
 
-        The validate() method in ancestors should be a class method,
-        so it can be called without instantiating the object.
+    The validate() method in ancestors should be a class method,
+    so it can be called without instantiating the object.
+
+    Type name variable stores symbolic type name that is used in
+    interface definitions
     """
-
-    """ Type name variable stores symbolic type name that is used in
-        interface definitions """
     name = None
 
     def __init__(self):
@@ -57,8 +58,9 @@ class TypeValidator(object):
 
     @staticmethod
     def to_string_safe(value):
-        """ Sometimes conversion to string may fail,
-            and we don't want to introduce more failures in validator """
+        """Sometimes conversion to string may fail,
+        and we don't want to introduce more failures in validator.
+        """
         value_str = ""
         if not isinstance(value, str):
             try:
@@ -69,7 +71,7 @@ class TypeValidator(object):
 
 
 def get_types(module):
-    """ Build a dict of type validators from specified module """
+    """Build a dict of type validators from specified module."""
     types = {}
     classes = inspect.getmembers(module, inspect.isclass)
     for c in classes:

@@ -17,11 +17,11 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301
 # USA
 
-from vyconf.types import TypeValidator, ValidationError, ConstraintFormatError
+from vyconf.types import types
 
 
-class AlwaysValid(TypeValidator):
-    """ Dumb type validator which thinks any value is valid """
+class AlwaysValid(types.TypeValidator):
+    """Dumb type validator which thinks any value is valid"""
     name = "alwaysvalid"
 
     def __init__(self):
@@ -32,8 +32,8 @@ class AlwaysValid(TypeValidator):
         return True
 
 
-class NeverValid(TypeValidator):
-    """ Dumb type validator which thinks the value is never valid """
+class NeverValid(types.TypeValidator):
+    """Dumb type validator which thinks the value is never valid"""
     name = "nevervalid"
 
     def __init__(self):
@@ -41,13 +41,13 @@ class NeverValid(TypeValidator):
 
     @classmethod
     def validate(self, value, constraint=None):
-        raise ValidationError(
+        raise types.ValidationError(
             "Value '%s' is not a valid value of type '%s'" %
             (value, self.name))
 
 
-class BadConstraint(TypeValidator):
-    """ Dumb type validator, always complains about constraint format """
+class BadConstraint(types.TypeValidator):
+    """Dumb type validator, always complains about constraint format"""
     name = "badconstraint"
 
     def __init__(self):
@@ -55,6 +55,6 @@ class BadConstraint(TypeValidator):
 
     @classmethod
     def validate(self, value, constraint=None):
-        raise ConstraintFormatError(
+        raise types.ConstraintFormatError(
             "Constraint string '%s' is not valid for type '%s'" %
             (value, self.name))

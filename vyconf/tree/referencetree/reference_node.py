@@ -31,7 +31,7 @@ import vyconf.tree
 
 
 class ReferenceNodeError(Exception):
-    """ Raised on attempts to create incorrectly configure ReferenceNode
+    """Raised on attempts to create incorrectly configure ReferenceNode
         instance (e.g. set mutually exlusive flags at the same time)
     """
     def __init__(self, message):
@@ -40,7 +40,7 @@ class ReferenceNodeError(Exception):
 
 
 class ReferenceNode(vyconf.tree.Node):
-    """ Reference nodes store information about available configuration
+    """Reference nodes store information about available configuration
         tree paths.
 
         Nodes are divided into:

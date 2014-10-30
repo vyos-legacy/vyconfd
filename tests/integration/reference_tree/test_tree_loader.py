@@ -21,8 +21,7 @@
 import testtools
 
 from vyconf.tree import referencetree as reftree
-
-from .base import ReferenceTreeTestCase
+from vyconf.tests.integration.reference_tree import base
 
 
 class MockType(object):
@@ -31,7 +30,7 @@ class MockType(object):
         return "fgsfds"
 
 
-class TestVytreeReferenceLoader(ReferenceTreeTestCase):
+class TestVytreeReferenceLoader(base.ReferenceTreeTestCase):
     def setUp(self):
         super(TestVytreeReferenceLoader, self).setUp()
         self.reference_tree = reftree.ReferenceNode('root')

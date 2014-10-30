@@ -23,12 +23,12 @@
 #                  Lipson, Molinsky, "A Russian Course"
 
 import ply.yacc as yacc
-from .lexer import Lexer
+
+from vyconf.configfile.curly import lexer
 
 
 class ParseError(Exception):
-    """ Raised when incorrect token is found
-    """
+    """Raised when incorrect token is found"""
     def __init__(self, token):
         token_str = ""
         position = ""
@@ -46,11 +46,9 @@ class Parser(object):
             lex_optimize=True,
             yacc_optimize=True,
             yacc_debug=False):
-        self.lexer = Lexer()
+        self.lexer = lexer.Lexer()
 
-        self.lexer.build(
-            optimize=lex_optimize,
-            )
+        self.lexer.build(optimize=lex_optimize)
         self.tokens = self.lexer.tokens
 
         self.parser = yacc.yacc(
@@ -69,17 +67,17 @@ class Parser(object):
             tracking=positiontracking)
 
     def p_value(self, p):
-        ''' value : IDENTIFIER
-                  | STRING
-        '''
+        """value : IDENTIFIER
+                 | STRING
+        """
         p[0] = p[1]
 
     def p_leaf_node(self, p):
-        ''' leaf_node : node_comment IDENTIFIER value SEMICOLON
-                      | IDENTIFIER value SEMICOLON
-                      | IDENTIFIER SEMICOLON
-                      | node_comment IDENTIFIER SEMICOLON
-        '''
+        """leaf_node : node_comment IDENTIFIER value SEMICOLON
+                     | IDENTIFIER value SEMICOLON
+                     | IDENTIFIER SEMICOLON
+                     | node_comment IDENTIFIER SEMICOLON
+        """
         p_tmp = None
         if len(p) == 3:
             # Typeless node without comment
@@ -100,9 +98,9 @@ class Parser(object):
         p[0] = ('leaf-node', p_tmp)
 
     def p_leaf_nodes(self, p):
-        ''' leaf_nodes : leaf_node
-                       | leaf_nodes leaf_node
-        '''
+        """leaf_nodes : leaf_node
+                      | leaf_nodes leaf_node
+        """
         if len(p) == 2:
             # The first node in group, make a list of it
             p[0] = [p[1]]
@@ -111,13 +109,13 @@ class Parser(object):
             p[0] = p[1] + [p[2]]
 
     def p_node_comment(self, p):
-        ''' node_comment : NODE_COMMENT '''
+        """node_comment : NODE_COMMENT"""
         p[0] = ('comment', p[1])
 
     def p_node_name(self, p):
-        ''' node_name : IDENTIFIER
-                      | IDENTIFIER IDENTIFIER
-        '''
+        """node_name : IDENTIFIER
+                     | IDENTIFIER IDENTIFIER
+        """
         if len(p) < 3:
             # That's ordinary node with one-word name
             node_name = [p[1]]
@@ -128,12 +126,12 @@ class Parser(object):
         p[0] = ('node-name', node_name)
 
     def p_node_content(self, p):
-        ''' node_content : leaf_nodes
-                         | leaf_nodes nodes
-                         | nodes leaf_nodes
-                         | leaf_nodes nodes leaf_nodes
-                         | nodes
-        '''
+        """node_content : leaf_nodes
+                        | leaf_nodes nodes
+                        | nodes leaf_nodes
+                        | leaf_nodes nodes leaf_nodes
+                        | nodes
+        """
         # This is to avoid producing a nested list
         # when there are leaf/non-leaf nodes mixed together,
         # since we return those as lists
@@ -143,20 +141,20 @@ class Parser(object):
             p[0] = p[1] + p[2]
 
     def p_nodes(self, p):
-        ''' nodes : node
+        """nodes : node
                   | nodes node
-        '''
+        """
         if len(p) == 2:
             p[0] = [p[1]]
         else:
             p[0] = p[1] + [p[2]]
 
     def p_node(self, p):
-        ''' node : node_name LBRACE node_content RBRACE
-                 | node_comment node_name LBRACE node_content RBRACE
-                 | node_name LBRACE RBRACE
-                 | node_comment node_name LBRACE RBRACE
-        '''
+        """node : node_name LBRACE node_content RBRACE
+                | node_comment node_name LBRACE node_content RBRACE
+                | node_name LBRACE RBRACE
+                | node_comment node_name LBRACE RBRACE
+        """
         if len(p) == 4:
             # Empty node without comment
             p[0] = ('node',
@@ -176,7 +174,7 @@ class Parser(object):
                     {"comment": p[1][1], "name": p[2][1], "content": p[4]})
 
     def p_config(self, p):
-        ''' config : nodes '''
+        """config : nodes"""
 
         p[0] = p[1]
 

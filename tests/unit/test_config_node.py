@@ -18,9 +18,9 @@
 #    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301
 #    USA
 
+import unittest
 
 import vyconf.tree.configtree
-import unittest
 
 
 class TestVytreeConfigNode(unittest.TestCase):
