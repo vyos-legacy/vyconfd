@@ -69,3 +69,8 @@ class TestCurlyParser(unittest.TestCase):
                    'name': ['foo']})]
         ast = self.parser.parse(""" foo {  /* Foo */ bar 0; baz "quux"; } """)
         self.assertEqual(ast, result)
+
+    def test_tag_node(self):
+        result = [('node', {'comment': None, 'name': ['foo', 'bar'], 'content': None})]
+        ast = self.parser.parse(""" foo bar {} """)
+        self.assertEqual(ast, result)
