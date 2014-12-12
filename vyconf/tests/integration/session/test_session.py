@@ -166,3 +166,10 @@ class SessionTest(unittest.TestCase):
         self.assertEqual(session.get_comment(
                          ['foo', 'quux', 'spam']),
                          "test")
+
+    def test_get_status_added(self):
+        session = self._make_session()
+        session.set(['foo', 'quux', 'spam', 'asdf'])
+        status = session.get_node_status(['foo', 'quux', 'spam'])
+        self.assertEqual(status, vsession.ADDED)
+

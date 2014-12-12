@@ -17,11 +17,18 @@
 #    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301
 #    USA
 
+# Who said "God object"? It's a facade!
+
 import copy
 
 
 OP_MODE = 0
 CONF_MODE = 1
+
+UNCHANGED = 0
+CHANGED = 1
+ADDED = 2
+DELETED = 3
 
 
 class SessionError(object):
@@ -137,5 +144,32 @@ class Session(object):
         node = self._proposed_config.get_child(path)
         return node.get_comment()
 
+    def get_node_status(self, config_path, abspath=False):
+        _config_path = self._make_path(config_path, abspath)
+        path, value = self._validator.split_path(_config_path)
+        return self.__get_node_status(self._running_config, self._proposed_config, path)
+
+    def __get_node_status(self, running, proposed, path):
+        cur_level = path.pop(0)
+        if running.child_exists(cur_level) and proposed.child_exists(cur_level):
+            running_child = running.find_child(cur_level)
+            proposed_child = proposed.find_child(cur_level)
+            if path:
+                # We need to go deeper
+                self.__get_node_status(running_child, proposed_child, path)
+            else:
+                # It's a leaf node, we need to compare values
+                if set(running_child.get_values()) == set(proposed_child.get_values()):
+                    return UNCHANGED
+                else:
+                    return CHANGED
+        elif running.child_exists(cur_level) and not proposed.child_exists(cur_level):
+            return DELETED
+        elif not running.child_exists(cur_level) and proposed.child_exists(cur_level):
+            return ADDED
+        else:
+            # Shouldn't happen
+            raise SessionError("Could not determine status of {0}: missing from both trees".format(cur_level))
+              
     def commit(self):
         pass
