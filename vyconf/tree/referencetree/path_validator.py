@@ -159,6 +159,9 @@ class PathValidator(object):
             # children in a reference tree
             if node.is_tag():
                 path.pop(0)
+            # Chances are the path ends at tag node child name
+            if not path:
+                return None
 
             next_name = path.pop(0)
             next_child = node.find_child(next_name)

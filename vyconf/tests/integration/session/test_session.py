@@ -104,6 +104,14 @@ class SessionTest(unittest.TestCase):
         self.assertTrue(
             session.exists(['foo', 'bar', 'baz', 'asdf', 'eggs', 'fghj']))
 
+    def test_tag_node_exists(self):
+        session = self._make_session()
+        session.set(
+            ['foo', 'bar', 'baz', 'asdf', 'eggs', 'fghj'])
+        self.assertTrue(
+            session.exists(['foo', 'bar', 'baz', 'asdf']))
+
+
     def test_get_values(self):
         session = self._make_session()
         session.set(['foo', 'quux', 'spam', 'fgsfds'])
