@@ -25,19 +25,25 @@ import vyconf.tree
 class ConfigNode(vyconf.tree.Node):
     def __init__(self, name, parent=None):
         super(ConfigNode, self).__init__(name, parent)
-        self.set_property("value_list", [])
+        self.set_property("value_set", set([]))
 
     def add_value(self, value):
-        self.get_property("value_list").append(value)
+        self.get_property("value_set").add(value)
 
     def delete_value(self, value):
-        self.get_property("value_list").remove(value)
+        self.get_property("value_set").remove(value)
 
     def set_value(self, value):
-        self.set_property("value_list", [value])
+        self.set_property("value_set", set([value]))
 
     def get_values(self):
-        return self.get_property("value_list")
+        return list(self.get_property("value_set"))
+
+    def has_value(self, value):
+        if value in self.get_property("value_set"):
+            return True
+        else:
+            return False
 
     def set_comment(self, comment):
         self.set_property("comment", comment)
