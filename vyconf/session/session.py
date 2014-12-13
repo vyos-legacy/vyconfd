@@ -177,3 +177,9 @@ class Session(object):
               
     def commit(self):
         pass
+
+    def render_proposed(self, renderer):
+        return renderer.render(self._proposed_config, self._validator.tree)
+
+    def render_running(self, renderer):
+        return renderer.render(self._running_config, self._validator.tree)
