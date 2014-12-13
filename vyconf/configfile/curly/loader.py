@@ -18,13 +18,14 @@
 #    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301
 #    USA
 
+
 def load(ast, session, path=[]):
     for node in ast:
-        value = node[1]
+        type, value = node
         name = value["name"]
         comment = value["comment"]
 
-        if node[0] == "node":
+        if type == "node":
             content = value["content"]
             new_path = path + name
             load(content, session, path=new_path)
