@@ -203,6 +203,10 @@ class Node(object):
         else:
             return True
 
+    def get_children(self):
+        """ Returns a list of children (not names) """
+        return self.__children
+
     def get_parent(self):
         return self.__parent
 
