@@ -20,7 +20,7 @@
 # Who said "God object"? It's a facade!
 
 import copy
-
+import vyconf.pathutils as vpu
 
 OP_MODE = 0
 CONF_MODE = 1
@@ -31,7 +31,7 @@ ADDED = 2
 DELETED = 3
 
 
-class SessionError(object):
+class SessionError(Exception):
     def __init__(self, msg):
         super(SessionError, self).__init__(msg)
         self.strerror = msg
@@ -75,7 +75,11 @@ class Session(object):
                 node = self._proposed_config.get_child(path)
 
             if self._validator.check_node(path, lambda x: x.is_multi()):
-                node.add_value(value)
+                if node.has_value(value):
+                    raise SessionError("Node \"{0}\" already has value \"{1}\"".format(
+                        vpu.path_to_string(path), value))
+                else:
+                    node.add_value(value)
             else:
                 node.set_value(value)
         else:

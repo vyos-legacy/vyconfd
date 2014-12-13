@@ -82,6 +82,14 @@ class SessionTest(unittest.TestCase):
         self.assertTrue(session.exists(['foo', 'quux', 'spam', 'fgsfds']))
         self.assertTrue(session.exists(['foo', 'quux', 'spam', 'vbnm']))
 
+    def test_set_with_value_multi_duplicate(self):
+        session = self._make_session()
+        session.set(['foo', 'quux', 'spam', 'fgsfds'])
+        self.assertRaises(
+            vsession.SessionError,
+            session.set,
+            ['foo', 'quux', 'spam', 'fgsfds'])
+
     def test_set_with_value_non_multi(self):
         session = self._make_session()
         session.set(['foo', 'quux', 'eggs', 'fgsfds'])
