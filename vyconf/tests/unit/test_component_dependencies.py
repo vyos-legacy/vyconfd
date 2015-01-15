@@ -51,3 +51,8 @@ class TestComponentDependencies(unittest.TestCase):
         data = {"foo": ["bar"], "bar": ["baz"], "baz": ["foo"]}
         self.assertRaises(deps.DependencyError,
                           deps.DependencyList, data)
+
+    def test_nondestructive(self):
+        data = {"foo": [], "bar": ["foo"]}
+        deplist = deps.DependencyList(data).get_dependencies()
+        self.assertEqual(data, {"foo": [], "bar": ["foo"]})
