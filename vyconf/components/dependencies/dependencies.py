@@ -71,6 +71,17 @@ class DependencyList(object):
             Returns:
                 list: a list of lists of components with the same priority
         """
+
+        # The idea:
+        # 1. Move components that have no dependencies to the first item
+        #    of the sorted list and remember them in seen_deps list.
+        # 2. Find components that depend only on components from the
+        #    seen_deps list, add them to the next item of the sorted list
+        #    and add to seen_deps.
+        # 3. Repeat this until the component list is empty.
+        #    if nothing is removed in a step, it means there is either
+        #    a loop or a non-existent dependency.
+
         _components = copy.copy(components)
         seen_deps = []
         sorted = []
@@ -79,9 +90,10 @@ class DependencyList(object):
             cur_level = []
             cur_len = len(_components)
 
-            __components = copy.deepcopy(_components)
+            __components = copy.copy(_components)
             for key in __components.keys():
-                if self._subset_of(__components[key], seen_deps):
+                deps = __components[key]
+                if self._subset_of(deps, seen_deps):
                     cur_level.append(key)
                     del _components[key]
 
