@@ -41,3 +41,15 @@ class TestPathUtils(unittest.TestCase):
     def test_string_to_path_separator(self):
         path = vpu.string_to_path("foo:bar:baz", separator=":")
         self.assertEqual(path, ['foo', 'bar', 'baz'])
+
+    def test_car(self):
+        l = [1, 3, 3]
+        self.assertEqual(vpu.car(l), 1)
+
+    def test_cdr(self):
+        l = [1, 2, 3]
+        self.assertEqual(vpu.cdr(l), [2, 3])
+
+    def test_cdr_empty(self):
+        l = []
+        self.assertEqual(vpu.cdr(l), [])

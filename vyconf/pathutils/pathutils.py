@@ -57,3 +57,11 @@ def string_to_path(path_str, separator=" "):
     else:
         path = path_str.split(separator)
         return path
+
+def car(l):
+    """ Returns the head of a list """
+    return l[0]
+
+def cdr(l):
+    """ Returns the tail of a list """
+    return l[1:]
